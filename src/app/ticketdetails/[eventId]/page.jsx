@@ -4,6 +4,7 @@ import React, { use, useEffect, useState } from "react";
 import eventApi from "@/api/events.api";
 import EventDetailsPage from "../_component/details";
 import { getTokenLocal } from "@/utils/localStorage.util";
+import { toast } from "react-toastify";
 
 export default function TicketPage({ params }) {
   const [selectedEvent, setSelectedEvent] = useState({});
@@ -11,7 +12,7 @@ export default function TicketPage({ params }) {
   const { eventId } = React.use(params);
   useEffect(() => {
     if (getTokenLocal() == null || getTokenLocal() == "" || getTokenLocal() == undefined) {
-      alert("Please login to purchase ticket details.");
+      toast("Please login to purchase ticket details.");
       window.location.href = "/login";
       return;
     }

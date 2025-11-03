@@ -1,8 +1,9 @@
 "use client";
 import authInstance from "@/api/auth/auth.api";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { logoimg } from "@/shared/images";
+import { toast } from "react-toastify";
 
 export default function Signup() {
   const countries = [
@@ -25,10 +26,13 @@ export default function Signup() {
   const [gender, setGender] = useState("");
   const [country, setCountry] = useState("");
   const [email, setEmail] = useState("");
+
+  const [dateOfBirth, setDateOfBirth] = useState("");
   const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [dobError, setDobError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -49,6 +53,7 @@ export default function Signup() {
       country,
       email,
       password,
+      dateOfBirth
     };
 
     try {
@@ -56,12 +61,12 @@ export default function Signup() {
       setLoading(false);
 
       if (!res?.success) {
-        setError(res?.message || "Signup failed ❌");
-        return;
+        toast.success(res?.message);
+         window.location.href = "/login";
       }
 
-      alert("Signup Successful ✅");
-      window.location.href = "/login";
+      // toast("Signup Successful ");
+     
     } catch (err) {
       console.error(err);
       setError("Something went wrong ❌");
@@ -112,9 +117,9 @@ export default function Signup() {
                 required
               >
                 <option value="">Select gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
               </select>
             </div>
 
@@ -160,25 +165,47 @@ export default function Signup() {
               />
             </div>
           </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div className="text-left">
+              <label className="block font-semibold mb-1 text-sm text-black">EMAIL</label>
+              <input
+                type="email"
+                placeholder="Enter email"
+                className={`w-full p-2 border rounded-md outline-none ${emailError ? "border-red-500" : "border-gray-300"
+                  }`}
+                value={email}
+                onChange={(e) => {
+                  const val = e.target.value.trim().toLowerCase();
+                  setEmail(val);
+                  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                  setEmailError(!regex.test(val) ? "Please enter a valid email" : "");
+                }}
+                required
+              />
+              {emailError && <p className="text-red-500 text-xs">{emailError}</p>}
+            </div>
+            <div className="text-left">
+              <label className="block font-semibold mb-1 text-sm text-black">
+                Date of Birth
+              </label>
+              <input
+                type="date"
+                placeholder="Select date of birth"
+                className={`w-full p-2 border rounded-md outline-none ${dobError ? "border-red-500" : "border-gray-300"
+                  }`}
+                value={dateOfBirth}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setDateOfBirth(val);
 
-          <div className="mb-4 text-left">
-            <label className="block font-semibold mb-1 text-sm text-black">EMAIL</label>
-            <input
-              type="email"
-              placeholder="Enter email"
-              className={`w-full p-2 border rounded-md outline-none ${
-                emailError ? "border-red-500" : "border-gray-300"
-              }`}
-              value={email}
-              onChange={(e) => {
-                const val = e.target.value.trim().toLowerCase();
-                setEmail(val);
-                const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                setEmailError(!regex.test(val) ? "Please enter a valid email" : "");
-              }}
-              required
-            />
-            {emailError && <p className="text-red-500 text-xs">{emailError}</p>}
+                  // Example validation: must be in the past
+                  // const today = new Date().toISOString().split("T")[0];
+                  // setDobError(val >= today ? "Date of birth must be in the past" : "");
+                }}
+                required
+              />
+              {dobError && <p className="text-red-500 text-xs">{dobError}</p>}
+            </div>
           </div>
 
           {error && <p className="text-red-500 text-sm mb-2">{error}</p>}

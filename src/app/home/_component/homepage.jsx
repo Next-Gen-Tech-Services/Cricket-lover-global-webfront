@@ -1,52 +1,52 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion"; 
+import { motion } from "framer-motion";
 import { homepage1 } from "@/shared/images";
+import { useRouter } from "next/navigation";
 
 
 const Home = () => {
-//   const images = [Home1, Home2];
+  //   const images = [Home1, Home2];
   const [currentImage, setCurrentImage] = useState(0);
   const [fade, setFade] = useState(true);
-
+  const router = useRouter();
   useEffect(() => {
     const interval = setInterval(() => {
-      setFade(false); 
+      setFade(false);
       setTimeout(() => {
         setCurrentImage((prev) => (prev + 1) % homepage1.length);
-        setFade(true); 
+        setFade(true);
       }, 500);
     }, 4000);
     return () => clearInterval(interval);
   }, []);
 
- 
+
   const container = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.4, 
+        staggerChildren: 0.4,
       },
     },
   };
 
   const item = {
     hidden: { opacity: 0, y: 70 },
-visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
   };
 
   return (
     <section
-      className={`relative h-screen w-full flex flex-col items-center justify-center text-center text-white transition-all duration-1000 ${
-        fade ? "opacity-100" : "opacity-100"
-      }`}
+      className={`relative h-screen w-full flex flex-col items-center justify-center text-center text-white transition-all duration-1000 ${fade ? "opacity-100" : "opacity-100"
+        }`}
       style={{
-    backgroundImage: `url(${homepage1[currentImage]})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center 75%",
-    backgroundRepeat: "no-repeat",
-  }}
+        backgroundImage: `url(${homepage1[currentImage]})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center 75%",
+        backgroundRepeat: "no-repeat",
+      }}
     >
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/40"></div>
@@ -84,7 +84,7 @@ visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
           variants={item}
         >
-          <button className="bg-green-500 hover:bg-green-600 text-white font-semibold px-8 py-3 rounded-full cursor-pointer">
+          <button onClick={() => router.push("/signup")} className="bg-green-500 hover:bg-green-600 text-white font-semibold px-8 py-3 rounded-full cursor-pointer">
             SIGN UP NOW
           </button>
           <button className="border-2 border-white hover:bg-white hover:text-black font-semibold px-8 py-3 rounded-full transition-all cursor-pointer">

@@ -5,6 +5,7 @@ import { logoimg } from "@/shared/images";
 import authInstance from "@/api/auth/auth.api";
 import { setTokenLocal, setUserLocal } from "@/utils/localStorage.util";
 import Image from "next/image";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -29,17 +30,17 @@ export default function Login() {
       if (res?.status.toLowerCase() != "success") return setError(res?.message || "Login failed ❌");
        
       setTokenLocal(res?.data?.token);
-      // alert("Login Successful ✅");
-      setUserLocal(res?.data?.user)
+      setUserLocal(res?.data?.user);
+            toast.success("Login Successful ");
       window.location.href = "/";
     } catch {
-      // setError("Something went wrong ❌");
+      // setError("Something went wrong ");
       setLoading(false);
     }
   };
 
   const handleForgetPass = async () => {
-    if (!email) return setError("email is required ❌");
+    if (!email) return setError("email is required ");
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(email)) return setEmailError("Please enter a valid email");
@@ -47,10 +48,10 @@ export default function Login() {
     try {
       const res = await authInstance.forgetPass({ email });
 
-      if (!res?.success) return setError(res?.message || "Request failed ❌");
-      alert("Reset Email Send Successfully ✅");
+      if (!res?.success) return setError(res?.message || "Request failed ");
+        toast("Reset Email Send Successfully ");
     } catch {
-      alert("Something went wrong ❌");
+      toast("Something went wrong ");
     }
   };
 
