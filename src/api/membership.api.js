@@ -1,6 +1,6 @@
 import { Limelight } from "next/font/google";
 import HttpClient from "./index.api";  // adjust path if needed
-
+import ApiRoutes from "@/app/configs/endpoints.config";
 
 const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -10,13 +10,16 @@ class MemebrshipApi extends HttpClient {
   }
 
   // ✅ Get all events with filters
-  getAllMembershipPlan = async () => {
-    return await this.instance.get(
-      `/plan/get-all-membership-plans`,
-      {
-        params: {limit: 2}
-      }
-    );
+  getAllMembershipPlan = async (queryParams = {limit: 2}) => {
+    return await this.instance({
+      method: ApiRoutes.membership.getAllMembershipPlan.Method,
+      url:ApiRoutes.membership.getAllMembershipPlan.Endpoint(queryParams),
+      // data:""
+    })
+     
+    //  {
+    //     params: {limit: 2}
+    //   }
   };
 }
 

@@ -1,45 +1,60 @@
 import EventHistory from "../event-history/page";
 
 export const HttpMethod = {
-  Get: "GET",
-  Post: "POST",
-  Put: "PUT",
-  Patch: "PATCH",
-  Delete: "DELETE",
+    Get: "GET",
+    Post: "POST",
+    Put: "PUT",
+    Patch: "PATCH",
+    Delete: "DELETE",
 };
 
 
 
- const ApiRoutes = {
-    auth:{
-        signup:{
-            Method:HttpMethod.Post,
-            Endpoint:"auth/sign-up"
+const ApiRoutes = {
+    auth: {
+        signup: {
+            Method: HttpMethod.Post,
+            Endpoint: "auth/sign-up"
         },
-        login:{
-            Method:HttpMethod.Post,
-            Endpoint:"auth/login"
+        login: {
+            Method: HttpMethod.Post,
+            Endpoint: "auth/login"
         },
-        reset:{
-            Method:HttpMethod.Post,
-            Endpoint:"auth/reset-password"
+        reset: {
+            Method: HttpMethod.Post,
+            Endpoint: "auth/reset-password"
         },
-        forget:{
-            Method:HttpMethod.Post,
-            Endpoint:"auth/forget-password"
+        forget: {
+            Method: HttpMethod.Post,
+            Endpoint: "auth/forget-password"
         },
-        ticketdetails:{
-            Method:HttpMethod.Post,
-            Endpoint:"auth/"
+        ticketdetails: {
+            Method: HttpMethod.Post,
+            Endpoint: "auth/"
         },
-        updateProfile:{
-            Method:HttpMethod.Patch,
+        updateProfile: {
+            Method: HttpMethod.Patch,
             Endpoint: "/user/update-profile"
         },
-        eventHistory : {
+        eventHistory: {
             Method: HttpMethod.Get,
             Endpoint: "/user/event-history"
+        },
+        createPayment: {
+            Method: HttpMethod.Post,
+            Endpoint: "/user/purchase-ticket"
         }
+
+    },
+    membership: {
+        getAllMembershipPlan: {
+            Endpoint: (params = {}) => {
+                const query = new URLSearchParams(params).toString();
+                return `/plan/get-all-membership-plans${query ? `?${query}` : ""}`;
+            },
+            Method: HttpMethod.Get
+        },
     }
+
 }
 export default ApiRoutes
