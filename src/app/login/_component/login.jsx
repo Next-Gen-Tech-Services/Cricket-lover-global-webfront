@@ -16,6 +16,7 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
     if (!email || !password) return setError("All fields are required ❌");
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(email)) return setEmailError("Please enter a valid email");
@@ -24,6 +25,8 @@ export default function Login() {
     setLoading(true);
 
     try {
+      console.log("email, password", email, password);
+
       const res = await authInstance.login({ email, password });
       setLoading(false);
       console.log("Login Response:", res);
