@@ -19,7 +19,7 @@ class EventApi extends HttpClient {
 
   // ✅ Get event by ID
   getEventById = async (id) => {
-    return await this.instance.get(`/user/get-event/${id}`);
+    return await this.instance.get(`/event/get-event/${id}`);
   };
 
   // ✅ Create new event
