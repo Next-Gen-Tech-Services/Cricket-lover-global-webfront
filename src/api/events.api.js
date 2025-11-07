@@ -7,6 +7,7 @@ class EventApi extends HttpClient {
     super(baseURL);
   }
 
+  
   // ✅ Get all events with filters
   getAllEvents = async ({ page = 1, limit = 10, search = "", category = "Sports" }) => {
     return await this.instance.get(

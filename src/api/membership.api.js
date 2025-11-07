@@ -4,10 +4,20 @@ import ApiRoutes from "@/app/configs/endpoints.config";
 
 const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
-class MemebrshipApi extends HttpClient {
+class MembershipApi extends HttpClient {
   constructor() {
     super(baseURL);
   }
+  async createMembershipPayment(payload) {
+    return this.post("/user/purchase-membership", payload); 
+    // return this.post("/user/purchase-ticket", payload); 
+  }
+
+  async getAllPlans() {
+    return this.get("/user/get-all-membership-plan");
+  }
+
+  
 
   // ✅ Get all events with filters
   getAllMembershipPlan = async (queryParams = {limit: 2}) => {
@@ -20,9 +30,10 @@ class MemebrshipApi extends HttpClient {
     //  {
     //     params: {limit: 2}
     //   }
+    
   };
 }
 
 // Create instance
-const memebrshipApi = new MemebrshipApi();
-export default memebrshipApi;
+const  membershipApi = new  MembershipApi();
+export default  membershipApi;

@@ -173,9 +173,9 @@ const Navbar = () => {
                 <Link href="/event-history" className="text-sm hover:text-white" onClick={() => setIsOpen(false)}>
                   Event History
                 </Link>
-                 <Button  className="text-sm hover:text-white" onClick={handleLogout}>
+                 <button  className="text-sm hover:text-white" onClick={handleLogout}>
                   Logout
-                </Button>
+                </button>
               </div>
             </div>
           ) : (

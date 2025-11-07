@@ -69,7 +69,7 @@ const EventHistory = () => {
           >
             {/* Event Banner */}
             <div className="relative h-56 w-full">
-              <Image
+              <img
                 src={item?.event?.bannerImage}
                 alt={item?.event?.title}
                 fill

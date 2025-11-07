@@ -15,6 +15,7 @@ const ApiRoutes = {
         reset: { Method: HttpMethod.Post, Endpoint: "auth/reset-password" },
         forget: { Method: HttpMethod.Post, Endpoint: "auth/forget-password" },
         updateProfile: { Method: HttpMethod.Patch, Endpoint: "/user/update-profile" },
+        updateImage: { Method: HttpMethod.Post, Endpoint: "/upload" },
         eventHistory: { Method: HttpMethod.Get, Endpoint: "/user/event-history" },
 
     },
@@ -34,6 +35,34 @@ const ApiRoutes = {
             },
             Method: HttpMethod.Get
         },
-    }
-}
+       
+    getPlans: {
+      Method: "GET",
+      Endpoint: "/membership/plans",
+    },
+    buy: {
+      Method: "POST",
+      Endpoint: "/membership/buy",
+    },
+    },
+ 
+  product: {
+    getAll: {
+      Method: "GET",
+      Endpoint: `/user/get-all-products`,
+    },
+    
+  }
+
+
+
+
+        
+
+   
+  
+  
+};
+
+
 export default ApiRoutes;

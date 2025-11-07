@@ -65,7 +65,7 @@ const Passion1 = () => {
         {/* Image Container */}
         <div
           ref={scrollRef}
-          className="flex gap-4 overflow-x-scroll scroll-smooth scrollbar-hide"
+          className="flex gap-4 overflow-x-scroll scroll-smooth  no-scrollbar  snap-x snap-mandatory scrollbar-hide"
         >
           {homepage.map((img, index) => (
             <motion.div
