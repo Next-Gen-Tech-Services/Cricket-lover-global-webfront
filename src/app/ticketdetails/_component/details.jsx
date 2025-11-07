@@ -140,7 +140,7 @@ const handleConfirm = () => {
         </p>
 
         <div className="mt-6 flex flex-col md:flex-row justify-center items-center gap-8 text-lg font-semibold">
-          <p>{formatEventTime(event.startDate, event.endDate)}</p>
+          {/* <p>{formatEventTime(event.startDate, event.endDate)}</p> */}
           <p>PRICE : <span className="font-bold">&euro; {event?.tickets?.[0]?.price }</span></p>
         </div>
       </section>
@@ -173,11 +173,11 @@ const handleConfirm = () => {
           <h2 className="text-2xl font-bold mb-5">TICKETS</h2>
 
           <p className="text-gray-600 text-sm mb-2">
-            <span className="font-bold">VENUE:</span> {event.venue}
+            <span className="font-bold">VENUE:</span> {event?.venue}
           </p>
 
           <div className="flex justify-between items-center py-4 border-b">
-            <p className="font-bold text-lg">{event.title}</p>
+            <p className="font-bold text-lg">{event?.title}</p>
             <p className="font-bold text-lg">&euro; {event?.tickets?.[0]?.price}</p>
           </div>
 
@@ -231,9 +231,9 @@ const handleConfirm = () => {
 <div className="bg-white shadow-md p-8 rounded-lg md:w-[380px]">
   <h2 className="text-3xl font-bold mb-6">TICKET DETAILS</h2>
   <div className="space-y-5 text-base leading-relaxed">
-    <p><span className="font-bold">TIME:</span> {formatEventTime(event.startDate, event.endDate)}</p>
+    {/* <p><span className="font-bold">TIME:</span> {formatEventTime(event.startDate, event.endDate)}</p> */}
     <p><span className="font-bold">COST:</span> &euro; {getTotalWithOption()}</p>
-    <p><span className="font-bold">EVENT CATEGORY:</span> {event.category}</p>
+    <p><span className="font-bold">EVENT CATEGORY:</span> {event?.category}</p>
   </div>
 </div>
 

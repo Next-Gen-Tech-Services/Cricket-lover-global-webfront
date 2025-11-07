@@ -78,6 +78,11 @@ export const gallery = [
     
   
 ];
+export const imagesmember=[
+    Home1.src,
+       
+]
+
 
 
  

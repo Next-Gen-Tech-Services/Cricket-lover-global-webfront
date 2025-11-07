@@ -10,6 +10,8 @@ export default function TicketPage({ params }) {
   const [selectedEvent, setSelectedEvent] = useState({});
   // params.id will hold the dynamic value (e.g., "123")
   const { eventId } = React.use(params);
+  // const { eventId } = params;
+
   useEffect(() => {
     if (getTokenLocal() == null || getTokenLocal() == "" || getTokenLocal() == undefined) {
       toast("Please login to purchase ticket details.");
@@ -23,7 +25,7 @@ export default function TicketPage({ params }) {
     try {
       const res = await eventApi.getEventById(id);
       if (res?.status.toLowerCase() != "success") return alert(res?.message || "Something went wrong, please try again later❌");
-      const currentEvent=res?.data
+      const currentEvent=res?.data?.data;
       setSelectedEvent(currentEvent);
     } catch (error) {
       console.error("Error fetching event by ID:", error);
