@@ -5,7 +5,7 @@ import Footer from "./_layout/footer";
 import Navbar from "./_layout/navbar";
 import Home from "./home/_component/homepage";
 import Main from "./home/page";
-import MainMembership from "./membership/page";
+import MainMembership from "./membership/mainmembership";
 import CaresPage from "./cares/page";
 import About from "./about/page";
 import Event from "./events/page";
