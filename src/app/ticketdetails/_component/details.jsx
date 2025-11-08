@@ -1,223 +1,249 @@
 "use client";
 import paymentApi from "@/api/payment.api";
+import productApi from "@/api/product.api";
 import { useRouter } from "next/navigation";
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import Modal from "./popupmodel";
+import ProductDetails from "../[eventId]/product";
+import React from "react";
 
-
-
-
-export default function EventDetailsPage({event}) {
+export default function EventDetailsPage({ event }) {
   const [qty, setQty] = useState(1);
   const [showOptions, setShowOptions] = useState(false);
   const [option, setOption] = useState("");
-
-  const tshirtPrice = 10;
-  const batPrice = 20;
-  const productId = "69067449d302a359ab155716" 
-
-
-   
-//     const payload = {
-//     {
-//   eventId: ;
-//   productId: productId;
-//   quantity:qty
-// }}
-
-const getTotalWithOption = () => {
-  const total = event?.tickets?.[0]?.price ? qty * event.tickets[0].price : 0;
-  let optionPrice = 0;
-
-  if (option === "T-Shirt") optionPrice = tshirtPrice;
-  else if (option === "Bat") optionPrice = batPrice;
-
-  return total + optionPrice * qty;
-};
-
-const handlePayment = async () => {
-  const payload = {
-    eventId: event?._id,
-    productId: productId,
-    quantity: qty,
-    price: getTotalWithOption()
-  };
-
-  try {
-    const res = await paymentApi.createPayment(payload);
-    console.log("response of api -----", res);
-
-    if (!res || res?.status?.toLowerCase() !== "success") {
-      return toast.error(res?.message || "Payment failed ");
-    }
-    console.log(res.data.url)
-
-     toast.success("Payment Successful ");
-
-      window.location.href = res.data.url;
-    // goToSuccessPage();
-  
-    
-
-  } catch (error) {
-    console.log("Payment Error:", error);
-    toast.error("Something went wrong ❌");
-  }
-};
-
-const handleConfirm = () => {
-  if (!option) {
-    toast("Please select a purchase option (Required)");
-    return;
-  }
-
-  toast(`✅ Ticket Added\nOption: ${option}\nQty: ${qty}`);
-  setShowOptions(false);
-  setOption("");
-
-  handlePayment(); // ✅ Only call payment
-};
-
-
-
+  const [products, setProducts] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [totalPrice, setTotalPrice] = useState(0);
   const router = useRouter();
 
-
-  const goToSuccessPage = () => {
-    router.push("/success");
+  const handleAddProduct = (product) => {
+    setSelectedProduct(product);
+    setTotalPrice(qty * product.price);
   };
 
-  
+  const handleSelectClick = () => setOpen(false);
 
-  const handleTicketClick = () => {
-    setShowOptions(true);
+  const fetchProducts = async () => {
+    try {
+      const res = await productApi.getAllProducts();
+      if (res.status?.toLowerCase() === "success") {
+        setProducts(res.data);
+      }
+    } catch (error) {
+      console.log("Product fetch error:", error);
+    }
   };
 
-  
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
-  // const Confirm = ()=>{
-  //   const router = useRouter();
-  //   const handle= () =>{
-  //   router.push("/success");
-  //   }
-    
-  // }
-  
+  const getTotalWithOption = () => {
+    const ticketPrice = event?.tickets?.[0]?.price || 0;
+    const productPrice = selectedProduct?.price || 0;
+    return Math.round(qty * ticketPrice + qty * productPrice);
+  };
+
+  const handlePayment = async () => {
+    const payload = {
+      eventId: event?._id,
+      productId: selectedProduct,
+      quantity: qty,
+      price: getTotalWithOption(),
+    };
+
+    try {
+      const res = await paymentApi.createPayment(payload);
+      if (!res || res?.status?.toLowerCase() !== "success") {
+        return toast.error(res?.message || "Payment failed");
+      }
+      toast.success("Payment Successful");
+      window.location.href = res.data.url;
+    } catch (error) {
+      console.log("Payment Error:", error);
+      toast.error("Something went wrong ❌");
+    }
+  };
+
+  const handleConfirm = () => {
+    if (!selectedProduct) return toast("Please select a product");
+
+    toast(`✅ Ticket Added\nOption: ${selectedProduct}\nQty: ${qty}`);
+    setShowOptions(false);
+    setOption("");
+    handlePayment();
+  };
+
+  const handleTicketClick = () => setShowOptions(true);
+
   function formatEventTime(startStr, endStr) {
     const start = new Date(startStr);
     const end = new Date(endStr);
 
-
     const date = start.toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
-      year: "numeric"
+      year: "numeric",
     });
 
     const startTime = start.toLocaleTimeString("en-US", {
       hour: "numeric",
-      minute: "numeric"
+      minute: "numeric",
     });
 
     const endTime = end.toLocaleTimeString("en-US", {
       hour: "numeric",
-      minute: "numeric"
+      minute: "numeric",
     });
 
     return `${date} @ ${startTime.toLowerCase()} - ${endTime.toLowerCase()}`;
-}
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Top Section */}
-      <section className="max-w-6xl mx-auto px-4 py-10 text-center">
-        <h1 className="text-3xl md:text-4xl font-extrabold tracking-wide">
+
+      {/* ✅ Top Section (Responsive Text) */}
+      <section className="max-w-6xl mx-auto px-3 sm:px-4 py-8 sm:py-10 text-center">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-wide">
           EXPERIENCE THE THRILL LIVE IN THE STADIUM!
         </h1>
-        <p className="text-gray-600 mt-2 text-sm">
+
+        <p className="text-gray-600 mt-2 text-xs sm:text-sm">
           GET YOUR TICKETS TO WATCH YOUR FAVORITE TEAM IN ACTION.
         </p>
 
-        <div className="mt-6 flex flex-col md:flex-row justify-center items-center gap-8 text-lg font-semibold">
-          {/* <p>{formatEventTime(event.startDate, event.endDate)}</p> */}
-          <p>PRICE : <span className="font-bold">&euro; {event?.tickets?.[0]?.price }</span></p>
+        <div className="mt-6 flex flex-col md:flex-row justify-center items-center gap-4 sm:gap-8 text-sm sm:text-lg font-semibold">
+          <p>{formatEventTime(event?.startDate, event?.endDate)}</p>
+          <p>
+            PRICE :{" "}
+            <span className="font-bold">
+              &euro; {event?.tickets?.[0]?.price}
+            </span>
+          </p>
         </div>
       </section>
 
-      {/* How to Buy + Benefits */}
-      <section className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 px-4 py-10">
+      {/* ✅ How to Buy & Benefits */}
+      <section className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10 px-3 sm:px-4 py-8 sm:py-10">
+
         <div>
-          <h2 className="text-2xl font-bold mb-3">HOW TO BUY:</h2>
-          <ul className="space-y-3">
-            <li className="flex items-center gap-2 text-gray-700">✅ PURCHASE ONLINE THROUGH OUR OFFICIAL WEBSITE.</li>
-            <li className="flex items-center gap-2 text-gray-700">✅ BUY FROM AUTHORIZED TICKETING PARTNERS.</li>
+          <h2 className="text-xl sm:text-2xl font-bold mb-3">HOW TO BUY:</h2>
+          <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-gray-700">
+            <li>✅ PURCHASE ONLINE THROUGH OUR OFFICIAL WEBSITE.</li>
+            <li>✅ BUY FROM AUTHORIZED TICKETING PARTNERS.</li>
           </ul>
         </div>
 
         <div>
-          <h2 className="text-2xl font-bold mb-3">BENEFITS OF BUYING OFFICIAL TICKETS:</h2>
-          <ul className="space-y-3">
-            <li className="flex items-center gap-2 text-gray-700">✅ GUARANTEED ENTRY TO THE STADIUM.</li>
-            <li className="flex items-center gap-2 text-gray-700">✅ ACCESS TO EXCLUSIVE FAN EVENTS.</li>
-            <li className="flex items-center gap-2 text-gray-700">✅ PRIORITY FOR HIGH-DEMAND MATCHES AND FINALS.</li>
+          <h2 className="text-xl sm:text-2xl font-bold mb-3">
+            BENEFITS OF BUYING OFFICIAL TICKETS:
+          </h2>
+          <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-gray-700">
+            <li>✅ GUARANTEED ENTRY TO THE STADIUM.</li>
+            <li>✅ ACCESS TO EXCLUSIVE FAN EVENTS.</li>
+            <li>✅ PRIORITY FOR HIGH-DEMAND MATCHES AND FINALS.</li>
           </ul>
         </div>
       </section>
+            {/* ✅ Tickets Section */}
+      <section className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 px-3 sm:px-4 py-8 sm:py-10">
 
-      {/* Tickets Section */}
-      <section className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 px-4 py-10">
+        {/* ✅ Ticket Card */}
+        <div className="md:col-span-2 bg-white shadow-md p-4 sm:p-6 rounded-lg">
 
-        {/* Ticket Card */}
-        <div className="md:col-span-2 bg-white shadow-md p-6 rounded-lg">
-          <h2 className="text-2xl font-bold mb-5">TICKETS</h2>
+          <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-5">TICKETS</h2>
 
-          <p className="text-gray-600 text-sm mb-2">
+          {/* Venue */}
+          <p className="text-gray-600 text-xs sm:text-sm mb-2">
             <span className="font-bold">VENUE:</span> {event?.venue}
           </p>
 
-          <div className="flex justify-between items-center py-4 border-b">
-            <p className="font-bold text-lg">{event?.title}</p>
-            <p className="font-bold text-lg">&euro; {event?.tickets?.[0]?.price}</p>
+          {/* Event Title + Price */}
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-3 sm:py-4 border-b gap-2 sm:gap-0">
+            <p className="font-bold text-base sm:text-lg">{event?.title}</p>
+
+            <p className="font-bold text-base sm:text-lg">
+              &euro;{" "}
+              {event?.eventType?.toLowerCase() === "paid"
+                ? 0
+                : event?.tickets?.[0]?.price}
+            </p>
           </div>
 
-          {/* Quantity */}
-          <div className="flex justify-between items-center py-6">
-            <p className="font-bold text-gray-700">QUANTITY: {qty}</p>
-            <div className="flex items-center gap-3">
-              <button onClick={() => qty > 1 && setQty(qty - 1)} className="border px-3 py-1 rounded text-lg">-</button>
-              <span className="font-bold text-lg">{qty}</span>
-              <button onClick={() => setQty(qty + 1)} className="border px-3 py-1 rounded text-lg">+</button>
+          {/* ✅ Quantity Selector */}
+          <div className="flex justify-between items-center py-4 sm:py-6">
+            <p className="font-bold text-gray-700 text-sm sm:text-base">
+              QUANTITY: {qty}
+            </p>
+
+            <div className="flex items-center gap-2 sm:gap-3">
+
+              {/* Minus */}
+              <button
+                onClick={() => qty > 1 && setQty(qty - 1)}
+                className="border px-2 sm:px-3 py-1 rounded text-base sm:text-lg  transition cursor-pointer"
+              >
+                -
+              </button>
+
+              <span className="font-bold text-base sm:text-lg">{qty}</span>
+
+              {/* Plus */}
+              <button
+                onClick={() => setQty(qty + 1)}
+                className="border px-2 sm:px-3 py-1 rounded text-base sm:text-lg  transition cursor-pointer"
+              >
+                +
+              </button>
             </div>
           </div>
 
-          <div className="flex justify-between items-center pb-6 border-b">
-            <p className="font-bold">TOTAL: &euro; {getTotalWithOption()}</p>
+          {/* ✅ TOTAL + GET TICKETS BUTTON */}
+          <div className="flex justify-between items-center pb-4 sm:pb-6 border-b">
+
+            <p className="font-bold text-sm sm:text-base">
+              TOTAL: &euro; {getTotalWithOption()}
+            </p>
 
             {!showOptions ? (
-              <button 
-                className="bg-green-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-green-700"
-                onClick={handleTicketClick}
+              <button
+                className="bg-green-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-md sm:rounded-lg font-semibold hover:bg-green-700 text-xs sm:text-sm  transition cursor-pointer"
+                onClick={() => {
+                  setOpen(true);
+                  handleTicketClick();
+                }}
               >
                 GET TICKETS
               </button>
             ) : (
-              <div className="flex flex-col gap-3 w-48">
-                <select
-                  className="border p-2 rounded-md"
-                  value={option}
-                  onChange={(e) => setOption(e.target.value)}
-                >
-                  <option value="">Select Option *</option>
-                  <option value="T-Shirt">T-Shirt</option>
-                  <option value="Bat">Bat</option>
-                </select>
+              <div className="flex flex-col gap-3 w-36 sm:w-48">
+                
+                {/* ✅ PRODUCT LIST POPUP */}
+                <Modal isOpen={open} onClose={() => setOpen(false)}>
+                  <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4 text-black">
+                    Select Product
+                  </h2>
 
-                <button 
-                  className="bg-green-600 text-white px-4 py-2 rounded font-bold hover:bg-green-700"
-                  onClick={() => {
-        handleConfirm();  
-      }}
+                  <div className="flex flex-col gap-3 sm:gap-4">
+
+                    {products.map((item) => (
+                      <ProductDetails
+                        key={item._id}
+                        product={item}
+                        onAdd={() => handleAddProduct(item)}
+                        onSelect={handleSelectClick}
+                      />
+                    ))}
+
+                  </div>
+                </Modal>
+
+                {/* ✅ CONFIRM BUTTON */}
+                <button
+                  className="bg-green-600 text-white px-3 sm:px-4 py-2 rounded font-bold hover:bg-green-700 text-xs sm:text-sm  transition cursor-pointer"
+                  onClick={handleConfirm}
                 >
                   Confirm
                 </button>
@@ -225,20 +251,38 @@ const handleConfirm = () => {
             )}
           </div>
         </div>
+        {/* ✅ Ticket Details Sidebar */}
+        <div className="
+  bg-white shadow-md p-5 sm:p-8 rounded-lg 
+  w-full                 
+  lg:w-[360px]           
+">
 
-        {/* Ticket Details */}
-        {/* Ticket Details */}
-<div className="bg-white shadow-md p-8 rounded-lg md:w-[380px]">
-  <h2 className="text-3xl font-bold mb-6">TICKET DETAILS</h2>
-  <div className="space-y-5 text-base leading-relaxed">
-    {/* <p><span className="font-bold">TIME:</span> {formatEventTime(event.startDate, event.endDate)}</p> */}
-    <p><span className="font-bold">COST:</span> &euro; {getTotalWithOption()}</p>
-    <p><span className="font-bold">EVENT CATEGORY:</span> {event?.category}</p>
-  </div>
-</div>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">
+            TICKET DETAILS
+          </h2>
 
+          <div className="space-y-4 sm:space-y-5 text-sm sm:text-base leading-relaxed">
+
+            <p>
+              <span className="font-bold">TIME:</span>{" "}
+              {formatEventTime(event?.startDate, event?.endDate)}
+            </p>
+
+            <p>
+              <span className="font-bold">COST:</span> &euro; {getTotalWithOption()}
+            </p>
+
+            <p>
+              <span className="font-bold">EVENT CATEGORY:</span>{" "}
+              {event?.category}
+            </p>
+
+          </div>
+        </div>
 
       </section>
     </div>
   );
 }
+
