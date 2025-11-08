@@ -149,7 +149,7 @@ const MembershipBenefit = () => {
   // ];
   const scrollRef = useRef(null);
 
-  // ✅ Auto Slide Logic
+  //  Auto Slide Logic
   useEffect(() => {
     const container = scrollRef.current;
     let scrollAmount = 0;
@@ -163,14 +163,13 @@ const MembershipBenefit = () => {
         behavior: "smooth",
       });
 
-      
       if (scrollAmount >= container.scrollWidth - container.clientWidth) {
         scrollAmount = 0;
         setTimeout(() => {
-          container.scrollTo({ left: 0, behavior:"smooth" });
+          container.scrollTo({ left: 0, behavior: "smooth" });
         }, 0.6);
       }
-    }, 1000); 
+    }, 1000);
 
     return () => clearInterval(interval);
   }, []);
@@ -194,59 +193,60 @@ const MembershipBenefit = () => {
       </section>
       <section className="py-10">
         <div
-          ref={scrollRef}
-          className="flex gap-6 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory px-1 mb-3"
-        >
-          {blogs.map((item, idx) => (
-            <div
-              key={idx}
-              className="min-w-[300px] max-w-[300px] bg-gradient-to-t from-[#e8ebf0] to-[#f3f5f8]
- rounded-3xl border border-gray-300 shadow-sm snap-start hover:scale-105 transition duration-400
-            overflow-hidden cursor-pointer hover:shadow-lg "
-            >
-              {/* Image */}
-              <div className="h-[180px] w-full relative">
-                <Image
-                  src={item.img}
-                  alt={item.title}
-                  fill
-                  className="object-cover"
-                />
-              </div>
+  ref={scrollRef}
+  className="
+    flex 
+    gap-6 
+    overflow-x-auto 
+    no-scrollbar 
+    scroll-smooth 
+    snap-x 
+    snap-mandatory
+    px-4
+  "
+>
+  {blogs.map((item, idx) => (
+    <div
+      key={idx}
+      className="
+        flex-shrink-0
+        w-[90%]          /* ✅ MOBILE: exact 1 card visible */
+        sm:w-[300px]
+        mx-auto           /* ✅ ALWAYS CENTER IN VIEWPORT */
+        bg-gradient-to-t from-[#e8ebf0] to-[#f3f5f8]
+        rounded-3xl 
+        border border-gray-300 
+        shadow-sm 
+        snap-center        /* ✅ CENTER LOCK */
+        transition duration-300
+        overflow-hidden 
+        cursor-pointer 
+        hover:shadow-lg
+      "
+    >
+      {/* Image */}
+      <div className="h-[180px] w-full relative">
+        <Image
+          src={item.img}
+          alt={item.title}
+          fill
+          className="object-cover"
+        />
+      </div>
 
-              {/* Content */}
-              <div className="p-5">
-                <p className="text-gray-500 text-[13px] mb-2">{item.desc}</p>
+      {/* Content */}
+      <div className="p-5">
+        <p className="text-gray-500 text-[13px] mb-2">{item.desc}</p>
+        <h3 className="text-xl font-bold leading-snug">
+          {item.title} {item.icon}
+        </h3>
+      </div>
+    </div>
+  ))}
+</div>
 
-                <h3 className="text-xl font-bold leading-snug">
-                  {item.title} {item.icon}
-                </h3>
-              </div>
-            </div>
-          ))}
-        </div>
+
       </section>
-
-      {/* Cards Grid */}
-      {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 justify-items-center">
-        {benefits.map((item, index) => (
-          <div
-            key={index}
-            className="bg-[#f3f5f8] shadow-sm rounded-2xl p-5 flex flex-col gap-3 border-4 border-gray-200 hover:shadow-lg hover:-translate-y-2 transition-all duration-300 ease-in-out
-            h-[240px] w-[270px]"
-          >
-            <div className="text-white bg-[#467ff6] p-2 w-fit rounded-xl">
-              {item.icon}
-            </div>
-            <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-[#0b1441]">
-              {item.title}
-            </h3>
-            <p className="text-gray-500 text-sm leading-relaxed">
-              {item.desc}
-            </p>
-          </div>
-        ))}
-      </div> */}
     </section>
   );
 };

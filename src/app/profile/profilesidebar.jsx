@@ -12,8 +12,7 @@ export default function ProfileSidebar() {
 
   const menu = [
     { label: "Profile", icon: <User size={18} />, href: "/profile" },
-    { label: "My Tickets", icon: <Ticket size={18} />, href: "/events" },
-    { label: "Settings", icon: <Settings size={18} />, href: "/settings" },
+    { label: "My Tickets", icon: <Ticket size={18} />, href: "/event-history" },
   ];
 
   return (

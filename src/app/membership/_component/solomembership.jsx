@@ -125,10 +125,22 @@ export default function SoloMembershipDetailsPage() {
         </div>
 
         <div className="mt-10 text-center">
-          <button onClick={() => handlePayment(plans[1])} className="bg-green-600 hover:bg-green-700 text-white px-10 py-4 font-bold text-lg rounded-xl shadow-lg  transition cursor-pointer">
-            Join Solo Membership
-          </button>
-        </div>
+  <button
+    onClick={() => handlePayment(plans[1])}
+    className="
+      bg-green-600 hover:bg-green-700 text-white 
+      px-6 py-3 text-base      /* ✅ Mobile */
+      sm:px-10 sm:py-4 sm:text-lg   /* ✅ Tablet / Desktop */
+      font-bold 
+      rounded-xl shadow-lg 
+      transition cursor-pointer
+      w-[85%] sm:w-auto        /* ✅ Mobile full-ish width */
+    "
+  >
+    Join Solo Membership
+  </button>
+</div>
+
 
       </div>
      

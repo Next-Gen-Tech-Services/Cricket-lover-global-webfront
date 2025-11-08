@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-
 .slick-slider {
   display: block !important;
 }
@@ -18,6 +17,7 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
 
 
 /* 

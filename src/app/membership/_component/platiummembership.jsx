@@ -122,10 +122,22 @@ export default function MembershipDetailsPage() {
         </div>
 
         <div className="mt-10 text-center">
-          <button  onClick={() => handlePayment(plans[0])} className="bg-green-600 hover:bg-green-700 text-white px-10 py-4 font-bold text-lg rounded-xl shadow-lg  transition cursor-pointer">
-            Join Platinum Membership
-          </button>
-        </div>
+  <button
+    onClick={() => handlePayment(plans[0])}
+    className="
+      bg-green-600 hover:bg-green-700 text-white 
+      px-6 py-3 text-base      
+      sm:px-10 sm:py-4 sm:text-lg  
+      font-bold 
+      rounded-xl shadow-lg 
+      transition cursor-pointer
+      w-[85%] sm:w-auto       
+    "
+  >
+    Join Platinum Membership
+  </button>
+</div>
+
 
       </div>
     </div>
