@@ -1,9 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-    //      domains: [
-    //   "develop-clipverse.s3.ap-south-1.amazonaws.com", // ✅ allow S3 images
-    // ],
+          domains: [
+       "develop-clipverse.s3.ap-south-1.amazonaws.com", // ✅ allow S3 images
+     ],
+     
     remotePatterns: [
       {
         protocol: "https",
@@ -11,7 +12,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "**.yourdomain.com", // (optional) allow your own CDN or image hosts
+        hostname: "develop-clipverse.s3.ap-south-1.amazonaws.com", // (optional) allow your own CDN or image hosts
       },
       
     ],

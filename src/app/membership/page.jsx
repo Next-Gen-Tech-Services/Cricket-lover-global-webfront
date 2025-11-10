@@ -1,20 +1,10 @@
-import React from 'react'
-import Membership1 from './_component/membership'
-import MembershipBenefit from './_component/membershipBenefit'
-import PricingPlan from './_component/pricingplan'
-import { Ribbon } from 'lucide-react'
-import RibbonOffer from './_component/ribbionoffer'
-import SoloMembership from './_component/solomembership'
+import { Suspense } from "react";
+import MainMembership from "./mainmembership";
 
- function MainMembership(){
+export default function Page() {
   return (
-    <>    <Membership1/>
-    <PricingPlan/>
-    <SoloMembership/>
-    <RibbonOffer/>
-    <MembershipBenefit/>
-    </>
-
-  )
+    <Suspense fallback={<div className="py-20 text-center">Loading...</div>}>
+      <MainMembership />
+    </Suspense>
+  );
 }
-export default MainMembership

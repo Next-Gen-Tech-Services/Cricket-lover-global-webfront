@@ -30,6 +30,8 @@ export      const homepage=[
     Pass2,
         Passion3,
     Passion4,
+    Passion4,
+    Pass2
     
 ]
 export const images = [
@@ -78,6 +80,11 @@ export const gallery = [
     
   
 ];
+export const imagesmember=[
+    Home1.src,
+       
+]
+
 
 
  
