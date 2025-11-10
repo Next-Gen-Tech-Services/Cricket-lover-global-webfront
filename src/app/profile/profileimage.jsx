@@ -1,6 +1,6 @@
 "use client";
 import authInstance from "@/api/auth/auth.api";
-import { setUserLocal } from "@/utils/localStorage.util";
+import { getUserLocal, setUserLocal } from "@/utils/localStorage.util";
 import { toast } from "react-toastify";
 import { useRef, useState } from "react";
 import { Plus } from "lucide-react";
@@ -38,7 +38,19 @@ export default function ProfileImageUpload() {
     
       // setUserLocal(res?.data?.user);
 
-      toast(" Profile Image Updated");
+      //  Merge old user with new image URL
+const oldUser = getUserLocal();
+
+const updatedUser = {
+  ...oldUser,
+  profileImage: res.data,  // S3 image URL
+};
+
+// ✅ Save updated user into cookies
+setUserLocal(updatedUser);
+
+toast("Profile Image Updated ");
+
     } catch (err) {
       toast("❌ Upload Failed");
     }

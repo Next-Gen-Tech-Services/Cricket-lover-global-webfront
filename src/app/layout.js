@@ -9,6 +9,8 @@ import Footer from "./_layout/footer";
 import Navbar from "./_layout/navbar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Provider } from "react-redux";
+import { store } from "@/redux/redux-store/store";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +29,7 @@ const geistMono = Geist_Mono({
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
-  const hideNavFooter = pathname === "/login" || pathname === "/signup";
+  const hideNavFooter = pathname === "/login" || pathname === "/signup" ;
   return (
     
     <html lang="en">
@@ -35,7 +37,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       > {!hideNavFooter && <Navbar/>}
       <main>
-     {children}
+     <Provider store={store}>{children}</Provider>
      <ToastContainer  position="top-right" autoClose={3000}></ToastContainer>
      </main>
        {!hideNavFooter && <Footer />}

@@ -44,7 +44,7 @@ const Care2 = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center justify-between">
         {/* LEFT TEXT */}
         <div className="order-2 md:order-1 text-left space-y-6 px-2 md:px-0">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold uppercase leading-tight tracking-tight text-[#0d0d36]">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-semibold uppercase leading-tight tracking-tight text-[#0d0d36]">
             Supporting<br />Under<br />
             Privilege / Refugee<br />
             Kids in the UK

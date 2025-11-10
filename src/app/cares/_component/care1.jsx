@@ -44,7 +44,7 @@ const Care1 = () => {
   return (
     <section className="bg-[#f8faff] text-[#0d0d36] px-4 sm:px-6 md:px-16 lg:px-16 py-10">
       {/* Heading */}
-      <h2 className="text-center text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-semibold tracking-wider mb-9">
+      <h2 className="text-center text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-wider mb-9">
         CLG CARES - OUR CSR INITIATIVES
       </h2>
 

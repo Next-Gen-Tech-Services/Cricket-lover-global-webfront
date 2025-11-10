@@ -12,7 +12,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "**.yourdomain.com", // (optional) allow your own CDN or image hosts
+        hostname: "develop-clipverse.s3.ap-south-1.amazonaws.com", // (optional) allow your own CDN or image hosts
       },
       
     ],
