@@ -14,8 +14,13 @@ class MembershipApi extends HttpClient {
   }
 
   async getAllPlans() {
-    return this.get("/user/get-all-membership-plan");
+
+    return this.get("/user/get-all-membership-plan",);
   }
+getPlanById = async (id) => {
+  console.log("id-------",id)
+  return this.get(`/plan/get-membership-plan/${id}`);
+};
 
   
 

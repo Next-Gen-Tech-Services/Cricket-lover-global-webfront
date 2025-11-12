@@ -68,9 +68,7 @@ const Navbar = () => {
                 />
 
                 <div className="text-right">
-                  <span className="text-sm font-medium block">
-                    {userData.email}
-                  </span>
+                  
                   <span className="text-base font-semibold">
                     {userData.firstName} {userData.lastName}
                   </span>

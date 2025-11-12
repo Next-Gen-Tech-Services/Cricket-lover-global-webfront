@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { CheckCircle, ArrowLeft, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter,useParams } from "next/navigation";
 import { Imgmembership } from "@/shared/images";
 import membershipApi from "@/api/membership.api";
 import { useEffect, useState } from "react";
@@ -12,13 +12,14 @@ import { toast } from "react-toastify";
 export default function MembershipDetailsPage() {
     const router = useRouter();
       const [plans, setPlans] = useState([]);
-    
+     const { id } = useParams();
 
 
     // api integerate start
   const fetchPlans = async () => {
       try {
-        const res = await membershipApi.getAllPlans();
+        const reqbody= {id:id}
+        const res = await membershipApi.getPlanById(reqbody);
         console.log("Membership Plans Response:", res);
   
         if (res.status?.toLowerCase() === "success") {
@@ -31,7 +32,7 @@ export default function MembershipDetailsPage() {
     };
   useEffect(() => {
       fetchPlans();
-    }, []);
+    }, [id]);
   // payment stripe link
   const handlePayment = async (plan) => {
     try {

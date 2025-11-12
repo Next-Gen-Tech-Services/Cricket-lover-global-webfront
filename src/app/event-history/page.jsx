@@ -24,19 +24,20 @@ export default function EventHistory() {
     );
 
   return (
-    <div className="min-h-screen bg-[#0A1128] py-10 px-5">
+    <div className="min-h-screen bg-[#a9b2d2] py-10 px-5">
       <h2 className="text-3xl font-bold text-center text-white drop-shadow-md mb-10">
         My Event History
       </h2>
 
-      <div className="max-w-5xl mx-auto space-y-10">
-        {events.map((item) => (
-          <div
-  key={item._id}
-  className="relative bg-[#0F1A3C] rounded-2xl shadow-xl border border-[#1E2A55] overflow-hidden 
-             transform hover:scale-[1.02] transition duration-300
-             hover:shadow-[0_0_35px_#00E67655]"
->
+      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  {events.map((item) => (
+    <div 
+      key={item._id}
+      className="relative bg-[#243b80] rounded-2xl shadow-xl border border-[#1E2A55] overflow-hidden 
+                 transform hover:scale-[1.02] transition duration-300
+                 hover:shadow-[0_0_35px_#00E67655]"
+    >
+
   {/* TICKET CUT DESIGN */}
   <div className="absolute left-0 top-1/2 -translate-y-1/2 w-6 h-6 bg-[#0A1128] rounded-full shadow-inner"></div>
   <div className="absolute right-0 top-1/2 -translate-y-1/2 w-6 h-6 bg-[#0A1128] rounded-full shadow-inner"></div>
@@ -48,9 +49,14 @@ export default function EventHistory() {
   </div>
 
   {/* Banner Section */}
-  <div className="relative h-64 w-full overflow-hidden">
+  <div className="relative h-40 sm:h-48 w-full overflow-hidden">
+
+    {/* {console.log("banner image-----",item.event.bannerImage)}; */}
+
     <img
+    
       src={item.event.bannerImage}
+      
       alt="Event"
       fill
       className="object-cover opacity-90 transition-all duration-500 hover:scale-105"
@@ -79,27 +85,29 @@ export default function EventHistory() {
   </div>
 
   {/* Content Section */}
-  <div className="p-6 text-gray-200 space-y-6">
+  <div className="p-4 text-gray-200 space-y-4
+">
 
     {/* Title + Venue */}
     <div>
       <h3 className="text-2xl font-extrabold text-white drop-shadow-[0_0_5px_#00E676]">
         {item.event.title}
       </h3>
-      <p className="text-gray-400 mt-1">{item.event.venue}</p>
-      <p className="text-gray-500 text-sm">
+      <p className="text-gray-300 mt-1">{item.event.venue}</p>
+      <p className="text-gray-300 text-sm">
         {new Date(item.event.startDate).toLocaleString()} –{" "}
         {new Date(item.event.endDate).toLocaleString()}
       </p>
     </div>
 
     {/* Ticket Info */}
-    <div className="border-t border-[#1E2A55] pt-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm">
+
       <h4 className="text-lg font-semibold text-[#00E676] mb-2 drop-shadow-[0_0_6px_#00E676aa]">
         Ticket Details
       </h4>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
         <p><span className="font-semibold text-white">Type:</span> {item.ticket.type}</p>
         <p><span className="font-semibold text-white">Qty:</span> {item.ticket.quantity}</p>
         <p><span className="font-semibold text-white">Unit Price:</span> ₹{item.ticket.unitPrice}</p>
@@ -116,7 +124,7 @@ export default function EventHistory() {
           Product Add-ons
         </h4>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-6">
           <div className="relative w-20 h-20 rounded-lg overflow-hidden shadow-[0_0_12px_#00E67688] border border-[#00E676]">
             <Image
               src={item.product.coverImage}
@@ -138,7 +146,7 @@ export default function EventHistory() {
 
     {/* Footer */}
     <div className="border-t border-[#1E2A55] pt-4 text-sm text-gray-400">
-      Purchased On:{" "}
+      Purchased On:
       <span className="text-white">
         {new Date(item.createdAt).toLocaleString()}
       </span>
