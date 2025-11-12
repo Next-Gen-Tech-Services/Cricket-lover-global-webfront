@@ -24,7 +24,6 @@ export default function EventDetailsPage(event) {
   const [ticketQuantities, setTicketQuantities] = useState({});
 
   const handleAddProduct = (product) => {
-    alert("call");
     console.log("product--------", product);
     setSelectedProduct(product);
     setTotalPrice(qty * product.price);
@@ -49,7 +48,7 @@ export default function EventDetailsPage(event) {
   useEffect(() => {
     setGetEvent(event?.event);
   }, [event]);
-  console.log("get by id of event data:", products, getEvent, ticketQuantities);
+  // console.log("get by id of event data:", products, getEvent, ticketQuantities);
 
   // const getTotalWithOption = () => {
   //   const ticketPrice = event?.tickets?.[0]?.price || 0;
@@ -74,8 +73,6 @@ export default function EventDetailsPage(event) {
   }
 
   const handlePayment = async () => {
-    alert("call payemtnt");
-    // console.log("alert------------", getEvent, selectedProduct);
     const payload = {
       eventId: getEvent?._id,
       productId: selectedProduct?._id,
@@ -98,10 +95,9 @@ export default function EventDetailsPage(event) {
       if (!res || res?.status?.toLowerCase() !== "success") {
         return toast.error(res?.message);
       }
-      toast.success("Payment Successful");
       window.location.href = res.data.url;
     } catch (error) {
-      console.log("Payment Error:", error);
+      // console.log("Payment Error:", error);
       toast.error("Something went wrong ❌");
     }
   };
@@ -355,7 +351,6 @@ export default function EventDetailsPage(event) {
 
           {/* ✅ PRODUCT SECTION */}
           <div className="mt-4">
-            {/* If NO product selected */}
 
             {/* If product SELECTED */}
             {selectedProduct && (
@@ -376,20 +371,22 @@ export default function EventDetailsPage(event) {
                   </div>
                 </div>
 
-                <div className="flex gap-2">
-                  <button
-                    className="flex-1 bg-blue-600 text-white px-3 py-2 rounded font-semibold text-xs hover:bg-blue-700 transition"
-                    onClick={() => setOpen(true)}
-                  >
-                    Change
-                  </button>
-                  <button
-                    className="flex-1 bg-red-600 text-white px-3 py-2 rounded font-semibold text-xs hover:bg-red-700 transition"
-                    onClick={() => setSelectedProduct(null)}
-                  >
-                    Remove
-                  </button>
-                </div>
+                <div className="flex flex-col sm:flex-row gap-2 w-full mb-2">
+  <button
+    className="flex-1 bg-blue-600 text-white px-3 py-2 rounded font-semibold text-xs hover:bg-blue-700 transition"
+    onClick={() => setOpen(true)}
+  >
+    Change
+  </button>
+
+  <button
+    className="flex-1 bg-red-600 text-white px-3 py-2  rounded font-semibold text-xs hover:bg-red-700 transition"
+    onClick={() => setSelectedProduct(null)}
+  >
+    Remove
+  </button>
+</div>
+
               </div>
             )}
 
