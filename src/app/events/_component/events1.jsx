@@ -122,12 +122,16 @@ const EventPage = () => {
                   {sliderEvents[current]?.venue}
                 </p>
 
-                <p className="text-lg font-semibold mb-6 ">
-                  {/* {events[current]?.price || "€—"} */}€
-                  {sliderEvents[current]?.tickets?.[0]?.price || "Free Entry"}
-                  €{sliderEvents[current]?.tickets?.[0]?.price || "Free Entry"}
-                  {/* €{event?.tickets?.[0]?.price || "—"} onwards */}
-                </p>
+                <p className="text-lg font-semibold mb-6 flex gap-2 flex-wrap">
+  {sliderEvents[current]?.tickets?.length > 0 ? (
+    sliderEvents[current].tickets
+      .map((t) => `${t.type.charAt(0).toUpperCase() + t.type.slice(1)} €${t.price}`)
+      .join(" • ")
+  ) : (
+    "Free Entry"
+  )}
+</p>
+
 
                 <button
                   onClick={() =>
@@ -285,9 +289,18 @@ const EventPage = () => {
 
                       <p className="text-gray-500 text-sm">{event.venue}</p>
 
-                      <p className="text-[15px] font-semibold mt-2 text-gray-900">
-                        €{event?.tickets?.[0]?.price || "Free Entry"} onwards
-                      </p>
+                      <div className="mt-2 text-gray-900 font-semibold text-[15px]">
+  {event?.tickets?.length > 0 ? (
+    event.tickets.map((t, i) => (
+      <p key={i}>
+        {t.type.charAt(0).toUpperCase() + t.type.slice(1)}: €{t.price}
+      </p>
+    ))
+  ) : (
+    <p>Free Entry</p>
+  )}
+</div>
+
 
                       {/* 🎟️ Buy Button Fixed Bottom */}
                       <button

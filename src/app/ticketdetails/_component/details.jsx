@@ -74,8 +74,8 @@ export default function EventDetailsPage(event) {
   }
 
   const handlePayment = async () => {
-    alert("call payemtnt")
-    console.log("alert------------", getEvent, selectedProduct)
+    alert("call payemtnt");
+    // console.log("alert------------", getEvent, selectedProduct);
     const payload = {
       eventId: getEvent?._id,
       productId: selectedProduct?._id,
@@ -92,11 +92,11 @@ export default function EventDetailsPage(event) {
       ],
     };
     console.log("payload----", selectedProduct, payload);
-    
+
     try {
       const res = await paymentApi.createPayment(payload);
       if (!res || res?.status?.toLowerCase() !== "success") {
-        return toast.error(res?.message || "Payment failed");
+        return toast.error(res?.message);
       }
       toast.success("Payment Successful");
       window.location.href = res.data.url;
@@ -213,14 +213,14 @@ export default function EventDetailsPage(event) {
 
           {/* Venue */}
           <p className="text-gray-600 text-xs sm:text-sm mb-2">
-            <span className="font-bold capitalize">VENUE:</span>{" "}
+            <span className="font-bold capitalize">VENUE:</span>
             {getEvent?.venue}
           </p>
 
           {/* Event Title + Price */}
-          <div className="py-3 sm:py-4 border-b">
+          <div className="py-3 sm:py-4 ">
             {/* ✅ EVENT TITLE */}
-            <div className="py-3 sm:py-4 border-b">
+            <div className="py-3 sm:py-4">
               {/* ✅ EVENT TITLE */}
               <p className="font-bold text-base sm:text-lg mb-2">
                 {getEvent?.title}
@@ -234,7 +234,7 @@ export default function EventDetailsPage(event) {
                       key={index}
                       onClick={() => setSelectedTicket(ticket)}
                       className={`
-          flex justify-between items-center w-full p-2 rounded-lg border 
+          flex justify-between items-center w-full p-2   
           transition 
           ${
             selectedTicket?.type === ticket.type
@@ -289,7 +289,7 @@ export default function EventDetailsPage(event) {
             {getEvent?.tickets?.map((ticket, index) => (
               <div
                 key={index}
-                className="flex justify-between items-center p-3 border rounded-lg bg-white shadow-sm"
+                className="flex justify-between items-center p-3  bg-white shadow-sm"
               >
                 {/* ✅ LEFT SIDE TEXT */}
                 <div className="flex flex-col">
