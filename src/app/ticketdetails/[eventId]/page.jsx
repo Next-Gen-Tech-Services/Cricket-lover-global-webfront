@@ -52,7 +52,7 @@ console.log("eventId mila:", eventId);
     } catch (error) {
       console.error("Error fetching event by ID:", error);
     }
-  }
+  } 
 
   useEffect(() => {
     if (getTokenLocal() == null || getTokenLocal() == "" || getTokenLocal() == undefined) {
@@ -71,7 +71,7 @@ console.log("eventId mila:", eventId);
     {view === "product" ? (
       <ProductDetails />
     ) : (
-      "error"
+      ""
     )}
   </>
 );
