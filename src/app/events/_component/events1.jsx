@@ -61,19 +61,20 @@ const EventPage = () => {
 
       setEvents(res.data);
       // new logic
-      // ✅ Show all events in grid
-setEvents(res.data);
+      //  Show all events in grid
+      setEvents(res.data);
 
-// ✅ Filter only first 4 upcoming for slider
-const today = new Date();
+      //  Filter only first 4 upcoming for slider
+      const today = new Date();
 
-const upcomingEvents = res.data
-  .filter((event) => new Date(event.startDate) >= today)
-  .sort((a, b) => new Date(a.startDate) - new Date(b.startDate))
-  .slice(0, 5);
+      const upcomingEvents = res.data
+        .filter((event) => new Date(event.startDate) >= today)
+        .sort((a, b) => new Date(a.startDate) - new Date(b.startDate))
+        .slice(0, 5);
 
-setSliderEvents(upcomingEvents.length > 0 ? upcomingEvents : res.data.slice(0, 5));
-
+      setSliderEvents(
+        upcomingEvents.length > 0 ? upcomingEvents : res.data.slice(0, 5)
+      );
     } catch (error) {
       console.log("Error fetching events:", error);
     }
@@ -101,7 +102,7 @@ setSliderEvents(upcomingEvents.length > 0 ? upcomingEvents : res.data.slice(0, 5
 
   return (
     <section className="min-h-full bg-white px-4 md:px-16 py-10 text-gray-800 relative">
-        {/* ✅ Slider Section */}
+      {/*  Slider Section */}
       <section>
         {sliderEvents.length > 0 && (
           <div className="w-full bg-gradient-to-b from-gray-200 to-white py-10 mt-10 mb-10">
@@ -121,19 +122,22 @@ setSliderEvents(upcomingEvents.length > 0 ? upcomingEvents : res.data.slice(0, 5
                   {sliderEvents[current]?.venue}
                 </p>
 
-                <p className="text-lg font-semibold mb-6">
-                  
-                  {/* {events[current]?.price || "€—"} */}
-                  €{sliderEvents[current]?.tickets?.[0]?.price|| " 0"}
-                            {/* ₹{event?.tickets?.[0]?.price || "—"} onwards */}
+                <p className="text-lg font-semibold mb-6 flex gap-2 flex-wrap">
+  {sliderEvents[current]?.tickets?.length > 0 ? (
+    sliderEvents[current].tickets
+      .map((t) => `${t.type.charAt(0).toUpperCase() + t.type.slice(1)} €${t.price}`)
+      .join(" • ")
+  ) : (
+    "Free Entry"
+  )}
+</p>
 
-                </p>
 
                 <button
                   onClick={() =>
                     router.push(`/ticketdetails/${sliderEvents[current]._id}`)
                   }
-                  className="bg-black text-white px-7 py-2 rounded-lg text-lg font-semibold"
+                  className="bg-green-600 hover:bg-green-700 text-white px-7 py-2 rounded-lg text-lg font-semibold"
                 >
                   Buy tickets
                 </button>
@@ -148,17 +152,17 @@ setSliderEvents(upcomingEvents.length > 0 ? upcomingEvents : res.data.slice(0, 5
                 </button>
 
                 {/* {events[current]?.bannerImage || events[current]?.[0] */}
-                <img
-                  src={
-                    sliderEvents[current]?.bannerImage ||
-                   sliderEvents[current]?.images?.[0] ||
-                    "/placeholder.png"
-                  }
-                  width={350}
-                  height={200}
-                  alt="Event poster"
-                  className="rounded-2xl shadow-xl object-cover  "
-                />
+                <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-xl">
+                  <img
+                    src={
+                      sliderEvents[current]?.bannerImage ||
+                      sliderEvents[current]?.images?.[0] ||
+                      "/placeholder.png"
+                    }
+                    alt="Event poster"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
 
                 <button
                   onClick={nextSlide}
@@ -183,9 +187,8 @@ setSliderEvents(upcomingEvents.length > 0 ? upcomingEvents : res.data.slice(0, 5
           </div>
         )}
       </section>
-      
 
-      {/* ✅ Search Box */}
+      {/*  Search Box */}
       <div className="flex flex-col md:flex-row items-center justify-between border border-gray-300 rounded-lg shadow-sm py-3 px-4 gap-4">
         <div className="flex items-center w-full md:w-2/3 border border-gray-300 rounded-lg px-3 py-2">
           <Search className="text-gray-400 mr-2" size={18} />
@@ -199,13 +202,13 @@ setSliderEvents(upcomingEvents.length > 0 ? upcomingEvents : res.data.slice(0, 5
         </div>
 
         <button
-          className="bg-[#551FFF] text-white px-5 py-2 rounded-md text-sm md:text-base hover:bg-[#4513e0] transition cursor-pointer"
+          className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-md text-sm md:text-base  transition cursor-pointer"
           onClick={() => fetchEvents("")}
         >
           Find Events
         </button>
       </div>
-      {/* ✅ Filters & Calendar */}
+      {/*  Filters & Calendar */}
       <div className="flex items-center justify-between mt-6 border-b border-gray-300 pb-2 relative">
         <div className="flex items-center gap-4">
           <button className="p-1 rounded-full hover:bg-gray-100">
@@ -216,7 +219,7 @@ setSliderEvents(upcomingEvents.length > 0 ? upcomingEvents : res.data.slice(0, 5
           </button>
 
           <select
-            className="bg-[#551FFF] text-white px-2 py-2  rounded-md text-sm md:text-base hover:bg-[#4513e0] transition cursor-pointer"
+            className="bg-green-600 hover:bg-green-700 text-white px-2 py-2  rounded-md text-sm md:text-base transition cursor-pointer"
             value={filterType}
             onChange={(e) => handleFilterChange(e.target.value)}
           >
@@ -244,71 +247,74 @@ setSliderEvents(upcomingEvents.length > 0 ? upcomingEvents : res.data.slice(0, 5
         </div>
       </div>
       <section>
-        {/* ✅ Events Grid Section */}
+        {/*  Events Grid Section */}
         <div className="mt-14 max-w-7xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold mb-6">Events</h2>
 
           <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {events.length === 0 ? (
-  // 🔄 Shimmer Loading Cards (4)
-  [...Array(4)].map((_, i) => (
-    <div key={i} className="bg-gray-200 animate-pulse rounded-2xl h-80"></div>
-  ))
-) : (
-  events.map((event) => (
-    <div
-      key={event?._id}
-      className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition overflow-hidden cursor-pointer flex flex-col relative group"
-      onClick={() => router.push(`/ticketdetails/${event?._id}`)}
-    >
-      {/* ❤️ Favorite icon */}
-      {/* <button
-        onClick={(e) => e.stopPropagation()}
-        className="absolute top-3 right-3 bg-white rounded-full p-2 shadow opacity-80 hover:opacity-100"
-      >
-        ❤️
-      </button> */}
+            {events.length === 0
+              ? // 🔄 Shimmer Loading Cards (4)
+                [...Array(4)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="bg-gray-200 animate-pulse rounded-2xl h-80"
+                  ></div>
+                ))
+              : events.map((event) => (
+                  <div
+                    key={event?._id}
+                    className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition overflow-hidden cursor-pointer flex flex-col relative group"
+                    onClick={() => router.push(`/ticketdetails/${event?._id}`)}
+                  >
+                    <div className="w-full h-60 overflow-hidden rounded-xl">
+                      <img
+                        src={
+                          event?.bannerImage ||
+                          event?.images?.[0] ||
+                          "/placeholder.png"
+                        }
+                        alt={event.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                      />
+                    </div>
 
-      <img
-        src={
-          event?.bannerImage ||
-          event?.images?.[0] ||
-          "/placeholder.png"
-        }
-        alt={event.title}
-        className="w-full h-60 object-cover group-hover:scale-105 transition duration-300"
-      />
+                    <div className="p-4 flex flex-col h-full">
+                      <p className="text-xs font-medium text-emerald-600 mb-1">
+                        {new Date(event?.startDate).toDateString()}
+                      </p>
 
-      <div className="p-4 flex flex-col h-full">
-        <p className="text-xs font-medium text-emerald-600 mb-1">
-          {new Date(event?.startDate).toDateString()}
-        </p>
+                      <h3 className="font-semibold text-[16px] leading-tight line-clamp-2 mb-1">
+                        {event.title}
+                      </h3>
 
-        <h3 className="font-semibold text-[16px] leading-tight line-clamp-2 mb-1">
-          {event.title}
-        </h3>
+                      <p className="text-gray-500 text-sm">{event.venue}</p>
 
-        <p className="text-gray-500 text-sm">{event.venue}</p>
+                      <div className="mt-2 text-gray-900 font-semibold text-[15px]">
+  {event?.tickets?.length > 0 ? (
+    event.tickets.map((t, i) => (
+      <p key={i}>
+        {t.type.charAt(0).toUpperCase() + t.type.slice(1)}: €{t.price}
+      </p>
+    ))
+  ) : (
+    <p>Free Entry</p>
+  )}
+</div>
 
-        <p className="text-[15px] font-semibold mt-2 text-gray-900">
-          ₹{event?.tickets?.[0]?.price || "—"} onwards
-        </p>
 
-        {/* 🎟️ Buy Button Fixed Bottom */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            router.push(`/ticketdetails/${event._id}`);
-          }}                                                                  
-          className="bg-black text-white px-3 py-2 rounded-md text-sm font-semibold mt-auto group-hover:scale-105 transition duration-300 cursor-pointer"
-        >
-          Buy tickets
-        </button>
-      </div>
-    </div>
-  ))
-)}
-
+                      {/* 🎟️ Buy Button Fixed Bottom */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          router.push(`/ticketdetails/${event._id}`);
+                        }}
+                        className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-md text-sm font-semibold mt-auto group-hover:scale-105 transition duration-300 cursor-pointer"
+                      >
+                        Buy tickets
+                      </button>
+                    </div>
+                  </div>
+                ))}
           </div>
         </div>
       </section>

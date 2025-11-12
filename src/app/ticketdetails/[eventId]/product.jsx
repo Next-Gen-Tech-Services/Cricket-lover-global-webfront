@@ -6,18 +6,18 @@ export default function ProductDetails({ product, onAdd, onSelect }) {
   return (
     <div className="w-full p-3 md:p-4 border rounded-xl bg-white shadow-sm flex items-center gap-3 bg-gradient-to-t from-[#e8ebf0] to-[#f3f5f8] border-gray-300">
 
-      {/* ✅ Product Image */}
+      {/*  Product Image */}
       <img
         src={product.coverImage}
         alt={product.name}
         className="
-          w-14 h-14                      /* ✅ Mobile size */
-          md:w-20 md:h-20                /* ✅ Desktop size */
+          w-14 h-14                      /*  Mobile size */
+          md:w-20 md:h-20                /*  Desktop size */
           rounded-lg object-cover border
         "
       />
 
-      {/* ✅ Text Section */}
+      {/*  Text Section */}
       <div className="flex-1">
         <h2 className="text-sm md:text-lg font-semibold text-gray-900">
           {product.name}
@@ -36,11 +36,15 @@ export default function ProductDetails({ product, onAdd, onSelect }) {
         </p>
       </div>
 
-      {/* ✅ Buttons Right Side */}
+      {/*  Buttons Right Side */}
       <div className="flex flex-col gap-2">
 
         <button
-          onClick={onAdd}
+        onClick={() => {
+                  onAdd()
+                  onSelect()
+                }}
+         
           className="
             px-2 py-[2px]                 
             md:px-4 md:py-1               
@@ -53,19 +57,7 @@ export default function ProductDetails({ product, onAdd, onSelect }) {
           Add
         </button>
 
-        <button
-          onClick={onSelect}
-          className="
-            px-2 py-[2px]
-            md:px-4 md:py-1
-            bg-blue-600 text-white 
-            text-[10px] md:text-xs 
-            rounded-md hover:bg-blue-700
-             transition cursor-pointer
-          "
-        >
-          Select
-        </button>
+       
       </div>
 
     </div>
