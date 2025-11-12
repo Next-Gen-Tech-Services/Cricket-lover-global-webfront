@@ -13,140 +13,86 @@ import {
   Plus,
 } from "lucide-react";
 import Image from "next/image";
-import { Imgabout, Imgmembership } from "@/shared/images";
+import { Imgbenefit, Imgmembership ,} from "@/shared/images";
 
 const blogs = [
   {
     icon: <Ticket size={28} />,
     title: "Ticket Priority",
     desc: "Including international matches from the allocation received by Cricket Lovers Global",
-    img: Imgabout.imgVision2,
+    img: Imgbenefit.imgBenefit4,
   },
   {
     icon: <Shirt size={28} />,
     title: "CLG Merchandise",
     desc: "At a preferential rate",
-    img: Imgabout.imgVision1,
+    img: Imgbenefit.imgBenefit36,
   },
   {
     icon: <Tag size={28} />,
     title: "Discounts",
     desc: "Preferential rates on partner vendor products",
-    img: Imgabout.imgVision2,
+    img: Imgbenefit.imgBenefit10,
   },
   {
     icon: <Users size={28} />,
     title: "Annual Meetings",
     desc: "Entry to Cricket Lovers Global Annual Meet",
-    img: Imgabout.imgVision1,
+    img: Imgbenefit.imgBenefit22,
   },
   {
     icon: <Baby size={28} />,
     title: "Junior Meets",
     desc: "Entry to the Annual Junior Meets",
-    img: Imgabout.imgVision2,
+    img: Imgbenefit.imgBenefit34,
   },
-  {
-    icon: <KeyRound size={28} />,
-    title: "Member Access",
-    desc: "Dedicated CLG member area access on website",
-    img: Imgabout.imgVision1,
-  },
+  
   {
     icon: <Camera size={28} />,
     title: "Experiences",
     desc: "Ability to participate in online/virtual events and watch matches in the company of fellow fans",
-    img: Imgabout.imgVision2,
+    img: Imgbenefit.imgBenefit12,
   },
   {
     icon: <Star size={28} />,
     title: "Up Close",
     desc: "Opportunity to meet your favourite cricket icons.",
-    img: Imgabout.imgVision2,
+    img: Imgbenefit.imgBenefit49,
   },
   {
     icon: <Newspaper size={28} />,
     title: "Newsletter",
     desc: "Stay updated with the latest cricket news and announcements.",
-    img: Imgabout.imgVision1,
+    img: Imgbenefit.imgBenefit24,
+  },
+  {
+    icon: <KeyRound size={28} />,
+    title: "Member Access",
+    desc: "Dedicated CLG member area access on website",
+    img: Imgbenefit.imgBenefit41,
   },
   {
     icon: <Shirt size={28} />,
     title: "Member Content",
     desc: "Get access to premium member-only content, behind-the-scenes stories, and exclusive cricket insights.",
-    img: Imgabout.imgVision2,
+    img: Imgbenefit.imgBenefit1,
   },
   {
     icon: <Users size={28} />,
     title: "Competition Entry",
     desc: "Participate in fun challenges, prediction contests, and exciting competitions to win amazing prizes.",
-    img: Imgabout.imgVision1,
+    img: Imgbenefit.imgBenefit6,
   },
   {
     icon: <Plus size={28} />,
     title: "More to Come",
     desc: "We’re just getting started! Stay tuned for more exciting member benefits and upcoming features.",
-    img: Imgabout.imgVision2,
+    img: Imgbenefit.imgBenefit8,
   },
 ];
 
 const MembershipBenefit = () => {
-  // const blogs = [
-  //   { icon: <Ticket size={28} />,
-  //     title: "Ticket Priority",
-  //     date: "January 8, 2025",
-  //     category: "Training Tips",
-  //     img: Imgabout.imgVision2,
-  //   },
-  //   {
-  //     title: "Perfect Your Swing Technique",
-  //     date: "April 4, 2025",
-  //     category: "Training Tips",
-  //     img: Imgabout.imgVision2,
-  //   },
-  //   {
-  //     title: "Smarter Strategy, Better Wins",
-  //     date: "May 6, 2025",
-  //     category: "Training Tips",
-  //     img: Imgabout.imgVision1,
-  //   },
-  //   {
-  //     title: "Smarter Strategy, Better Wins",
-  //     date: "May 6, 2025",
-  //     category: "Training Tips",
-  //     img: Imgabout.imgVision2,
-  //   },
-  //   {
-  //     title: "Smarter Strategy, Better Wins",
-  //     date: "May 6, 2025",
-  //     category: "Training Tips",
-  //     img: Imgabout.imgVision1,
-  //   },
-  //   {
-  //     title: "Smarter Strategy, Better Wins",
-  //     date: "May 6, 2025",
-  //     category: "Training Tips",
-  //     img: Imgabout.imgVision2,
-  //   },
-  //   {
-  //     title: "Smarter Strategy, Better Wins",
-  //     date: "May 6, 2025",
-  //     category: "Training Tips",
-  //     img: Imgabout.imgVision1,
-  //   },
-  //   {
-  //     title: "Smarter Strategy, Better Wins",
-  //     date: "May 6, 2025",
-  //     category: "Training Tips",
-  //     img: Imgabout.imgVision2,
-  //   },
-  //   {
-  //     title: "Smarter Strategy, Better Wins",
-  //     date: "May 6, 2025",
-  //     category: "Training Tips",
-  //     img: Imgabout.imgVision1,
-  //   }
-  // ];
+  
   const scrollRef = useRef(null);
 
   //  Auto Slide Logic
@@ -191,62 +137,65 @@ const MembershipBenefit = () => {
           </h2>
         </div>
       </section>
-      <section className="py-10">
-        <div
-  ref={scrollRef}
+      <section className="py-10 px-4 sm:px-8 md:px-16 lg:px-24">
+  <div
   className="
-    flex 
-    gap-6 
-    overflow-x-auto 
-    no-scrollbar 
-    scroll-smooth 
-    snap-x 
-    snap-mandatory
-    px-4
+    grid 
+    grid-cols-2        /*  Mobile: 2 cards */
+    sm:grid-cols-3      /*  Tablet: 3 cards */
+    lg:grid-cols-4      /*  Desktop: 4 cards */
+    gap-6
   "
 >
   {blogs.map((item, idx) => (
     <div
       key={idx}
       className="
-        flex-shrink-0
-        w-[90%]          /* ✅ MOBILE: exact 1 card visible */
-        sm:w-[300px]
-        mx-auto           /* ✅ ALWAYS CENTER IN VIEWPORT */
         bg-gradient-to-t from-[#e8ebf0] to-[#f3f5f8]
         rounded-3xl 
         border border-gray-300 
         shadow-sm 
-        snap-center        /* ✅ CENTER LOCK */
-        transition duration-300
         overflow-hidden 
-        cursor-pointer 
+        transition
         hover:shadow-lg
+        p-3 sm:p-4 md:p-5   /*  Responsive padding */
       "
     >
-      {/* Image */}
-      <div className="h-[180px] w-full relative">
-        <Image
-          src={item.img}
-          alt={item.title}
-          fill
-          className="object-cover"
-        />
+      {/*  Icon Center Box */}
+      <div className="h-[140px] sm:h-[150px] md:h-[160px] w-full flex items-center justify-center">
+        <div className="
+          rounded-full 
+          
+          bg-white
+          shadow 
+          flex items-center justify-center
+          w-16 h-16         /*  Mobile size */
+          sm:w-18 sm:h-18   /*  Tablet size */
+          md:w-20 md:h-20   /*  Desktop size */
+        ">
+          {React.cloneElement(item.icon, { 
+            size: 32,        //  Mobile icon
+            className: "sm:size-40 md:size-48" 
+          })}
+        </div>
       </div>
 
-      {/* Content */}
-      <div className="p-5">
-        <p className="text-gray-500 text-[13px] mb-2">{item.desc}</p>
-        <h3 className="text-xl font-bold leading-snug">
-          {item.title} {item.icon}
+      {/*  Text Content */}
+      <div className="text-center px-2 mt-3">
+        <h3 className="text-sm sm:text-base md:text-xl font-bold leading-snug">
+          {item.title}
         </h3>
+
+        <p className="text-[11px] sm:text-[13px] md:text-sm text-gray-500 mt-1">
+          {item.desc}
+        </p>
       </div>
     </div>
   ))}
 </div>
 
+</section>
 
-      </section>
     </section>
   );
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { homepage } from "@/shared/images";
+import { homepageposter } from "@/shared/images";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -9,10 +9,10 @@ import { useRouter } from "next/navigation";
 const Passion2 = () => {
   const router = useRouter();
   const cards = [
-  { Img: homepage[0], title: "Enjoy Cricket Matches Together" },
-  { Img: homepage[1], title: "Interact With Cricket Enthusiasts Worldwide" },
-  { Img: homepage[2], title: "Meet Cricket Icons" },
-  { Img: homepage[0], title: "Join The Community" }, // reuse first image
+  { Img: homepageposter[0], title: "Enjoy Cricket Matches Together" },
+  { Img: homepageposter[1], title: "Interact With Cricket Enthusiasts Worldwide" },
+  { Img: homepageposter[2], title: "Meet Cricket Icons" },
+  { Img: homepageposter[3], title: "Join The Community" }, // reuse first image
 ];
 
 

@@ -86,7 +86,7 @@ const Passion1 = () => {
           ref={scrollRef}
           className="flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory no-scrollbar"
         >
-          {homepage.map((img, index) => (
+          {homepage.map((img,index) => (
             <motion.div
               key={index}
               className="
