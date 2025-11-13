@@ -70,7 +70,7 @@ class Auth extends HttpClient {
   };
   // forget password
 
-  forgetPass = async (reqBody) => {
+  forgetPassword = async (reqBody) => {
     return this.instance({
       method: ApiRoutes.auth.forget.Method,
       url: ApiRoutes.auth.forget.Endpoint,

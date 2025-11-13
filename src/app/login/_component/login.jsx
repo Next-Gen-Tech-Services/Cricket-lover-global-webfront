@@ -10,6 +10,8 @@ import { toast } from "react-toastify";
 // Redux Import here 
 import { useDispatch } from "react-redux";
 import { updateUser, updateToken } from "@/redux/redux-slice/user.slice";
+import { Router } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -19,7 +21,7 @@ export default function Login() {
   const [emailError, setEmailError] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const router = useRouter();
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -144,15 +146,15 @@ export default function Login() {
               required
             />
           </div>
-
+            {error && <p className="text-left text-red-500 text-sm mb-2">{error}</p>}
           <p
             className="text-green-600 text-sm text-right cursor-pointer mb-2"
-            onClick={handleForgetPass}
+            onClick={()=>router.push('/forget-password')}
           >
             Forgot Password?
           </p>
 
-          {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
+          
 
           <button
             type="submit"

@@ -62,7 +62,7 @@ const Footer = () => {
             </a>
           </p>
           <p className="text-[16px]">
-            <a href="/clg-contact" className="!text-[#00175f] !no-underline hover:no-underline">
+            <a href="/contact" className="!text-[#00175f] !no-underline hover:no-underline">
               Contact us
             </a>
           </p>
