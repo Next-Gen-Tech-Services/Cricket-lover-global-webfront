@@ -54,7 +54,7 @@ const MembershipHistory = () => {
                             <div className="relative h-40 w-full overflow-hidden">
                                 <img
                                     src={
-                                        item?.image ||
+                                        item?.coverImage ||
                                         "https://cdn-icons-png.flaticon.com/512/9068/9068985.png"
                                     }
                                     alt={item?.planName || "Membership Plan"}

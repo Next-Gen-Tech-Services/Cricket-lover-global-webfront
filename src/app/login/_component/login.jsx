@@ -44,8 +44,8 @@ export default function Login() {
         return setError(res?.message || "Login failed ");
 
       // ✅ LocalStorage Save
-      setTokenLocal(res?.data?.token);
-      setUserLocal(res?.data?.user);
+      // setTokenLocal(res?.data?.token);
+      // setUserLocal(res?.data?.user);
 
       //  Redux State Update
       dispatch(updateToken(res?.data?.token));
@@ -61,10 +61,10 @@ export default function Login() {
     err?.response?.data?.message ||
     err?.data?.message ||
     err?.message ||
-    "Something went wrong ❌";
+    "Something went wrong";
 
   setError(backendMessage); 
-  toast.error(backendMessage);
+  // toast.error(backendMessage);
 }
 
   };

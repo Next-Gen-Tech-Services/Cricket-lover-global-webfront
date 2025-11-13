@@ -4,7 +4,7 @@ import { Menu, X, ChevronDown } from "lucide-react";
 import { logoimg } from "@/shared/images";
 import Image from "next/image";
 import Link from "next/link";
-import { getTokenLocal, getUserLocal } from "@/utils/localStorage.util";
+import { clearAuthLocal, getTokenLocal, getUserLocal } from "@/utils/localStorage.util";
 import { logout } from "@/utils/common.util";
 import { useRouter } from "next/navigation";
 import { FaUserCircle } from "react-icons/fa";
@@ -20,8 +20,9 @@ const Navbar = () => {
   const profilePic = userData?.avatarUrl || "/default-avatar.png";
 
   const handleLogout = () => {
-    logout(router);
     setShowDropdown(false);
+    clearAuthLocal()
+    logout(router);
   };
   useEffect(() => {
     setProfileImage(userData?.profileImage || null);

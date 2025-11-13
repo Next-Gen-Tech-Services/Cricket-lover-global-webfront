@@ -8,13 +8,14 @@
 import Cookies from "js-cookie";
 
 export const logout = (router) => {
+  alert("You have been logged out successfully.");
   // Remove cookies
   Cookies.remove("x_ufo");
   Cookies.remove("x_auth_token");
 
   // Remove any saved user data
-  Cookies.removeItem("token");
-  Cookies.removeItem("x_ufo");
+  Cookies.remove("token");
+  // Cookies.removeItem("x_ufo");
 
   // ✅ redirect to homepage
   router.push("/");
