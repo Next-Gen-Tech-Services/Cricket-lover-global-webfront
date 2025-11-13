@@ -57,7 +57,7 @@ const EventPage = () => {
       });
 
       if (res?.status.toLowerCase() !== "success")
-        return alert(res?.message || "Something went wrong ❌");
+        return toast.error(res?.message || "Something went wrong ");
 
       setEvents(res.data);
       // new logic

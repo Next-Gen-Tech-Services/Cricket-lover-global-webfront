@@ -107,6 +107,7 @@ import { ChevronLeft, ChevronRight, Search, CalendarDays } from "lucide-react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import eventApi from "@/api/events.api";
+import { toast } from "react-toastify";
 
 const EventList = () => {
   const [showCalendar, setShowCalendar] = useState(false);
@@ -168,7 +169,7 @@ const fetchEvents= async (searchValue = "")=>{
     const res = await eventApi.getAllEvents({ page: page, limit: 10, search: searchValue});
     
 
-    if (res?.status.toLowerCase() != "success") return alert(res?.message || "Something went wrong, please try again later❌");
+    if (res?.status.toLowerCase() != "success") return toast.error(res?.message || "Something went wrong, please try again later❌");
     const currentEvent=res.data
     
     for(let i=0 ;i<currentEvent.length;i++){
@@ -182,7 +183,7 @@ const fetchEvents= async (searchValue = "")=>{
     applyFilters(currentEvent)
   } catch(error) {
     console.log("Error fetching events:", error);
-        alert("Something went wrong ❌");
+        toast.error("Something went wrong");
   }
 }
 
