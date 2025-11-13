@@ -81,10 +81,19 @@ export default function Signup() {
         return;
       }
     } catch (err) {
-      console.error(err);
-      setError("Something went wrong ❌");
-      setLoading(false);
-    }
+  console.error("API Error:", err);
+
+  // Extract backend message safely
+  const backendMessage =
+    err?.response?.data?.message ||
+    err?.data?.message ||
+    err?.message ||
+    "Something went wrong ❌";
+
+  toast.error(backendMessage); //  show specific backend error
+  setLoading(false);
+}
+
   };
 
   return (
