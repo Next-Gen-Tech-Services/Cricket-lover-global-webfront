@@ -280,22 +280,23 @@ export default function PricingSection() {
               className="bg-white rounded-2xl shadow hover:shadow-lg border border-gray-200 hover:scale-[1.02] transition-all duration-300 overflow-hidden"
             >
               {/* Image */}
-              <div className="relative h-[220px] w-full bg-gray-100">
-                {plan?.coverImage ? (
-                  <Image
-                    src={plan.coverImage}
-                    alt={plan.name}
-                    fill
-                    className="object-contain p-2 border rounded-2xl"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    priority
-                  />
-                ) : (
-                  <div className="flex items-center justify-center h-full text-gray-400 text-sm">
-                    No Image Available
-                  </div>
-                )}
-              </div>
+              <div className="relative h-[220px] w-full bg-white rounded-2xl overflow-hidden border">
+  {plan?.coverImage ? (
+    <Image
+      src={plan.coverImage}
+      alt={plan.name}
+      fill
+      className="object-cover object-top rounded-2xl"
+      sizes="(max-width: 768px) 100vw, 33vw"
+      priority
+    />
+  ) : (
+    <div className="flex items-center justify-center h-full text-gray-400 text-sm">
+      No Image Available
+    </div>
+  )}
+</div>
+
 
               {/* Content */}
               <div className="p-6 space-y-3">

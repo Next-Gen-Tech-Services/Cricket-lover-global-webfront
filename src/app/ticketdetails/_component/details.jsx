@@ -61,12 +61,19 @@ export default function EventDetailsPage(event) {
     // ✅ Ticket prices × each ticket quantity
     getEvent?.tickets?.forEach((ticket) => {
       const qty = ticketQuantities?.[ticket.type] || 0;
+      // total += ticket.price * qty;
       total += ticket.price * qty;
+total = Number(total.toFixed(2));
+
+
     });
 
     // ✅ Add selected product price (if any)
     if (selectedProduct) {
+      // total += selectedProduct.price * qty;
       total += selectedProduct.price * qty;
+total = Number(total.toFixed(2));
+
     }
 
     return total;
@@ -92,14 +99,22 @@ export default function EventDetailsPage(event) {
 
     try {
       const res = await paymentApi.createPayment(payload);
+      console.log("res--------",res)
       if (!res || res?.status?.toLowerCase() !== "success") {
         return toast.error(res?.message);
       }
-      window.location.href = res.data.url;
+      // window.location.href = res.data.url;
     } catch (error) {
-      // console.log("Payment Error:", error);
-      toast.error("Something went wrong ❌");
-    }
+            console.log("error --------",error)
+
+  const backendMessage =
+    error?.response?.data?.message ||   
+    error?.response?.data?.error ||     
+    error?.message ||
+    "Something went wrong ";          
+
+  toast.error(backendMessage);
+}
   };
 
   const handleConfirm = () => {
