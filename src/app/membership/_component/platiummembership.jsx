@@ -105,19 +105,21 @@ export default function MembershipDetailsPage() {
 
         {/* BENEFITS LIST */}
         <div className="grid sm:grid-cols-2 gap-4">
-          {[
-            "Priority access to international match tickets",
-            "Discounts on CLG merchandise",
-            "Invitation to exclusive CLG annual meets",
-            "Entry to junior members meets",
-            "Access to private members-only online events",
-            "Opportunity to meet cricket celebrities",
-            "Subscription to premium newsletter",
-            "Exclusive behind-the-scenes cricket content",
-          ].map((benefit, i) => (
+          {
+          //   [
+          //   "Priority access to international match tickets",
+          //   "Discounts on CLG merchandise",
+          //   "Invitation to exclusive CLG annual meets",
+          //   "Entry to junior members meets",
+          //   "Access to private members-only online events",
+          //   "Opportunity to meet cricket celebrities",
+          //   "Subscription to premium newsletter",
+          //   "Exclusive behind-the-scenes cricket content",
+          // ]
+          plans?.benefit.map((item, i) => (
             <div key={i} className="flex items-start gap-3">
               <CheckCircle className="text-green-600 mt-1" size={22} />
-              <p className="text-gray-700 leading-tight">{benefit}</p>
+              <p className="text-gray-700 leading-tight">{item}</p>
             </div>
           ))}
         </div>

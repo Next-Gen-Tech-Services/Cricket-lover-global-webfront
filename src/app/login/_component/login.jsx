@@ -39,7 +39,7 @@ export default function Login() {
       setLoading(false);
 
       if (res?.status?.toLowerCase() != "success")
-        return setError(res?.message || "Login failed ❌");
+        return setError(res?.message || "Login failed ");
 
       // ✅ LocalStorage Save
       setTokenLocal(res?.data?.token);
@@ -49,7 +49,7 @@ export default function Login() {
       dispatch(updateToken(res?.data?.token));
       dispatch(updateUser(res?.data?.user));
 
-      toast.success("Login Successful ✅");
+      toast.success("Login Successful ");
 
       window.location.href = "/";
     } catch (err) {
