@@ -37,7 +37,7 @@ export default function Login() {
     try {
       console.log("email, password", email, password);
 
-      const res = await authInstance.login({ email, password });
+      const res = await authInstance.login({ email, password, role: "user" });
       setLoading(false);
 
       if (res?.status?.toLowerCase() != "success")
@@ -70,7 +70,7 @@ export default function Login() {
   };
 
   const handleForgetPass = async () => {
-    if (!email) return setError("Email is required ❌");
+    if (!email) return setError("Email is required");
 
     const emailRegex =
       /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -83,11 +83,11 @@ export default function Login() {
 
       if  (res?.status?.toLowerCase() !== "success")
 
-        return setError(res?.message || "Request failed ❌");
+        return setError(res?.message || "Request failed");
 
-      toast("Reset Email Sent Successfully ✅");
+      toast("Reset Email Sent Successfully");
     } catch {
-      toast("Something went wrong ❌");
+      toast("Something went wrong");
     }
   };
 
