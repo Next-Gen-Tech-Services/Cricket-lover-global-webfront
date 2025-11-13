@@ -41,23 +41,32 @@ export default function Login() {
       setLoading(false);
 
       if (res?.status?.toLowerCase() != "success")
-        return setError(res?.message || "Login failed ❌");
+        return setError(res?.message || "Login failed ");
 
       // ✅ LocalStorage Save
       setTokenLocal(res?.data?.token);
       setUserLocal(res?.data?.user);
 
-      // ✅ Redux State Update
+      //  Redux State Update
       dispatch(updateToken(res?.data?.token));
       dispatch(updateUser(res?.data?.user));
 
-      toast.success("Login Successful ✅");
+      toast.success("Login Successful ");
 
       window.location.href = "/";
-    } catch {
-      setLoading(false);
-      setError("Something went wrong ❌");
-    }
+    } catch (err) {
+  setLoading(false);
+
+  const backendMessage =
+    err?.response?.data?.message ||
+    err?.data?.message ||
+    err?.message ||
+    "Something went wrong ❌";
+
+  setError(backendMessage); 
+  toast.error(backendMessage);
+}
+
   };
 
   const handleForgetPass = async () => {

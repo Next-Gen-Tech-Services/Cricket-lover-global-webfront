@@ -93,14 +93,14 @@ export default function MembershipDetailsPage() {
         {/* Description */}
         <p> {htmlTostring(plans?.description)}</p>
 
-        <h2 className="text-2xl font-bold mt-10 mb-4">Membership Benefits</h2>
+        <h2 className="text-2xl font-bold mt-10 mb-4">Membership Benefits </h2>
 
         {/* BENEFITS LIST */}
         <div className="grid sm:grid-cols-2 gap-4">
-          {plans?.benefits?.map((benefit, i) => (
+          {plans?.benefit?.map((item, i) => (
             <div key={i} className="flex items-start gap-3">
               <CheckCircle className="text-green-600 mt-1" size={22} />
-              <p className="text-gray-700 leading-tight">{benefit}</p>
+              <p className="text-gray-700 leading-tight">{item}</p>
             </div>
           ))}
         </div>
