@@ -102,6 +102,30 @@ class Auth extends HttpClient {
       data:""
     })
   }
+  newsletterSubscribe = async (reqBody) => {
+    return this.instance({
+      method: ApiRoutes.auth.newsletterSubscribe.Method,
+      url: ApiRoutes.auth.newsletterSubscribe.Endpoint,
+      data: reqBody,
+    });
+  }
+  
+  ContactUs = async (reqBody) => {
+    return this.instance({
+      method: ApiRoutes.auth.Contact.Method,
+      url: ApiRoutes.auth.Contact.Endpoint,
+      data: reqBody,
+    });
+  }
+  getUserMembershipStatus = async (reqBody) => {
+    return this.instance({
+      method: ApiRoutes.auth.getUserMembershipStatus.Method,
+      url: ApiRoutes.auth.getUserMembershipStatus.Endpoint,
+      data: reqBody,
+    });
+  }
+      
+  
   
 
 }

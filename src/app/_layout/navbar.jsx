@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { logoimg } from "@/shared/images";
 import Image from "next/image";
@@ -7,6 +7,7 @@ import Link from "next/link";
 import { getTokenLocal, getUserLocal } from "@/utils/localStorage.util";
 import { logout } from "@/utils/common.util";
 import { useRouter } from "next/navigation";
+import { FaUserCircle } from "react-icons/fa";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,15 +15,17 @@ const Navbar = () => {
   const userData = getUserLocal();
   const userToken = getTokenLocal();
   const router = useRouter();
-
+  const [profileImage, setProfileImage] = useState(null);
   // ✅ PATCH 1 — Add profilePic
-  const profilePic = userData?.profileImage || "/default-avatar.png";
+  const profilePic = userData?.avatarUrl || "/default-avatar.png";
 
   const handleLogout = () => {
     logout(router);
     setShowDropdown(false);
   };
-
+  useEffect(() => {
+    setProfileImage(userData?.profileImage || null);
+  }, []);
   return (
     <nav className="bg-[#001B5E] text-white py-4 relative w-full z-50">
       <div className="container mx-auto flex items-center justify-between px-6">
@@ -49,41 +52,49 @@ const Navbar = () => {
         </div>
 
         {/* Auth Button / Dropdown */}
-        {userToken && userData ? (
+        {/* {userToken && userData ? (
           <div className="relative hidden lg:block">
             <button
               onClick={() => setShowDropdown(!showDropdown)}
               className="flex flex-col items-end bg-green-50 border border-green-600 text-green-800 px-6 py-2 rounded-full focus:outline-none hover:bg-green-100 transition"
             >
-              {/* ✅ PATCH 2 — Insert Profile Image */}
               <div className="flex items-center gap-2">
 
-                {/* ✅ PROFILE IMAGE ADDED */}
-                <Image
-                  src={profilePic}
-                  width={36}
-                  height={36}
-                  alt="User"
-                  className="rounded-full border border-green-600 object-cover"
-                />
+                
+                {profileImage ? (
+                  <img
+                    src={profileImage}
+                    alt="Profile"
+                    style={{
+                      width: "10%",
+                      height: "10%",
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                    }}
+                  />
+                ) : (
+                  <FaUserCircle
+                    size={100}
+                    color="#ccc"
+                    style={{ width: "20%", height: "20%" }}
+                  />
+                )}
 
                 <div className="text-right">
-                  
+
                   <span className="text-base font-semibold">
                     {userData.firstName} {userData.lastName}
                   </span>
                 </div>
 
                 <ChevronDown
-                  className={`transition-transform ${
-                    showDropdown ? "rotate-180" : ""
-                  }`}
+                  className={`transition-transform ${showDropdown ? "rotate-180" : ""
+                    }`}
                   size={18}
                 />
               </div>
             </button>
 
-            {/* Dropdown Menu */}
             {showDropdown && (
               <div className="absolute right-0 mt-2 w-48 bg-white border border-green-600 rounded-lg shadow-lg text-[#001B5E]">
                 <Link
@@ -118,9 +129,80 @@ const Navbar = () => {
           >
             LOGIN / SIGN UP
           </Link>
+        )} */}
+        {userToken && userData ? (
+          <div className="relative  hidden lg:block">
+            <button
+              onClick={() => setShowDropdown(!showDropdown)}
+              className="flex items-center justify-between gap-3 bg-green-50 border border-green-600 text-green-800 px-4 py-2 rounded-full focus:outline-none hover:bg-green-100 transition w-full sm:w-auto"
+            >
+              {/* PROFILE IMAGE */}
+              {profileImage ? (
+                <img
+                  src={profileImage}
+                  alt="Profile"
+                  className="w-10 h-10 rounded-full object-cover border border-green-600"
+                />
+              ) : (
+                <FaUserCircle className="text-green-600 w-10 h-10" />
+              )}
+
+              {/* USER NAME */}
+              <div className="hidden sm:flex flex-col items-start">
+                <span className="text-sm font-semibold truncate max-w-[100px]">
+                  {userData.firstName} {userData.lastName}
+                </span>
+              </div>
+
+              {/* DROPDOWN ICON */}
+              <ChevronDown
+                className={`transition-transform duration-200 ${showDropdown ? "rotate-180" : ""
+                  }`}
+                size={18}
+              />
+            </button>
+
+            {/* Dropdown Menu */}
+            {showDropdown && (
+              <div className="absolute right-0 mt-2 w-44 sm:w-48 bg-white border border-green-600 rounded-lg shadow-lg text-[#001B5E] z-50">
+                <Link
+                  href="/profile"
+                  className="block px-4 py-2 hover:bg-green-50 hover:text-green-700"
+                  onClick={() => setShowDropdown(false)}
+                >
+                  Profile
+                </Link>
+
+                <Link
+                  href="/event-history"
+                  className="block px-4 py-2 hover:bg-green-50 hover:text-green-700"
+                  onClick={() => setShowDropdown(false)}
+                >
+                  Event History
+                </Link>
+                 <Link href="profile/membership-history" className="block px-4 py-2 hover:bg-green-50 hover:text-green-700" onClick={() => setShowDropdown(false)}>
+                  Membership-history
+                </Link>
+
+
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-left px-4 py-2 text-sm hover:bg-red-50 hover:text-red-700 border-t border-green-100"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <Link
+            href="/login"
+            className="bg-green-600 hover:bg-[#001B5E] hidden lg:block border border-transparent hover:border-green-600 hover:text-green-600 text-white font-semibold px-6 sm:px-9 py-2 sm:py-3 rounded-full transition"
+          >
+            LOGIN / SIGN UP
+          </Link>
         )}
 
-        {/* Mobile Menu Button */}
         <button
           className="lg:hidden focus:outline-none"
           onClick={() => setIsOpen(!isOpen)}
@@ -144,14 +226,16 @@ const Navbar = () => {
           {userToken && userData ? (
             <div className="flex flex-col items-center text-green-400 font-semibold py-3">
 
-              {/* ✅ Mobile bhi profile pic chahiye? */}
-              <Image
-                src={profilePic}
-                width={60}
-                height={60}
-                alt="User"
-                className="rounded-full border border-green-600 object-cover mb-2"
-              />
+              
+              {profileImage ? (
+                <img
+                  src={profileImage}
+                  alt="Profile"
+                  className="w-10 h-10 rounded-full object-cover border border-green-600 mb-3"
+                />
+              ) : (
+                <FaUserCircle className="text-green-600 w-10 h-10" />
+              )}
 
               <span className="text-sm">{userData.email}</span>
               <span className="text-base">
@@ -166,8 +250,11 @@ const Navbar = () => {
                 <Link href="/event-history" className="text-sm hover:text-white" onClick={() => setIsOpen(false)}>
                   Event History
                 </Link>
+                <Link href="profile/membership-history" className="text-sm hover:text-white" onClick={() => setIsOpen(false)}>
+                  Membership-history
+                </Link>
 
-                <button className="text-sm hover:text-white" onClick={handleLogout}>
+                <button className="text-sm hover:text-white " onClick={handleLogout}>
                   Logout
                 </button>
               </div>

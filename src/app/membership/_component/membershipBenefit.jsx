@@ -13,7 +13,7 @@ import {
   Plus,
 } from "lucide-react";
 import Image from "next/image";
-import { Imgbenefit, Imgmembership ,} from "@/shared/images";
+import { Imgbenefit, Imgmembership, } from "@/shared/images";
 
 const blogs = [
   {
@@ -46,7 +46,7 @@ const blogs = [
     desc: "Entry to the Annual Junior Meets",
     img: Imgbenefit.imgBenefit34,
   },
-  
+
   {
     icon: <Camera size={28} />,
     title: "Experiences",
@@ -92,7 +92,7 @@ const blogs = [
 ];
 
 const MembershipBenefit = () => {
-  
+
   const scrollRef = useRef(null);
 
   //  Auto Slide Logic
@@ -138,19 +138,19 @@ const MembershipBenefit = () => {
         </div>
       </section>
       <section className="py-10 px-4 sm:px-8 md:px-16 lg:px-24">
-  <div
-  className="
+        <div
+          className="
     grid 
     grid-cols-2        /*  Mobile: 2 cards */
     sm:grid-cols-3      /*  Tablet: 3 cards */
     lg:grid-cols-4      /*  Desktop: 4 cards */
     gap-6
   "
->
-  {blogs.map((item, idx) => (
-    <div
-      key={idx}
-      className="
+        >
+          {blogs.map((item, idx) => (
+            <div
+              key={idx}
+              className="
         bg-gradient-to-t from-[#e8ebf0] to-[#f3f5f8]
         rounded-3xl 
         border border-gray-300 
@@ -160,10 +160,10 @@ const MembershipBenefit = () => {
         hover:shadow-lg
         p-3 sm:p-4 md:p-5   /*  Responsive padding */
       "
-    >
-      {/*  Icon Center Box */}
-      <div className="h-[140px] sm:h-[150px] md:h-[160px] w-full flex items-center justify-center">
-        <div className="
+            >
+              {/*  Icon Center Box */}
+              <div className="h-[140px] sm:h-[150px] md:h-[160px] w-full flex items-center justify-center">
+                <div className="
           rounded-full 
           
           bg-white
@@ -173,28 +173,28 @@ const MembershipBenefit = () => {
           sm:w-18 sm:h-18   /*  Tablet size */
           md:w-20 md:h-20   /*  Desktop size */
         ">
-          {React.cloneElement(item.icon, { 
-            size: 32,        //  Mobile icon
-            className: "sm:size-40 md:size-48" 
-          })}
+                  {React.cloneElement(item.icon, {
+                    size: 32,        //  Mobile icon
+                    className: "sm:size-40 md:size-48"
+                  })}
+                </div>
+              </div>
+
+              {/*  Text Content */}
+              <div className="text-center px-2 mt-3">
+                <h3 className="text-sm sm:text-base md:text-xl font-bold leading-snug">
+                  {item.title}
+                </h3>
+
+                <p className="text-[11px] sm:text-[13px] md:text-sm text-gray-500 mt-1">
+                  {item.desc}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
 
-      {/*  Text Content */}
-      <div className="text-center px-2 mt-3">
-        <h3 className="text-sm sm:text-base md:text-xl font-bold leading-snug">
-          {item.title}
-        </h3>
-
-        <p className="text-[11px] sm:text-[13px] md:text-sm text-gray-500 mt-1">
-          {item.desc}
-        </p>
-      </div>
-    </div>
-  ))}
-</div>
-
-</section>
+      </section>
 
     </section>
   );
