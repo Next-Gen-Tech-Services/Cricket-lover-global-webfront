@@ -75,8 +75,18 @@ const EventPage = () => {
       setSliderEvents(
         upcomingEvents.length > 0 ? upcomingEvents : res.data.slice(0, 5)
       );
-    } catch (error) {
-      console.log("Error fetching events:", error);
+    } catch (err) {
+      console.error("API Error:", err);
+    
+      // Extract backend message safely
+      const backendMessage =
+        err?.response?.data?.message ||
+        err?.data?.message ||
+        err?.message ||
+        "Something went wrong ";
+    
+      toast.error(backendMessage); 
+      setLoading(false);
     }
   };
   // console.log("bannerimage------------",images)
