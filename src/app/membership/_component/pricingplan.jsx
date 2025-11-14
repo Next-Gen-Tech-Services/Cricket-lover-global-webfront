@@ -205,8 +205,18 @@ export default function PricingSection() {
       if (res.status?.toLowerCase() === "success") {
         setPlans(res.data);
       }
-    } catch (error) {
-      console.log("Fetch membership error:", error);
+    } catch (err) {
+      console.error("API Error:", err);
+    
+      // Extract backend message safely
+      const backendMessage =
+        err?.response?.data?.message ||
+        err?.data?.message ||
+        err?.message ||
+        "Something went wrong ";
+    
+      toast.error(backendMessage); 
+      setLoading(false);
     }
   };
   console.log("Id of plan-----", plans)
@@ -302,7 +312,7 @@ export default function PricingSection() {
               <div className="p-6 space-y-3">
                 <p className="text-sm flex items-center gap-1 text-gray-600">
                   <User size={16} />
-                  BUY{" "}
+                  BUY
                   <span className="font-bold text-green-600">
                     £{plan.price || "0.00"}
                   </span>

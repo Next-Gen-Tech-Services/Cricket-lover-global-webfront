@@ -37,8 +37,18 @@ export default function EventDetailsPage(event) {
       if (res.status?.toLowerCase() === "success") {
         setProducts(res.data);
       }
-    } catch (error) {
-      console.log("Product fetch error:", error);
+    } catch (err) {
+      console.error("API Error:", err);
+    
+      // Extract backend message safely
+      const backendMessage =
+        err?.response?.data?.message ||
+        err?.data?.message ||
+        err?.message ||
+        "Something went wrong ";
+    
+      toast.error(backendMessage); 
+      setLoading(false);
     }
   };
 

@@ -51,9 +51,19 @@ export default function ProfileForm() {
     try {
       const res = await authInstance.profileUpdate(formData);
       if (res?.data?.user) setUserLocal(res.data.user);
-      toast("✅ Profile Updated Successfully");
+      toast(" Profile Updated Successfully");
     } catch (err) {
-      toast("❌ Something went wrong");
+      console.error("API Error:", err);
+    
+      // Extract backend message safely
+      const backendMessage =
+        err?.response?.data?.message ||
+        err?.data?.message ||
+        err?.message ||
+        "Something went wrong ";
+    
+      toast.error(backendMessage); 
+      setLoading(false);
     }
   };
 
