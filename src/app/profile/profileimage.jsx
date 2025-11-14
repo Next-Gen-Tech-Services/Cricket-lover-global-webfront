@@ -28,7 +28,7 @@
 //     if (!image) return toast("Please select an image!");
 
 //     const formData = new FormData();
-//     formData.append("folderName", "userprofile"); // ✅ add normally
+//     formData.append("folderName", "userprofile"); //  add normally
 
 //     formData.append("file", image);
 
@@ -46,7 +46,7 @@
 //   profileImage: res.data,  // S3 image URL
 // };
 
-// // ✅ Save updated user into cookies
+// //  Save updated user into cookies
 // setUserLocal(updatedUser);
 
 // toast("Profile Image Updated ");
@@ -105,7 +105,7 @@ export default function ProfileImageUpload() {
   const [preview, setPreview] = useState("");
   const fileRef = useRef(null);
 
-  // 🧩 Load existing image from local storage on mount
+  //  Load existing image from local storage on mount
   useEffect(() => {
     const user = getUserLocal();
     if (user?.profileImage) {
@@ -118,14 +118,14 @@ export default function ProfileImageUpload() {
     const file = e.target.files[0];
     if (!file) return;
 
-    // ✅ Only allow image files
+    //  Only allow image files
     if (!file.type.startsWith("image/")) {
       toast("Please upload a valid image file!");
       e.target.value = "";
       return;
     }
 
-    // ✅ Optional size limit (2MB)
+    //  Optional size limit (2MB)
     if (file.size > 2 * 1024 * 1024) {
       toast("File size should be less than 2MB!");
       e.target.value = "";
