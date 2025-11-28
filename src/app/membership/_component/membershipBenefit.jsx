@@ -37,7 +37,7 @@ const blogs = [
   {
     title: "Up Close",
     desc: "Opportunity to meet your favourite cricket icons.",
-    img: benfitIconImg.benfitIcon7,
+    img: benfitIconImg.benfitIcon4,
   },
   {
     title: "Newsletter",
@@ -47,17 +47,17 @@ const blogs = [
   {
     title: "Member Access",
     desc: "Dedicated CLG member area access on website",
-    img: benfitIconImg.benfitIcon9,
+    img: benfitIconImg.benfitIcon13,
   },
   {
     title: "Member Content",
     desc: "Get access to premium member-only content, behind-the-scenes stories, and exclusive cricket insights.",
-    img: benfitIconImg.benfitIcon10,
+    img: benfitIconImg.benfitIcon1,
   },
   {
     title: "Competition Entry",
     desc: "Participate in fun challenges, prediction contests, and exciting competitions to win amazing prizes.",
-    img: benfitIconImg.benfitIcon11,
+    img: benfitIconImg.benfitIcon9,
   },
   {
     title: "More to Come",

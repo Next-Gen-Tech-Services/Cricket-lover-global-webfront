@@ -228,51 +228,7 @@ export default function PricingSection() {
         </h2>
       </div>
 
-      {/* Dynamic Plans Grid */}
-      {/* <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-10"> */}
-
-        {/* {plans.map((plan, index) => (
-          <div
-            key={plan._id}
-            className="bg-white rounded-2xl shadow hover:shadow-lg border border-gray-200  hover:scale-[1.02] transition-all duration-300"
-          >
-            <div className="relative h-[220px] w-full">
-              
-             <div className="h-[100%]">
-               <Image
-                 src={plan?.coverImage}  
-                alt={plan?.name}
-                fill
-                className="object-cover"
-              />
-             </div>
-            </div>
-
-            <div className="p-6 space-y-3">
-              <p className="text-sm flex items-center gap-1 text-gray-600">
-                <User size={16} /> BUY
-                <span className="font-bold text-green-600">£{plan.price}</span>
-              </p>
-
-              <h3 className="text-2xl font-bold text-[#0b1441] leading-tight">
-                {plan.name}
-              </h3>
-
-              <p className="text-sm text-gray-600 line-clamp-3">
-                {plan.description}
-              </p>
-
-              <button
-                onClick={() =>
-                  router.push(`/membership/${plan?._id}`)
-                }
-                className="mt-4 text-[#22c55e] font-semibold flex items-center gap-1 hover:underline transition cursor-pointer"
-              >
-                GET STARTED <ArrowUpRight size={18} />
-              </button>
-            </div>
-          </div>
-        ))} */}
+      
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-10">
           {plans.map((plan) => (
             <div
@@ -280,7 +236,7 @@ export default function PricingSection() {
               className="bg-white rounded-2xl shadow hover:shadow-lg border border-gray-200 hover:scale-[1.02] transition-all duration-300 overflow-hidden"
             >
               {/* Image */}
-              <div className="relative h-[220px] w-full bg-white rounded-2xl overflow-hidden border">
+              <div className="relative h-[300px] w-full bg-white rounded-2xl overflow-hidden border">
   {plan?.coverImage ? (
     <Image
       src={plan.coverImage}
