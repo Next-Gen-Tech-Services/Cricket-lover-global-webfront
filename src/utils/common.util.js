@@ -16,7 +16,7 @@ export const logout = (router) => {
   Cookies.remove("token");
   // Cookies.removeItem("x_ufo");
 
-  // ✅ redirect to homepage
+  // redirect to homepage
   router.push("/");
 };
 

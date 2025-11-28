@@ -4,7 +4,11 @@ import { Menu, X, ChevronDown } from "lucide-react";
 import { logoimg } from "@/shared/images";
 import Image from "next/image";
 import Link from "next/link";
-import { clearAuthLocal, getTokenLocal, getUserLocal } from "@/utils/localStorage.util";
+import {
+  clearAuthLocal,
+  getTokenLocal,
+  getUserLocal,
+} from "@/utils/localStorage.util";
 import { logout } from "@/utils/common.util";
 import { useRouter } from "next/navigation";
 import { FaUserCircle } from "react-icons/fa";
@@ -21,7 +25,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     setShowDropdown(false);
-    clearAuthLocal()
+    clearAuthLocal();
     logout(router);
   };
   useEffect(() => {
@@ -43,13 +47,30 @@ const Navbar = () => {
 
         {/* Desktop Nav Links */}
         <div className="hidden lg:flex space-x-8 text-l font-normalbold">
-          <Link href="/about" className="hover:text-green-400">ABOUT</Link>
-          <Link href="/cares" className="hover:text-green-400">CLG CARES</Link>
-          <Link href="/gallery" className="hover:text-green-400">GALLERY</Link>
-          <Link href="/membership" className="hover:text-green-400">MEMBERSHIP</Link>
-          <Link href="/events" className="hover:text-green-400">EVENTS</Link>
-          <Link href="https://clgacademy.co.uk/" className="hover:text-green-400">CLG ACADEMY</Link>
-          <Link href="/contact" className="hover:text-green-400">CONTACT</Link>
+          <Link href="/about" className="hover:text-green-400">
+            ABOUT
+          </Link>
+          <Link href="/cares" className="hover:text-green-400">
+            CLG CARES
+          </Link>
+          <Link href="/gallery" className="hover:text-green-400">
+            GALLERY
+          </Link>
+          <Link href="/membership" className="hover:text-green-400">
+            MEMBERSHIP
+          </Link>
+          <Link href="/events" className="hover:text-green-400">
+            EVENTS
+          </Link>
+          <Link
+            href="https://clgacademy.co.uk/"
+            className="hover:text-green-400"
+          >
+            CLG ACADEMY
+          </Link>
+          <Link href="/contact" className="hover:text-green-400">
+            CONTACT
+          </Link>
         </div>
 
         {/* Auth Button / Dropdown */}
@@ -153,12 +174,17 @@ const Navbar = () => {
                 <span className="text-sm font-semibold truncate max-w-[100px]">
                   {userData.firstName} {userData.lastName}
                 </span>
+                <span className="text-sm font-semibold">
+                  {" "}
+                  {userData?.membershipNumber}{" "}
+                </span>
               </div>
 
               {/* DROPDOWN ICON */}
               <ChevronDown
-                className={`transition-transform duration-200 ${showDropdown ? "rotate-180" : ""
-                  }`}
+                className={`transition-transform duration-200 ${
+                  showDropdown ? "rotate-180" : ""
+                }`}
                 size={18}
               />
             </button>
@@ -181,10 +207,13 @@ const Navbar = () => {
                 >
                   Event History
                 </Link>
-                 <Link href="/membership-history" className="block px-4 py-2 hover:bg-green-50 hover:text-green-700" onClick={() => setShowDropdown(false)}>
+                <Link
+                  href="/membership-history"
+                  className="block px-4 py-2 hover:bg-green-50 hover:text-green-700"
+                  onClick={() => setShowDropdown(false)}
+                >
                   Membership-history
                 </Link>
-
 
                 <button
                   onClick={handleLogout}
@@ -215,19 +244,59 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="lg:hidden bg-[#001B5E] text-center space-y-4 py-6">
-          <Link href="/about" className="block hover:text-green-400" onClick={() => setIsOpen(false)}>ABOUT</Link>
-          <Link href="/cares" className="block hover:text-green-400" onClick={() => setIsOpen(false)}>CLG CARES</Link>
-          <Link href="/gallery" className="block hover:text-green-400" onClick={() => setIsOpen(false)}>GALLERY</Link>
-          <Link href="/membership" className="block hover:text-green-400" onClick={() => setIsOpen(false)}>MEMBERSHIP</Link>
-          <Link href="/events" className="block hover:text-green-400" onClick={() => setIsOpen(false)}>EVENTS</Link>
-          <Link href="https://clgacademy.co.uk/" className="block hover:text-green-400" onClick={() => setIsOpen(false)}>CLG ACADEMY</Link>
-          <Link href="/contact" className="block hover:text-green-400" onClick={() => setIsOpen(false)}>CONTACT</Link>
+          <Link
+            href="/about"
+            className="block hover:text-green-400"
+            onClick={() => setIsOpen(false)}
+          >
+            ABOUT
+          </Link>
+          <Link
+            href="/cares"
+            className="block hover:text-green-400"
+            onClick={() => setIsOpen(false)}
+          >
+            CLG CARES
+          </Link>
+          <Link
+            href="/gallery"
+            className="block hover:text-green-400"
+            onClick={() => setIsOpen(false)}
+          >
+            GALLERY
+          </Link>
+          <Link
+            href="/membership"
+            className="block hover:text-green-400"
+            onClick={() => setIsOpen(false)}
+          >
+            MEMBERSHIP
+          </Link>
+          <Link
+            href="/events"
+            className="block hover:text-green-400"
+            onClick={() => setIsOpen(false)}
+          >
+            EVENTS
+          </Link>
+          <Link
+            href="https://clgacademy.co.uk/"
+            className="block hover:text-green-400"
+            onClick={() => setIsOpen(false)}
+          >
+            CLG ACADEMY
+          </Link>
+          <Link
+            href="/contact"
+            className="block hover:text-green-400"
+            onClick={() => setIsOpen(false)}
+          >
+            CONTACT
+          </Link>
 
           {/* Mobile Auth Display */}
           {userToken && userData ? (
             <div className="flex flex-col items-center text-green-400 font-semibold py-3">
-
-              
               {profileImage ? (
                 <img
                   src={profileImage}
@@ -244,18 +313,33 @@ const Navbar = () => {
               </span>
 
               <div className="flex flex-col gap-1 mt-2">
-                <Link href="/profile" className="text-sm hover:text-white" onClick={() => setIsOpen(false)}>
+                <Link
+                  href="/profile"
+                  className="text-sm hover:text-white"
+                  onClick={() => setIsOpen(false)}
+                >
                   Profile
                 </Link>
 
-                <Link href="/event-history" className="text-sm hover:text-white" onClick={() => setIsOpen(false)}>
+                <Link
+                  href="/event-history"
+                  className="text-sm hover:text-white"
+                  onClick={() => setIsOpen(false)}
+                >
                   Event History
                 </Link>
-                <Link href="/membership-history" className="text-sm hover:text-white" onClick={() => setIsOpen(false)}>
+                <Link
+                  href="/membership-history"
+                  className="text-sm hover:text-white"
+                  onClick={() => setIsOpen(false)}
+                >
                   Membership-history
                 </Link>
 
-                <button className="text-sm hover:text-white " onClick={handleLogout}>
+                <button
+                  className="text-sm hover:text-white "
+                  onClick={handleLogout}
+                >
                   Logout
                 </button>
               </div>
