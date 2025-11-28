@@ -32,3 +32,4 @@ export const strengthIndicator = (number) => {
     if (hasMixed(number)) strengths += 1;
     return strengths;
 };
+
