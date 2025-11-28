@@ -15,21 +15,90 @@ export default function EventDetailsPage(event) {
   const [showOptions, setShowOptions] = useState(false);
   const [option, setOption] = useState("");
   const [products, setProducts] = useState([]);
+  // const [open, setOpen] = useState(false);
+  // const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedProducts, setSelectedProducts] = useState([]); // { product, quantity }
   const [open, setOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
   const router = useRouter();
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [getEvent, setGetEvent] = useState(null);
   const [ticketQuantities, setTicketQuantities] = useState({});
 
-  const handleAddProduct = (product) => {
-    console.log("product--------", product);
-    setSelectedProduct(product);
-    setTotalPrice(qty * product.price);
-  };
+  // helper: total tickets selected
+  const totalTicketsSelected = Object.values(ticketQuantities).reduce(
+    (s, v) => s + (Number(v) || 0),
+    0
+  );
+
+  // helper: total selected product units
+  const totalProductUnits = selectedProducts.reduce(
+    (s, p) => s + (p.quantity || 0),
+    0
+  );
 
   const handleSelectClick = () => setOpen(false);
+
+  // add a product (or increment its quantity). Enforce total units <= totalTicketsSelected
+  const handleAddProduct = (product) => {
+    // if no tickets selected, don't allow
+    if (totalTicketsSelected === 0) {
+      return toast.error("Select tickets before adding products");
+    }
+
+    setSelectedProducts((prev) => {
+      // find existing
+      const idx = prev.findIndex((p) => p.product._id === product._id);
+      // if totalProductUnits already equals totalTicketsSelected, block increment
+      if (totalProductUnits >= totalTicketsSelected && idx === -1) {
+        toast.error(
+          `You can add up to ${totalTicketsSelected} product unit(s) (equal to tickets).`
+        );
+        return prev;
+      }
+
+      if (idx > -1) {
+        // increment, but ensure we don't exceed ticket total
+        const newQty = Math.min(
+          prev[idx].quantity + 1,
+          totalTicketsSelected - (totalProductUnits - prev[idx].quantity)
+        );
+        const copy = [...prev];
+        copy[idx] = { ...copy[idx], quantity: newQty };
+        return copy;
+      } else {
+        // add new product with qty 1
+        return [...prev, { product, quantity: 1 }];
+      }
+    });
+  };
+
+  // set product quantity (used by + / - controls)
+  const setProductQuantity = (productId, qty) => {
+    const q = Math.max(0, Number(qty) || 0);
+    // ensure not exceed ticket limit
+    const otherUnits = selectedProducts.reduce(
+      (s, p) => s + (p.product._id === productId ? 0 : p.quantity),
+      0
+    );
+    const allowed = Math.max(0, totalTicketsSelected - otherUnits);
+    const finalQty = Math.min(q, allowed);
+
+    setSelectedProducts(
+      (prev) =>
+        prev
+          .map((p) =>
+            p.product._id === productId ? { ...p, quantity: finalQty } : p
+          )
+          .filter((p) => p.quantity > 0) // remove zero-qty
+    );
+  };
+
+  const removeSelectedProduct = (productId) => {
+    setSelectedProducts((prev) =>
+      prev.filter((p) => p.product._id !== productId)
+    );
+  };
 
   const fetchProducts = async () => {
     try {
@@ -58,54 +127,59 @@ export default function EventDetailsPage(event) {
   function getTotalWithOption() {
     let total = 0;
 
-    // ✅ Ticket prices × each ticket quantity
+    // tickets
     getEvent?.tickets?.forEach((ticket) => {
-      const qty = ticketQuantities?.[ticket.type] || 0;
-      // total += ticket.price * qty;
-      total += ticket.price * qty;
-      total = Number(total.toFixed(2));
-
-
+      const qty = Number(ticketQuantities?.[ticket.type] || 0);
+      total += (Number(ticket.price) || 0) * qty;
     });
 
-    // ✅ Add selected product price (if any)
-    if (selectedProduct) {
-      // total += selectedProduct.price * qty;
-      total += selectedProduct.price * qty;
-      total = Number(total.toFixed(2));
+    // products (use selectedProducts)
+    selectedProducts.forEach(({ product, quantity }) => {
+      total += (Number(product.price) || 0) * Number(quantity || 0);
+    });
 
-    }
-
-    return total;
+    return Number(total.toFixed(2));
   }
 
-  const handlePayment = async () => {
+  const handleConfirm = () => {
+    if (totalTicketsSelected === 0)
+      return toast.error("Select at least one ticket");
+
+    // require that product units === tickets selected — change as needed
+    if (totalProductUnits !== totalTicketsSelected) {
+      return toast.error(
+        `Please select ${totalTicketsSelected} product unit(s). Currently selected: ${totalProductUnits}`
+      );
+    }
+
+    // build products array
+    const productsPayload = selectedProducts.map((p) => ({
+      id: p.product._id,
+      quantity: p.quantity,
+    }));
+
     const payload = {
       eventId: getEvent?._id,
-      productId: selectedProduct?._id,
-
-      ticketDetail: [
-        {
-          type: "adult",
-          quantity: ticketQuantities?.adult,
-        },
-        {
-          type: "child",
-          quantity: ticketQuantities?.child,
-        },
-      ],
+      products: productsPayload,
+      ticketDetail: Object.keys(ticketQuantities).map((type) => ({
+        type,
+        quantity: Number(ticketQuantities[type] || 0),
+      })),
     };
-    console.log("payload----", selectedProduct, payload);
 
+    // call payment
+    handlePayment(payload);
+  };
+
+  const handlePayment = async (payload) => {
     try {
       const res = await paymentApi.createPayment(payload);
-      console.log("res--------", res)
       if (!res || res?.status?.toLowerCase() !== "success") {
         return toast.error(res?.message);
       }
       window.location.href = res.data.url;
     } catch (error) {
-      console.log("error --------", error)
+      console.log("error --------", error);
 
       const backendMessage =
         error?.response?.data?.message ||
@@ -115,15 +189,6 @@ export default function EventDetailsPage(event) {
 
       toast.error(backendMessage);
     }
-  };
-
-  const handleConfirm = () => {
-    if (!selectedProduct) return toast("Please select a product");
-
-    // toast(`✅ Ticket Added\nOption: ${selectedProduct}\nQty: ${qty}`);
-    setShowOptions(false);
-    setOption("");
-    handlePayment();
   };
 
   const handleTicketClick = () => setShowOptions(true);
@@ -247,10 +312,11 @@ export default function EventDetailsPage(event) {
                       className={`
           flex justify-between items-center w-full p-2   
           transition 
-          ${selectedTicket?.type === ticket.type
-                          ? "border-green-600 bg-green-50"
-                          : "border-gray-300 bg-white"
-                        }
+          ${
+            selectedTicket?.type === ticket.type
+              ? "border-green-600 bg-green-50"
+              : "border-gray-300 bg-white"
+          }
         `}
                     >
                       <span className="font-medium capitalize text-gray-700">
@@ -347,10 +413,11 @@ export default function EventDetailsPage(event) {
                       }))
                     }
                     className={`border px-2 sm:px-3 py-1 rounded text-base sm:text-lg transition 
-      ${(ticketQuantities?.[ticket.type] || 0) >= ticket.quantity
-                        ? "opacity-40 cursor-not-allowed"
-                        : "cursor-pointer"
-                      }`}
+      ${
+        (ticketQuantities?.[ticket.type] || 0) >= ticket.quantity
+          ? "opacity-40 cursor-not-allowed"
+          : "cursor-pointer"
+      }`}
                     disabled={
                       (ticketQuantities?.[ticket.type] || 0) >= ticket.quantity
                     }
@@ -362,65 +429,237 @@ export default function EventDetailsPage(event) {
             ))}
           </div>
 
-          {/* ✅ PRODUCT SECTION */}
+          {/* ✅ PRODUCT SECTION (improved UI) */}
           <div className="mt-4">
+            {/* Header: progress + summary */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
+              <div className="flex items-center gap-3">
+                <div className="text-sm font-semibold">Products</div>
 
-            {/* If product SELECTED */}
-            {selectedProduct && (
-              <div className="flex flex-col gap-3 w-full sm:w-64">
-                {/* ✅ Selected Product Card */}
-                <div className="w-full p-3 border rounded-xl bg-white shadow-sm flex items-center gap-3">
-                  <img
-                    src={selectedProduct.coverImage}
-                    className="w-12 h-12 rounded-lg object-cover border"
+                <div className="text-xs text-gray-600">
+                  <span className="font-bold">{totalProductUnits}</span> /{" "}
+                  <span className="font-medium">{totalTicketsSelected}</span>{" "}
+                  tickets
+                </div>
+              </div>
+
+              {/* small progress bar */}
+              <div className="w-full sm:w-64">
+                <div className="h-2 rounded-full bg-gray-200 overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-green-500 transition-all"
+                    style={{
+                      width:
+                        totalTicketsSelected === 0
+                          ? "0%"
+                          : `${Math.min(
+                              (totalProductUnits / totalTicketsSelected) * 100,
+                              100
+                            )}%`,
+                    }}
+                    aria-hidden="true"
                   />
-                  <div>
-                    <p className="text-sm font-semibold">
-                      {selectedProduct.name}
-                    </p>
-                    <p className="text-xs text-gray-700">
-                      €{selectedProduct.price}
-                    </p>
+                </div>
+              </div>
+            </div>
+
+            {/* If no products selected -> empty state */}
+            {selectedProducts.length === 0 && (
+              <div className="w-full sm:w-2/3 p-4 border rounded-2xl bg-gradient-to-t from-white to-gray-50 shadow-sm flex flex-col sm:flex-row items-center gap-4">
+                <div className="flex-1 text-sm text-gray-700">
+                  <div className="font-semibold mb-1">
+                    No products added yet
                   </div>
+                  <p className="text-xs text-gray-500">
+                    Add a product for each ticket — you can choose the same
+                    product multiple times.
+                  </p>
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-2 w-full mb-2">
+                <div className="flex gap-2">
                   <button
-                    className="flex-1 bg-blue-600 text-white px-3 py-2 rounded font-semibold text-xs hover:bg-blue-700 transition"
-                    onClick={() => setOpen(true)}
+                    onClick={() => {
+                      if (totalTicketsSelected === 0)
+                        return toast.error("Select tickets first");
+                      setOpen(true);
+                    }}
+                    className="bg-green-600 text-white px-4 py-2 rounded-lg text-xs font-semibold hover:bg-green-700 transition"
                   >
-                    Change
+                    Add Product
                   </button>
 
                   <button
-                    className="flex-1 bg-red-600 text-white px-3 py-2  rounded font-semibold text-xs hover:bg-red-700 transition"
-                    onClick={() => setSelectedProduct(null)}
+                    onClick={() => {
+                      // quick open to product modal without errors
+                      setOpen(true);
+                    }}
+                    className="bg-white border border-gray-200 text-gray-700 px-3 py-2 rounded-lg text-xs hover:shadow transition"
                   >
-                    Remove
+                    Browse
                   </button>
                 </div>
-
               </div>
             )}
 
-            {/* ✅ PRODUCT MODAL */}
+            {/* Selected products list */}
+            {selectedProducts.length > 0 && (
+              <div className="flex flex-col gap-3 w-full">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {selectedProducts.map(({ product, quantity }) => {
+                    const lineTotal = (
+                      (Number(product.price) || 0) * (Number(quantity) || 0)
+                    ).toFixed(2);
+                    return (
+                      <div
+                        key={product._id}
+                        className="p-3 border rounded-2xl bg-white shadow-sm flex items-center gap-3"
+                        role="group"
+                        aria-label={`${product.name} selected`}
+                      >
+                        <img
+                          src={product.coverImage}
+                          alt={product.name}
+                          className="w-14 h-14 rounded-lg object-cover border"
+                        />
+
+                        <div className="flex-1 min-w-0">
+                          <div className="flex justify-between items-start gap-2">
+                            <div className="truncate">
+                              <p className="text-sm font-semibold truncate">
+                                {product.name}
+                              </p>
+                              <p className="text-xs text-gray-500 truncate">
+                                {product.category || product.brandName}
+                              </p>
+                            </div>
+
+                            <div className="text-right">
+                              <p className="text-sm font-semibold">
+                                €{product.price}
+                              </p>
+                              <p className="text-xs text-gray-400">
+                                €{lineTotal}
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* quantity controls */}
+                          <div className="mt-3 flex items-center gap-2">
+                            <button
+                              aria-label={`Decrease quantity for ${product.name}`}
+                              onClick={() =>
+                                setProductQuantity(
+                                  product._id,
+                                  Math.max(0, quantity - 1)
+                                )
+                              }
+                              className="w-8 h-8 grid place-items-center rounded-md border hover:bg-gray-50 transition"
+                            >
+                              −
+                            </button>
+
+                            {/* editable quantity input for keyboard users */}
+                            <input
+                              type="number"
+                              aria-label={`Quantity for ${product.name}`}
+                              value={quantity}
+                              min={0}
+                              max={totalTicketsSelected}
+                              onChange={(e) => {
+                                const v = Math.max(
+                                  0,
+                                  Number(e.target.value) || 0
+                                );
+                                setProductQuantity(product._id, v);
+                              }}
+                              className="w-16 h-8 text-center rounded-md border px-2 py-1 text-sm"
+                            />
+
+                            <button
+                              aria-label={`Increase quantity for ${product.name}`}
+                              onClick={() =>
+                                setProductQuantity(product._id, quantity + 1)
+                              }
+                              className={`w-8 h-8 grid place-items-center rounded-md border hover:bg-gray-50 transition ${
+                                totalProductUnits >= totalTicketsSelected &&
+                                quantity >=
+                                  totalTicketsSelected -
+                                    (totalProductUnits - quantity)
+                                  ? "opacity-40 cursor-not-allowed"
+                                  : ""
+                              }`}
+                              disabled={
+                                totalProductUnits >= totalTicketsSelected &&
+                                quantity >=
+                                  totalTicketsSelected -
+                                    (totalProductUnits - quantity)
+                              }
+                            >
+                              +
+                            </button>
+
+                            <button
+                              onClick={() => removeSelectedProduct(product._id)}
+                              className="ml-2 text-red-600 text-xs hover:underline"
+                              aria-label={`Remove ${product.name}`}
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Actions: change/add more, clear, total per products */}
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-2">
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setOpen(true)}
+                      className="bg-blue-600 text-white px-3 py-2 rounded-lg text-xs font-semibold hover:bg-blue-700 transition"
+                    >
+                      Change / Add more
+                    </button>
+
+                    <button
+                      onClick={() => setSelectedProducts([])}
+                      className="bg-red-600 text-white px-3 py-2 rounded-lg text-xs font-semibold hover:bg-red-700 transition"
+                    >
+                      Clear
+                    </button>
+                  </div>
+
+                  <div className="text-sm font-semibold">
+                    Products total: €
+                    {selectedProducts
+                      .reduce(
+                        (s, p) =>
+                          s +
+                          (Number(p.product.price) || 0) *
+                            (Number(p.quantity) || 0),
+                        0
+                      )
+                      .toFixed(2)}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* PRODUCT MODAL (keeps same mapping but nicer modal spacing) */}
             <Modal isOpen={open} onClose={() => setOpen(false)}>
               <h2 className="text-xl sm:text-2xl font-semibold mb-3 text-black">
                 Select Product
               </h2>
 
-              <div className="flex flex-col gap-3 sm:gap-4">
+              <div className="flex flex-col gap-3 sm:gap-4 max-h-[60vh] overflow-auto">
                 {products.map((item) => (
                   <ProductDetails
                     key={item._id}
                     product={item}
                     onAdd={() => {
-                      handleAddProduct(item); // ✅ Existing system
-                      setSelectedProduct(item); // ✅ UI selected product
-                    }}
-                    onSelect={() => {
-                      setOpen(false); // ✅ Close modal
-                      setShowOptions(true); // ✅ Show selected UI
+                      handleAddProduct(item); // increments/adds
+                      // keep modal open to add multiple
                     }}
                   />
                 ))}
@@ -428,66 +667,124 @@ export default function EventDetailsPage(event) {
             </Modal>
           </div>
 
-          {/* ✅ TOTAL + GET TICKETS BUTTON */}
-          <div className="flex justify-between items-center pb-4 sm:pb-6 border-b">
-            <p className="font-bold text-sm sm:text-base">
-              TOTAL: &euro; {getTotalWithOption()}
-            </p>
+          {/* ✅ TOTAL + GET TICKETS BUTTON (responsive) */}
+          <div className="w-full mt-4">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4 sm:pb-6 border-b">
+              {/* LEFT: Total */}
+              <div className="flex items-baseline gap-3 min-w-0">
+                <p className="font-bold text-sm sm:text-base truncate">
+                  TOTAL: &euro; {getTotalWithOption()}
+                </p>
 
-            {!selectedProduct ? (
-              <button
-                className="bg-green-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-md sm:rounded-lg font-semibold hover:bg-green-700 text-xs sm:text-sm  transition cursor-pointer"
-                onClick={() => {
-                  setOpen(true);
-                  handleTicketClick();
-                }}
-              >
-                Add Product
-              </button>
-            ) : (
-              <div className="flex flex-col gap-3 w-36 sm:w-48">
-                {/* ✅ PRODUCT LIST POPUP */}
+                {/* mobile-only helper: products progress shown inline under total on smallest screens */}
+                <div className="sm:hidden text-xs text-gray-600">
+                  <span className="font-semibold">{totalProductUnits}</span> /{" "}
+                  <span className="font-semibold">{totalTicketsSelected}</span>{" "}
+                  products
+                </div>
+              </div>
+
+              {/* RIGHT: Actions (stack on mobile, row on tablet+) */}
+              <div className="w-full sm:w-auto">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3 gap-2">
+                  {/* Progress + Add Product (on larger screens show inline; on mobile this becomes first full-width button) */}
+                  <div className="flex items-center justify-between sm:justify-start gap-2 w-full sm:w-auto">
+                    {/* Progress pill (hidden on smallest screens since we show it under total) */}
+                    <div className="hidden sm:inline-flex items-center gap-2 text-xs text-gray-700 bg-gray-50 border rounded-full px-3 py-1">
+                      <span>Products</span>
+                      <span className="font-bold">{totalProductUnits}</span>
+                      <span>/</span>
+                      <span className="font-bold">{totalTicketsSelected}</span>
+                    </div>
+
+                    {/* Add Product (primary action) */}
+                    {totalProductUnits < totalTicketsSelected && (
+                      <button
+                        className="w-full sm:w-auto bg-green-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-green-700 text-xs sm:text-sm transition"
+                        onClick={() => {
+                          setOpen(true);
+                          handleTicketClick();
+                        }}
+                        aria-label="Add product"
+                      >
+                        Add Product
+                      </button>
+                    )}
+
+                    {/* if no slots and 0 tickets, show disabled CTA */}
+                    {totalTicketsSelected === 0 && (
+                      <button
+                        className="w-full sm:w-auto bg-gray-200 text-gray-600 px-4 py-2 rounded-md text-xs sm:text-sm"
+                        disabled
+                        aria-disabled
+                      >
+                        Select tickets first
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Confirm + Change (shown only when there are selected products) */}
+                  {selectedProducts.length > 0 && (
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+                      {/* Open product modal / change */}
+                      <button
+                        onClick={() => setOpen(true)}
+                        className="w-full sm:w-auto bg-white border border-gray-200 text-gray-800 px-3 py-2 rounded-md text-xs sm:text-sm hover:shadow-sm transition"
+                        aria-label="Change or add more products"
+                      >
+                        Change / Add more
+                      </button>
+
+                      {/* Confirm: green, disabled until units match tickets */}
+                      <button
+                        className={`w-full sm:w-auto px-3 py-2 rounded-md font-bold text-xs sm:text-sm transition
+                ${
+                  totalProductUnits === totalTicketsSelected
+                    ? "bg-green-600 text-white hover:bg-green-700"
+                    : "bg-green-200 text-green-800 opacity-80 cursor-not-allowed"
+                }`}
+                        onClick={handleConfirm}
+                        disabled={totalProductUnits !== totalTicketsSelected}
+                        aria-disabled={
+                          totalProductUnits !== totalTicketsSelected
+                        }
+                      >
+                        Confirm
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* MODAL kept inside same block so markup is nearby — modal content unchanged */}
                 <Modal isOpen={open} onClose={() => setOpen(false)}>
                   <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4 text-black">
                     Select Product
                   </h2>
 
-                  <div className="flex flex-col gap-3 sm:gap-4">
+                  <div className="flex flex-col gap-3 sm:gap-4 max-h-[60vh] overflow-auto">
                     {products.map((item) => (
                       <ProductDetails
                         key={item._id}
                         product={item}
                         onAdd={() => {
                           handleAddProduct(item);
-                          setSelectedProduct(item); //  Save selected product
-                        }}
-                        onSelect={() => {
-                          handleSelectClick();
-                          setOpen(false); //  Close popup after selection
+                          // keep modal open to add multiple
                         }}
                       />
                     ))}
                   </div>
                 </Modal>
-
-                {/* ✅ CONFIRM BUTTON */}
-                <button
-                  className="bg-green-600 text-white px-3 sm:px-4 py-2 rounded font-bold hover:bg-green-700 text-xs sm:text-sm  transition cursor-pointer"
-                  onClick={handleConfirm}
-                >
-                  Confirm
-                </button>
               </div>
-            )}
+            </div>
           </div>
         </div>
         {/* ✅ Ticket Details Sidebar */}
         <div
           className="
-  bg-white shadow-md p-5 sm:p-8 rounded-lg 
-  w-full                 
-  lg:w-[360px]           
-"
+          bg-white shadow-md p-5 sm:p-8 rounded-lg 
+          w-full                 
+          lg:w-[360px]           
+        "
         >
           <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">
             TICKET DETAILS
