@@ -138,7 +138,7 @@ export default function EventDetailsPage(event) {
       total += (Number(product.price) || 0) * Number(quantity || 0);
     });
 
-    return Number(total.toFixed(2));
+    return Number(total.toFixed(4));
   }
 
   const handleConfirm = () => {
