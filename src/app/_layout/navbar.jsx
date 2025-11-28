@@ -181,7 +181,7 @@ const Navbar = () => {
                 >
                   Event History
                 </Link>
-                 <Link href="profile/membership-history" className="block px-4 py-2 hover:bg-green-50 hover:text-green-700" onClick={() => setShowDropdown(false)}>
+                 <Link href="/membership-history" className="block px-4 py-2 hover:bg-green-50 hover:text-green-700" onClick={() => setShowDropdown(false)}>
                   Membership-history
                 </Link>
 
@@ -251,7 +251,7 @@ const Navbar = () => {
                 <Link href="/event-history" className="text-sm hover:text-white" onClick={() => setIsOpen(false)}>
                   Event History
                 </Link>
-                <Link href="profile/membership-history" className="text-sm hover:text-white" onClick={() => setIsOpen(false)}>
+                <Link href="/membership-history" className="text-sm hover:text-white" onClick={() => setIsOpen(false)}>
                   Membership-history
                 </Link>
 

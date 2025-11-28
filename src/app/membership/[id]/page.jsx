@@ -8,11 +8,13 @@ import membershipApi from "@/api/membership.api";
 import { useEffect, useState } from "react";
 import { htmlTostring } from "@/utils/htmlTostring";
 import { toast } from "react-toastify";
+import { getUserLocal } from "@/utils/localStorage.util";
 
 export default function MembershipDetailsPage() {
   const router = useRouter();
   const [plans, setPlans] = useState([]);
   const { id } = useParams();
+  const userData = getUserLocal();
 
   // api integerate start
   const fetchPlans = async () => {
@@ -32,10 +34,15 @@ export default function MembershipDetailsPage() {
     fetchPlans();
   }, [id]);
   // payment stripe link
-  const handlePayment = async (plan) => {
+  const handlePayment = async () => {
+    if (!userData) {
+      localStorage.setItem('payment', true);
+      router.push("/signup");
+      return
+    }
     try {
       const payload = {
-        planId: plan._id,
+        planId: id,
       };
 
       const res = await membershipApi.createMembershipPayment(payload);
@@ -45,7 +52,7 @@ export default function MembershipDetailsPage() {
         return toast.error(res?.message || "Payment failed ❌");
       }
       console.log("url------", res.data.url);
-
+      localStorage.clear('payment')
       window.location.href = res.data;
     } catch (error) {
       console.log("Payment Error:", error);
@@ -53,6 +60,15 @@ export default function MembershipDetailsPage() {
     }
   };
 
+  useEffect(() => {
+
+    if (id) {
+      if (localStorage.getItem('payment') && userData) {
+        handlePayment()
+      }
+    }
+
+  }, [userData, id])
   return (
     <div className="min-h-screen bg-gray-50 px-4 md:px-10 lg:px-20 py-10">
       {/* Back Button */}
@@ -66,8 +82,8 @@ export default function MembershipDetailsPage() {
       {/* BANNER */}
       <div className="relative w-full h-[280px] md:h-[360px] lg:h-[420px] rounded-3xl overflow-hidden shadow">
         <Image
-        src={plans?.coverImage} 
-        //   src={Imgmembership.imgPassion1}
+          src={plans?.coverImage}
+          //   src={Imgmembership.imgPassion1}
           alt="Platinum Membership"
           fill
           className="object-cover"
@@ -107,7 +123,7 @@ export default function MembershipDetailsPage() {
 
         <div className="mt-10 text-center">
           <button
-            onClick={() => handlePayment(plans)}
+            onClick={() => handlePayment(id)}
             className="
       bg-green-600 hover:bg-green-700 text-white 
       px-6 py-3 text-base      

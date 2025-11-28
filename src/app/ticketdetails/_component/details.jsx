@@ -61,12 +61,19 @@ export default function EventDetailsPage(event) {
     // ✅ Ticket prices × each ticket quantity
     getEvent?.tickets?.forEach((ticket) => {
       const qty = ticketQuantities?.[ticket.type] || 0;
+      // total += ticket.price * qty;
       total += ticket.price * qty;
+      total = Number(total.toFixed(2));
+
+
     });
 
     // ✅ Add selected product price (if any)
     if (selectedProduct) {
+      // total += selectedProduct.price * qty;
       total += selectedProduct.price * qty;
+      total = Number(total.toFixed(2));
+
     }
 
     return total;
@@ -92,13 +99,21 @@ export default function EventDetailsPage(event) {
 
     try {
       const res = await paymentApi.createPayment(payload);
+      console.log("res--------", res)
       if (!res || res?.status?.toLowerCase() !== "success") {
         return toast.error(res?.message);
       }
       window.location.href = res.data.url;
     } catch (error) {
-      // console.log("Payment Error:", error);
-      toast.error("Something went wrong ❌");
+      console.log("error --------", error)
+
+      const backendMessage =
+        error?.response?.data?.message ||
+        error?.response?.data?.error ||
+        error?.message ||
+        "Something went wrong ";
+
+      toast.error(backendMessage);
     }
   };
 
@@ -232,11 +247,10 @@ export default function EventDetailsPage(event) {
                       className={`
           flex justify-between items-center w-full p-2   
           transition 
-          ${
-            selectedTicket?.type === ticket.type
-              ? "border-green-600 bg-green-50"
-              : "border-gray-300 bg-white"
-          }
+          ${selectedTicket?.type === ticket.type
+                          ? "border-green-600 bg-green-50"
+                          : "border-gray-300 bg-white"
+                        }
         `}
                     >
                       <span className="font-medium capitalize text-gray-700">
@@ -333,11 +347,10 @@ export default function EventDetailsPage(event) {
                       }))
                     }
                     className={`border px-2 sm:px-3 py-1 rounded text-base sm:text-lg transition 
-      ${
-        (ticketQuantities?.[ticket.type] || 0) >= ticket.quantity
-          ? "opacity-40 cursor-not-allowed"
-          : "cursor-pointer"
-      }`}
+      ${(ticketQuantities?.[ticket.type] || 0) >= ticket.quantity
+                        ? "opacity-40 cursor-not-allowed"
+                        : "cursor-pointer"
+                      }`}
                     disabled={
                       (ticketQuantities?.[ticket.type] || 0) >= ticket.quantity
                     }
@@ -372,20 +385,20 @@ export default function EventDetailsPage(event) {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-2 w-full mb-2">
-  <button
-    className="flex-1 bg-blue-600 text-white px-3 py-2 rounded font-semibold text-xs hover:bg-blue-700 transition"
-    onClick={() => setOpen(true)}
-  >
-    Change
-  </button>
+                  <button
+                    className="flex-1 bg-blue-600 text-white px-3 py-2 rounded font-semibold text-xs hover:bg-blue-700 transition"
+                    onClick={() => setOpen(true)}
+                  >
+                    Change
+                  </button>
 
-  <button
-    className="flex-1 bg-red-600 text-white px-3 py-2  rounded font-semibold text-xs hover:bg-red-700 transition"
-    onClick={() => setSelectedProduct(null)}
-  >
-    Remove
-  </button>
-</div>
+                  <button
+                    className="flex-1 bg-red-600 text-white px-3 py-2  rounded font-semibold text-xs hover:bg-red-700 transition"
+                    onClick={() => setSelectedProduct(null)}
+                  >
+                    Remove
+                  </button>
+                </div>
 
               </div>
             )}
