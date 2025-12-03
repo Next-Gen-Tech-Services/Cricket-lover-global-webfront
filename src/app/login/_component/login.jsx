@@ -55,7 +55,7 @@ export default function Login() {
 
       toast.success("Login Successful ");
 
-      window.location.href = "/";
+      // window.location.href = "/";
     } catch (err) {
   setLoading(false);
 

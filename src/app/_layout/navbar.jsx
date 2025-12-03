@@ -176,7 +176,7 @@ const Navbar = () => {
                 </span>
                 <span className="text-sm font-semibold">
                   {" "}
-                  {userData?.membershipNumber}{" "}
+                  {userData?.showMembership && (userData?.membershipNumber ?? "")}{" "}
                 </span>
               </div>
 
@@ -234,7 +234,7 @@ const Navbar = () => {
         )}
 
         <button
-          className="lg:hidden focus:outline-none"
+          className="lg:hidden focus:outline-none cursor-pointer"
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? <X size={28} /> : <Menu size={28} />}
@@ -310,6 +310,9 @@ const Navbar = () => {
               <span className="text-sm">{userData.email}</span>
               <span className="text-base">
                 {userData.firstName} {userData.lastName}
+              </span>
+              <span className="text-xs">
+                {userData?.showMembership && userData?.membershipNumber}{" "}
               </span>
 
               <div className="flex flex-col gap-1 mt-2">
