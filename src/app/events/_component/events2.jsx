@@ -199,7 +199,8 @@ const applyFilters = (eventsList, ftype) => {
   } else if (ftype === "paid") {
     updatedEvents = updatedEvents.filter(event => event.eventType.toLowerCase() === "paid");
   }
-  setFilteredEvents(updatedEvents);
+  // setFilteredEvents(updatedEvents);
+  setEvents(updatedEvents)
 }
 const handleSearch = (e) => {
   const value = e.target.value;
@@ -252,11 +253,12 @@ const handleSearch = (e) => {
 
           {/* ✅ Filter Dropdown */}
           <select
-            className="border px-3 py-1 rounded-md text-sm hover:bg-gray-100 cursor-pointer"
+            className="bg-green-600 hover:bg-green-700 text-white px-2 py-2  rounded-md text-sm md:text-base transition cursor-pointer text-center  "
             value={filterType}
             onChange={(e) => handleFilterChange(e.target.value)}
           >
-            <option value="all">All Entry</option>
+            <option value="">Filter:-</option>
+            <option value="all">All</option>
             <option value="free">Free Entry</option>
             <option value="paid">Paid Entry</option>
           </select>

@@ -6,8 +6,10 @@ import authInstance from "@/api/auth/auth.api";
 import { setTokenLocal, setUserLocal } from "@/utils/localStorage.util";
 import Image from "next/image";
 import { toast } from "react-toastify";
+import { strengthIndicator, strengthColor } from "@/utils/password-strength.js";
+import { Eye, EyeOff } from "lucide-react";
 
-// Redux Import here 
+// Redux Import here
 import { useDispatch } from "react-redux";
 import { updateUser, updateToken } from "@/redux/redux-slice/user.slice";
 import { Router } from "lucide-react";
@@ -18,6 +20,9 @@ export default function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [strength, setStrength] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+
   const [emailError, setEmailError] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,8 +32,7 @@ export default function Login() {
 
     if (!email || !password) return setError("All fields are required ❌");
 
-    const emailRegex =
-      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
     if (!emailRegex.test(email))
       return setEmailError("Please enter a valid email");
@@ -54,53 +58,61 @@ export default function Login() {
       dispatch(updateUser(res?.data?.user));
 
       toast.success("Login Successful ");
+      router.push("/");
 
       // window.location.href = "/";
     } catch (err) {
-  setLoading(false);
+      setLoading(false);
 
-  const backendMessage =
-    err?.response?.data?.message ||
-    err?.data?.message ||
-    err?.message ||
-    "Something went wrong";
+      const backendMessage =
+        err?.response?.data?.message ||
+        err?.data?.message ||
+        err?.message ||
+        "Something went wrong";
 
-  setError(backendMessage); 
-  // toast.error(backendMessage);
-}
-
-  };
-
-  const handleForgetPass = async () => {
-    if (!email) return setError("Email is required");
-
-    const emailRegex =
-      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-    if (!emailRegex.test(email))
-      return setEmailError("Please enter a valid email");
-
-    try {
-      const res = await authInstance.forgetPass({ email });
-
-      if  (res?.status?.toLowerCase() !== "success")
-
-        return setError(res?.message || "Request failed");
-
-      toast("Reset Email Sent Successfully");
-    } catch {
-      toast("Something went wrong");
+      setError(backendMessage);
+      // toast.error(backendMessage);
     }
   };
+  const handlePasswordChange = (e) => {
+    const val = e.target.value;
+    setPassword(val);
+
+    if (val) {
+      const strengthLevel = strengthIndicator(val);
+      const strengthInfo = strengthColor(strengthLevel);
+      setStrength(strengthInfo);
+    } else {
+      setStrength(null);
+    }
+  };
+
+  // const handleForgetPass = async () => {
+  //   if (!email) return setError("Email is required");
+
+  //   const emailRegex =
+  //     /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+  //   if (!emailRegex.test(email))
+  //     return setEmailError("Please enter a valid email");
+
+  //   try {
+  //     const res = await authInstance.forgetPass({ email });
+
+  //     if  (res?.status?.toLowerCase() !== "success")
+
+  //       return setError(res?.message || "Request failed");
+
+  //     toast("Reset Email Sent Successfully");
+  //   } catch {
+  //     toast("Something went wrong");
+  //   }
+  // };
 
   return (
     <section className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md text-center">
-        <Image
-          src={logoimg.logoImg}
-          alt="Logo"
-          className="w-36 mx-auto mb-2"
-        />
+        <Image src={logoimg.logoImg} alt="Logo" className="w-36 mx-auto mb-2" />
 
         <h3 className="text-xl font-semibold mb-6 text-black">LOGIN</h3>
 
@@ -121,9 +133,7 @@ export default function Login() {
                 const emailRegex =
                   /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
                 setEmailError(
-                  !emailRegex.test(val)
-                    ? "Please enter a valid email"
-                    : ""
+                  !emailRegex.test(val) ? "Please enter a valid email" : ""
                 );
               }}
               required
@@ -137,24 +147,55 @@ export default function Login() {
             <label className="block font-semibold mb-1 text-black text-sm">
               PASSWORD
             </label>
-            <input
-              type="password"
-              placeholder="Enter your password"
-              className="w-full p-2 border border-gray-300 rounded-md outline-none"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your password"
+                className={`w-full p-2 border rounded-md outline-none ${
+                  strength?.label === "Poor"
+                    ? "border-red-500"
+                    : "border-gray-300"
+                }`}
+                value={password}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setPassword(val);
+
+                  // strength logic
+                  const level = strengthIndicator(val);
+                  const info = strengthColor(level);
+                  setStrength(info);
+                }}
+                required
+              />
+
+              {/* Eye Icon */}
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
+
+            {strength && (
+              <p className="text-sm mt-1" style={{ color: strength.color }}>
+                {strength.label}
+              </p>
+            )}
           </div>
-            {error && <p className="text-left text-red-500 text-sm mb-2">{error}</p>}
+
+          {error && (
+            <p className="text-left text-red-500 text-sm mb-2">{error}</p>
+          )}
           <p
             className="text-green-600 text-sm text-right cursor-pointer mb-2"
-            onClick={()=>router.push('/forget-password')}
+            onClick={() => router.push("/forget-password")}
           >
             Forgot Password?
           </p>
-
-          
 
           <button
             type="submit"
