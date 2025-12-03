@@ -47,12 +47,12 @@ const EventPage = () => {
     return () => clearInterval(interval);
   }, [sliderEvents]);
 
-  const fetchEvents = async (searchValue = "") => {
+  const fetchEvents = async (searchValue = "",PageNumber=page) => {
     try {
       if (searchValue === "") searchValue = searchText;
 
       const res = await eventApi.getAllEvents({
-        page,
+        page: PageNumber,
         limit: 10,
         search: searchValue,
       });
@@ -101,6 +101,19 @@ const EventPage = () => {
   };
   
   console.log("image-------", events[current]?.bannerImage);
+  const handleNextPage = () => {
+  const next = page + 1;
+  setPage(next);
+  fetchEvents(searchText, next);
+};
+
+const handlePrevPage = () => {
+  if (page === 1) return;
+  const prev = page - 1;
+  setPage(prev);
+  fetchEvents(searchText, prev);
+};
+
 
   return (
     <section className="min-h-full bg-white px-4 md:px-16 py-10 text-gray-800 relative">
@@ -215,19 +228,20 @@ const EventPage = () => {
       {/*  Filters & Calendar */}
       <div className="flex items-center justify-between mt-6 border-b border-gray-300 pb-2 relative">
         <div className="flex items-center gap-4">
-          <button className="p-1 rounded-full hover:bg-gray-100">
+          <button className="p-1 rounded-full hover:bg-gray-100" onClick={handlePrevPage}>
             <ChevronLeft size={20} />
           </button>
-          <button className="p-1 rounded-full hover:bg-gray-100">
+          <button className="p-1 rounded-full hover:bg-gray-100" onClick={handleNextPage}>
             <ChevronRight size={20} />
           </button>
 
           <select
-            className="bg-green-600 hover:bg-green-700 text-white px-1 py-2  rounded-md text-sm md:text-base transition cursor-pointer w-20"
+            className="bg-green-600 hover:bg-green-700 text-white px-2 py-2  rounded-md text-sm md:text-base transition cursor-pointer text-center  "
             value={filterType}
             onChange={(e) => handleFilterChange(e.target.value)}
           >
-            <option value="all">Filter-</option>
+            <option value="">Filter:-</option>
+            <option value="all">All</option>
             <option value="free">Free Entry</option>
             <option value="paid">Paid Entry</option>
           </select>
