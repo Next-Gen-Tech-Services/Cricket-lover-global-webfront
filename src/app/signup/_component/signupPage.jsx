@@ -19,9 +19,9 @@ export default function Signup() {
   { code: "", name: "Select your country" },
 
   //  TOP 12 CRICKET NATIONS — added at top
+  { code: "GB", name: "United Kingdom (England)" },
   { code: "IN", name: "India" },
   { code: "AU", name: "Australia" },
-  { code: "GB", name: "United Kingdom (England)" },
   { code: "PK", name: "Pakistan" },
   { code: "NZ", name: "New Zealand" },
   { code: "ZA", name: "South Africa" },
@@ -35,7 +35,6 @@ export default function Signup() {
   //  DIVIDER — optional
 
   //  Rest of your original list (unchanged)
-  { code: "AF", name: "Afghanistan" },
   { code: "AL", name: "Albania" },
   { code: "DZ", name: "Algeria" },
   { code: "AD", name: "Andorra" },
@@ -43,12 +42,10 @@ export default function Signup() {
   { code: "AG", name: "Antigua and Barbuda" },
   { code: "AR", name: "Argentina" },
   { code: "AM", name: "Armenia" },
-  { code: "AU", name: "Australia" },
   { code: "AT", name: "Austria" },
   { code: "AZ", name: "Azerbaijan" },
   { code: "BS", name: "Bahamas" },
   { code: "BH", name: "Bahrain" },
-  { code: "BD", name: "Bangladesh" },
   { code: "BB", name: "Barbados" },
   { code: "BY", name: "Belarus" },
   { code: "BE", name: "Belgium" },
@@ -114,7 +111,6 @@ export default function Signup() {
   { code: "ID", name: "Indonesia" },
   { code: "IR", name: "Iran" },
   { code: "IQ", name: "Iraq" },
-  { code: "IE", name: "Ireland" },
   { code: "IL", name: "Israel" },
   { code: "IT", name: "Italy" },
   { code: "JM", name: "Jamaica" },
@@ -156,8 +152,6 @@ export default function Signup() {
   { code: "NA", name: "Namibia" },
   { code: "NR", name: "Nauru" },
   { code: "NP", name: "Nepal" },
-  { code: "NL", name: "Netherlands" },
-  { code: "NZ", name: "New Zealand" },
   { code: "NI", name: "Nicaragua" },
   { code: "NE", name: "Niger" },
   { code: "NG", name: "Nigeria" },
@@ -185,15 +179,12 @@ export default function Signup() {
   { code: "SN", name: "Senegal" },
   { code: "RS", name: "Serbia" },
   { code: "SC", name: "Seychelles" },
-  { code: "SL", name: "Sierra Leone" },
   { code: "SG", name: "Singapore" },
   { code: "SK", name: "Slovakia" },
   { code: "SI", name: "Slovenia" },
   { code: "SB", name: "Solomon Islands" },
   { code: "SO", name: "Somalia" },
-  { code: "ZA", name: "South Africa" },
   { code: "ES", name: "Spain" },
-  { code: "LK", name: "Sri Lanka" },
   { code: "SD", name: "Sudan" },
   { code: "SR", name: "Suriname" },
   { code: "SE", name: "Sweden" },
@@ -221,7 +212,6 @@ export default function Signup() {
   { code: "VN", name: "Vietnam" },
   { code: "YE", name: "Yemen" },
   { code: "ZM", name: "Zambia" },
-  { code: "ZW", name: "Zimbabwe" },
 ];
 
 

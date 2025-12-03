@@ -97,6 +97,7 @@ import giftcard from "../../public/assets/benefit/giftcard.png";
 import junior from "../../public/assets/benefit/junior.png";
 import success from "../../public/assets/benefit/success.png";
 import handshake from "../../public/assets/benefit/handshake.png";
+import addbutton from "../../public/assets/benefit/addbutton.png";
 export const logoimg = {
   logoImg: Logo,
   logobase: LogoBase,
@@ -214,8 +215,9 @@ export const benfitIconImg = {
   benfitIcon9: success,
   benfitIcon10: giftcard,
   benfitIcon11: junior,
-  benfitIcon12: plus,
+  benfitIcon12: addbutton,
   benfitIcon13: handshake
+  
 }
  
 export const imagesmember = [Home1.src];

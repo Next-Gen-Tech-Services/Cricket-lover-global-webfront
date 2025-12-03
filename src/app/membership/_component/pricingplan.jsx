@@ -236,7 +236,15 @@ export default function PricingSection() {
               className="bg-white rounded-2xl shadow hover:shadow-lg border border-gray-200 hover:scale-[1.02] transition-all duration-300 overflow-hidden"
             >
               {/* Image */}
+             
               <div className="relative h-[300px] w-full bg-white rounded-2xl overflow-hidden border">
+  {/* 🔥 Recommended Badge */}
+  {plan.name === "Lifetime Family Membership" && (
+    <span className="absolute top-3 left-3 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg z-20">
+      Recommended
+    </span>
+  )}
+  
   {plan?.coverImage ? (
     <Image
       src={plan.coverImage}

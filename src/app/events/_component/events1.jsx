@@ -99,6 +99,7 @@ const EventPage = () => {
 
     setEvents(filtered);
   };
+  
   console.log("image-------", events[current]?.bannerImage);
 
   return (

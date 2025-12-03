@@ -8,7 +8,7 @@ import membershipApi from "@/api/membership.api";
 import { useEffect, useState } from "react";
 import { htmlTostring } from "@/utils/htmlTostring";
 import { toast } from "react-toastify";
-import { getUserLocal } from "@/utils/localStorage.util";
+import { getTokenLocal, getUserLocal } from "@/utils/localStorage.util";
 
 export default function MembershipDetailsPage() {
   const router = useRouter();
@@ -69,6 +69,21 @@ export default function MembershipDetailsPage() {
     }
 
   }, [userData, id])
+
+// require login
+const requireLogin = (callback) => {
+  const token = getTokenLocal();
+
+  if (!token) {
+    toast("Please login to continue.");
+    window.location.href = "/login";
+    return;
+  }
+
+  callback(); // If logged in → run the action
+};
+
+
   return (
     <div className="min-h-screen bg-gray-50 px-4 md:px-10 lg:px-20 py-10">
       {/* Back Button */}
@@ -123,19 +138,20 @@ export default function MembershipDetailsPage() {
 
         <div className="mt-10 text-center">
           <button
-            onClick={() => handlePayment(id)}
-            className="
-      bg-green-600 hover:bg-green-700 text-white 
-      px-6 py-3 text-base      
-      sm:px-10 sm:py-4 sm:text-lg  
-      font-bold 
-      rounded-xl shadow-lg 
-      transition cursor-pointer
-      w-[85%] sm:w-auto       
-    "
-          >
-            {plans?.name}
-          </button>
+  onClick={() => requireLogin(() => handlePayment(id))}
+  className="
+    bg-green-600 hover:bg-green-700 text-white 
+    px-6 py-3 text-base      
+    sm:px-10 sm:py-4 sm:text-lg  
+    font-bold 
+    rounded-xl shadow-lg 
+    transition cursor-pointer
+    w-[85%] sm:w-auto       
+  "
+>
+  {plans?.name}
+</button>
+
         </div>
       </div>
     </div>
