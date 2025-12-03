@@ -22,7 +22,7 @@ const EventPage = () => {
 
   const [filterType, setFilterType] = useState("all");
   const [searchText, setSearchText] = useState("");
-  const [page] = useState(1);
+  const [page ,setPage] = useState(1);
   const [events, setEvents] = useState([]);
   const [current, setCurrent] = useState(0);
   const [allEvents, setAllEvents] = useState([]);
