@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import Modal from "./popupmodel";
 import ProductDetails from "../[eventId]/product";
 import React from "react";
+import { getTokenLocal } from "@/utils/localStorage.util";
 
 export default function EventDetailsPage(event) {
   console.log("event----------------", event, event?.event?.tickets);
@@ -142,8 +143,17 @@ export default function EventDetailsPage(event) {
   }
 
   const handleConfirm = () => {
+
+    const token = getTokenLocal();
+
+  if (!token) {
+    toast("Please login to confirm your purchase.");
+    window.location.href = "/login";
+    return;
+  }
     if (totalTicketsSelected === 0)
       return toast.error("Select at least one ticket");
+
 
     // require that product units === tickets selected — change as needed
     if (totalProductUnits !== totalTicketsSelected) {
@@ -640,27 +650,33 @@ export default function EventDetailsPage(event) {
                             (Number(p.quantity) || 0),
                         0
                       )
-                      .toFixed(2)}
+                      .toFixed(4)}
                   </div>
                 </div>
               </div>
             )}
 
-            {/* PRODUCT MODAL (keeps same mapping but nicer modal spacing) */}
             <Modal isOpen={open} onClose={() => setOpen(false)}>
-              <h2 className="text-xl sm:text-2xl font-semibold mb-3 text-black">
-                Select Product
-              </h2>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl sm:text-2xl font-semibold text-black">
+                  Select Product
+                </h2>
+
+                {/* Close button INSIDE header */}
+                <button
+                  onClick={() => setOpen(false)}
+                  className="text-gray-600 hover:text-black text-xl"
+                >
+                  ✖
+                </button>
+              </div>
 
               <div className="flex flex-col gap-3 sm:gap-4 max-h-[60vh] overflow-auto">
                 {products.map((item) => (
                   <ProductDetails
                     key={item._id}
                     product={item}
-                    onAdd={() => {
-                      handleAddProduct(item); // increments/adds
-                      // keep modal open to add multiple
-                    }}
+                    onAdd={() => handleAddProduct(item)}
                   />
                 ))}
               </div>
@@ -757,9 +773,19 @@ export default function EventDetailsPage(event) {
 
                 {/* MODAL kept inside same block so markup is nearby — modal content unchanged */}
                 <Modal isOpen={open} onClose={() => setOpen(false)}>
-                  <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4 text-black">
-                    Select Product
-                  </h2>
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-xl sm:text-2xl font-semibold text-black">
+                      Select Product
+                    </h2>
+
+                    {/* Close button INSIDE header */}
+                    <button
+                      onClick={() => setOpen(false)}
+                      className="text-gray-600 cursor-pointer hover:text-black text-xl"
+                    >
+                      ✖
+                    </button>
+                  </div>
 
                   <div className="flex flex-col gap-3 sm:gap-4 max-h-[60vh] overflow-auto">
                     {products.map((item) => (

@@ -176,7 +176,7 @@ const Navbar = () => {
                 </span>
                 <span className="text-sm font-semibold">
                   {" "}
-                  {userData?.membershipNumber}{" "}
+                  {userData?.showMembership && (userData?.membershipNumber ?? "")}{" "}
                 </span>
               </div>
 
@@ -191,7 +191,7 @@ const Navbar = () => {
 
             {/* Dropdown Menu */}
             {showDropdown && (
-              <div className="absolute right-0 mt-2 w-44 sm:w-48 bg-white border border-green-600 rounded-lg shadow-lg text-[#001B5E] z-50">
+              <div className="absolute right-0 mt-2 w-44 sm:w-48 p-1 bg-white border border-green-600 rounded-lg shadow-lg text-[#001B5E] z-50">
                 <Link
                   href="/profile"
                   className="block px-4 py-2 hover:bg-green-50 hover:text-green-700"
@@ -234,7 +234,7 @@ const Navbar = () => {
         )}
 
         <button
-          className="lg:hidden focus:outline-none"
+          className="lg:hidden focus:outline-none cursor-pointer"
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? <X size={28} /> : <Menu size={28} />}
@@ -310,6 +310,9 @@ const Navbar = () => {
               <span className="text-sm">{userData.email}</span>
               <span className="text-base">
                 {userData.firstName} {userData.lastName}
+              </span>
+              <span className="text-xs">
+                {userData?.showMembership && userData?.membershipNumber}{" "}
               </span>
 
               <div className="flex flex-col gap-1 mt-2">

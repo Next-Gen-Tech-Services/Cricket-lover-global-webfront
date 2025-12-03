@@ -251,7 +251,7 @@ const Contact = () => {
         {/* Right Side - Form */}
         <form
           onSubmit={handleSubmit}
-          className="bg-white shadow-xl p-6 sm:p-8 md:p-10 w-full border-t-[6px] border-l-[3px] border-b-[6px] border-r-[6px] border-gray-300"
+          className="bg-white shadow-3xl p-6 sm:p-8 md:p-10 w-full border-t border-b border-r border-gray-300 rounded-tr-2xl rounded-br-2xl "
         >
           <h1 className="text-3xl sm:text-4xl font-bold text-[#001B5E] mb-8 text-center">
             CONTACT US

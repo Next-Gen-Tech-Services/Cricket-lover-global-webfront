@@ -48,7 +48,6 @@ export default function MembershipDetailsPage() {
       if (!res || res?.status?.toLowerCase() !== "success") {
         return toast.error(res?.message || "Payment failed ❌");
       }
-      console.log("url------",res.data.url)
 
       window.location.href = res.data;
 
@@ -57,6 +56,20 @@ export default function MembershipDetailsPage() {
       toast.error("Something went wrong ❌");
     }
   };
+
+  // require login
+  const requireLogin = (callback) => {
+  const token = getTokenLocal();
+
+  if (!token) {
+    toast("Please login to continue.");
+    window.location.href = "/login";
+    return;
+  }
+
+  callback(); // user logged in → proceed
+};
+
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 md:px-10 lg:px-20 py-10">
@@ -125,7 +138,7 @@ export default function MembershipDetailsPage() {
         </div>
 
         <div className="mt-10 text-center">
-  <button
+  {/* <button
     onClick={() => handlePayment(plans[0])}
     className="
       bg-green-600 hover:bg-green-700 text-white 
@@ -138,7 +151,22 @@ export default function MembershipDetailsPage() {
     "
   >
     Join Platinum Membership
-  </button>
+  </button> */}
+  <button
+  onClick={() => requireLogin(() => handlePayment(plans[0]))}
+  className="
+    bg-green-600 hover:bg-green-700 text-white 
+    px-6 py-3 text-base
+    sm:px-10 sm:py-4 sm:text-lg  
+    font-bold 
+    rounded-xl shadow-lg 
+    transition cursor-pointer
+    w-[85%] sm:w-auto
+  "
+>
+  Join Platinum Membership
+</button>
+
 </div>
 
 
