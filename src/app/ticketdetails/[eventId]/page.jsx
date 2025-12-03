@@ -49,15 +49,15 @@ export default function TicketPage() {
   };
 
   useEffect(() => {
-    if (
-      getTokenLocal() == null ||
-      getTokenLocal() == "" ||
-      getTokenLocal() == undefined
-    ) {
-      toast("Please login to purchase ticket details.");
-      window.location.href = "/login";
-      return;
-    }
+    // if (
+    //   getTokenLocal() == null ||
+    //   getTokenLocal() == "" ||
+    //   getTokenLocal() == undefined
+    // ) {
+    //   toast("Please login to purchase ticket details.");
+    //   window.location.href = "/login";
+    //   return;
+    // }
     getEventByID(eventId);
   }, [eventId]);
 

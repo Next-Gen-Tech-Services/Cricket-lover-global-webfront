@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import Modal from "./popupmodel";
 import ProductDetails from "../[eventId]/product";
 import React from "react";
+import { getTokenLocal } from "@/utils/localStorage.util";
 
 export default function EventDetailsPage(event) {
   console.log("event----------------", event, event?.event?.tickets);
@@ -142,8 +143,17 @@ export default function EventDetailsPage(event) {
   }
 
   const handleConfirm = () => {
+
+    const token = getTokenLocal();
+
+  if (!token) {
+    toast("Please login to confirm your purchase.");
+    window.location.href = "/login";
+    return;
+  }
     if (totalTicketsSelected === 0)
       return toast.error("Select at least one ticket");
+
 
     // require that product units === tickets selected — change as needed
     if (totalProductUnits !== totalTicketsSelected) {

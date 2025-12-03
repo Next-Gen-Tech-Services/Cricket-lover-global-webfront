@@ -115,7 +115,7 @@ const MembershipBenefit = () => {
               key={idx}
               className="
                 bg-gradient-to-t from-[#e8ebf0] to-[#f3f5f8]
-                rounded-3xl border border-gray-300 shadow-sm p-3 sm:p-4 md:p-5
+                rounded-3xl border border-gray-300 shadow-sm p-3 sm:p-4 md:p-4
                 transition hover:shadow-lg
               "
             >
@@ -123,9 +123,9 @@ const MembershipBenefit = () => {
               <div className="h-[140px] sm:h-[150px] md:h-[160px] w-full flex items-center justify-center">
                 <div
                   className="
-                    rounded-3xl overflow-hidden shadow 
+                    rounded-2xl overflow-hidden shadow 
                     flex items-center justify-center
-                    w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32
+                    w-24 h-24 sm:w-28 sm:h-28 md:w-28 md:h-28
                   "
                 >
                   <Image
