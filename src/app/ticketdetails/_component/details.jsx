@@ -8,6 +8,42 @@ import Modal from "./popupmodel";
 import ProductDetails from "../[eventId]/product";
 import React from "react";
 import { getTokenLocal } from "@/utils/localStorage.util";
+import { useSelector } from "react-redux";
+
+// MembershipPopup - simple modal (Option A)
+const MembershipPopup = ({ isOpen, onClose, onBuy }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="bg-white p-6 rounded-xl shadow-lg w-11/12 max-w-sm text-center">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">
+          Membership Required
+        </h2>
+
+        <p className="text-gray-600 mb-6">
+          You need an active membership to buy tickets.
+        </p>
+
+        <div className="flex justify-center gap-4">
+          <button
+            onClick={onBuy}
+            className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-md font-semibold"
+          >
+            Buy Membership
+          </button>
+
+          <button
+            onClick={onClose}
+            className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-5 py-2 rounded-md font-semibold"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default function EventDetailsPage(event) {
   console.log("event----------------", event, event?.event?.tickets);
@@ -25,6 +61,11 @@ export default function EventDetailsPage(event) {
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [getEvent, setGetEvent] = useState(null);
   const [ticketQuantities, setTicketQuantities] = useState({});
+  const [showMembershipPopup,setShowMembershipPopup] =useState(false)
+  const membershipActive = useSelector(
+  (state) => state.user.userInfo?.showMembership
+);
+
 
   // helper: total tickets selected
   const totalTicketsSelected = Object.values(ticketQuantities).reduce(
@@ -151,6 +192,11 @@ export default function EventDetailsPage(event) {
     window.location.href = "/login";
     return;
   }
+  if (!membershipActive) {
+  setShowMembershipPopup(true);
+  return;
+}
+
     if (totalTicketsSelected === 0)
       return toast.error("Select at least one ticket");
 
@@ -176,6 +222,7 @@ export default function EventDetailsPage(event) {
         quantity: Number(ticketQuantities[type] || 0),
       })),
     };
+    
 
     // call payment
     handlePayment(payload);
@@ -236,6 +283,7 @@ export default function EventDetailsPage(event) {
   }, [getEvent]);
 
   return (
+    
     <div className="min-h-screen bg-gray-50">
       {/* ✅ Top Section (Responsive Text) */}
       <section className="max-w-6xl mx-auto px-3 sm:px-4 py-8 sm:py-10 text-center">
@@ -833,6 +881,12 @@ export default function EventDetailsPage(event) {
             </p>
           </div>
         </div>
+        <MembershipPopup
+  isOpen={showMembershipPopup}
+  onClose={() => setShowMembershipPopup(false)}
+  onBuy={() => (window.location.href = "/membership")}
+/>
+
       </section>
     </div>
   );
