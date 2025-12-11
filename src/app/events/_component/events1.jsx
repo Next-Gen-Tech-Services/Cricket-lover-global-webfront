@@ -144,7 +144,7 @@ const handlePrevPage = () => {
                           (t) =>
                             `${
                               t.type.charAt(0).toUpperCase() + t.type.slice(1)
-                            } €${t.price}`
+                            } £${t.price}`
                         )
                         .join(" • ")
                     : "Free Entry"}
@@ -312,7 +312,7 @@ const handlePrevPage = () => {
                           event.tickets.map((t, i) => (
                             <p key={i}>
                               {t.type.charAt(0).toUpperCase() + t.type.slice(1)}
-                              : €{t.price}
+                              : £{t.price}
                             </p>
                           ))
                         ) : (
