@@ -337,7 +337,7 @@ export default function Signup() {
             </div>
 
             <div className="text-left">
-              <label className="block font-semibold mb-1 text-sm text-black">COUNTRY OF RESIDENT</label>
+              <label className="block font-semibold mb-1 text-sm text-black">COUNTRY OF RESIDENCE</label>
               <select
                 className="w-full p-2 border border-gray-300 rounded-md outline-none"
                 value={country}
