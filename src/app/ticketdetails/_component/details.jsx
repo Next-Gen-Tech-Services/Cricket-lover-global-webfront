@@ -10,37 +10,104 @@ import React from "react";
 import { getTokenLocal } from "@/utils/localStorage.util";
 import { useSelector } from "react-redux";
 
-// MembershipPopup - simple modal (Option A)
+// Enhanced MembershipPopup Modal
 const MembershipPopup = ({ isOpen, onClose, onBuy }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-xl shadow-lg w-11/12 max-w-sm text-center">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">
+    <div 
+      className="fixed inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-fadeIn"
+      onClick={onClose}
+    >
+      <div 
+        className="bg-gradient-to-br from-white via-gray-50 to-white p-10 sm:p-12 rounded-3xl shadow-2xl w-full max-w-2xl text-center transform transition-all animate-slideUp relative overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Decorative Elements */}
+        <div className="absolute top-0 right-0 w-40 h-40 bg-green-100 rounded-full blur-3xl opacity-30 -mr-20 -mt-20"></div>
+        <div className="absolute bottom-0 left-0 w-40 h-40 bg-blue-100 rounded-full blur-3xl opacity-30 -ml-20 -mb-20"></div>
+        
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-6 right-6 text-gray-400 hover:text-gray-600 transition-colors"
+          aria-label="Close"
+        >
+          <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        {/* Icon */}
+        <div className="relative mb-8 flex justify-center">
+          <div className="bg-gradient-to-br from-green-100 to-blue-100 p-6 rounded-full">
+            <svg className="w-16 h-16 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+            </svg>
+          </div>
+        </div>
+
+        {/* Title */}
+        <h2 className="relative text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
           Membership Required
         </h2>
 
-        <p className="text-gray-600 mb-6">
-          You need an active membership to buy tickets.
+        {/* Description */}
+        <p className="relative text-base sm:text-lg text-gray-600 mb-10 leading-relaxed max-w-xl mx-auto">
+          To purchase event tickets, you need an active membership. Join now or sign in to continue!
         </p>
 
-        <div className="flex justify-center gap-4">
+        {/* Buttons */}
+        <div className="relative flex flex-col sm:flex-row justify-center gap-4 max-w-lg mx-auto">
           <button
             onClick={onBuy}
-            className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-md font-semibold"
+            className="group flex-1 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-8 py-4 rounded-xl font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-3"
           >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
             Buy Membership
           </button>
 
           <button
-            onClick={onClose}
-            className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-5 py-2 rounded-md font-semibold"
+            onClick={() => window.location.href = "/login"}
+            className="group flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-4 rounded-xl font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-3"
           >
-            Cancel
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+            </svg>
+            Already Member
           </button>
         </div>
+
+        {/* Helper Text */}
+        <p className="relative mt-8 text-sm text-gray-500">
+          Need help? Contact our support team
+        </p>
       </div>
+
+      <style jsx>{`
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes slideUp {
+          from { 
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+          }
+          to { 
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.2s ease-out;
+        }
+        .animate-slideUp {
+          animation: slideUp 0.3s ease-out;
+        }
+      `}</style>
     </div>
   );
 };
