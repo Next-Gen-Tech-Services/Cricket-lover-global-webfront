@@ -23,7 +23,7 @@ export default function ProductDetails({ product, onAdd }) {
         </h2>
 
         <p className="text-xs md:text-sm text-gray-700 font-medium">
-          €{product.price}
+          £{product.price}
         </p>
 
         <p className="text-[10px] md:text-xs text-gray-500">

@@ -104,7 +104,7 @@ const MembershipHistory = () => {
 
                                 <p className="text-lg">
                                     <span className="font-semibold">Plan Price:</span>{" "}
-                                    € {item?.price || "0.00"}
+                                    £ {item?.price || "0.00"}
                                 </p>
                             </div>
                         </div>
@@ -144,7 +144,7 @@ const MembershipHistory = () => {
                             : "N/A"}
                     </p>
                     <p className="text-lg">
-                      <span className="font-semibold text-[#001B5E]">Plan Price:</span>{" "}€ {getData?.price}
+                      <span className="font-semibold text-[#001B5E]">Plan Price:</span>{" "}£ {getData?.price}
                     </p>
                 </div>
             ) : (
