@@ -308,7 +308,7 @@ export default function EventDetailsPage(event) {
                 </span>
 
                 <span className="font-bold text-green-700">
-                  €{ticket.price}
+                  £{ticket.price}
                 </span>
               </p>
             ))}
@@ -382,7 +382,7 @@ export default function EventDetailsPage(event) {
                       </span>
 
                       <span className="font-semibold text-green-700">
-                        €{ticket.price}
+                        £{ticket.price}
                       </span>
                     </button>
                   ))
@@ -593,10 +593,10 @@ export default function EventDetailsPage(event) {
 
                             <div className="text-right">
                               <p className="text-sm font-semibold">
-                                €{product.price}
+                                £{product.price}
                               </p>
                               <p className="text-xs text-gray-400">
-                                €{lineTotal}
+                                £{lineTotal}
                               </p>
                             </div>
                           </div>
@@ -689,7 +689,7 @@ export default function EventDetailsPage(event) {
                   </div>
 
                   <div className="text-sm font-semibold">
-                    Products total: €
+                    Products total: £
                     {selectedProducts
                       .reduce(
                         (s, p) =>
