@@ -185,13 +185,13 @@ export default function EventDetailsPage(event) {
 
   const handleConfirm = () => {
 
-    const token = getTokenLocal();
+    // const token = getTokenLocal();
 
-  if (!token) {
-    toast("Please login to confirm your purchase.");
-    window.location.href = "/login";
-    return;
-  }
+  // if (!token) {
+  //   toast("Please login to confirm your purchase.");
+  //   window.location.href = "/login";
+  //   return;
+  // }
   if (!membershipActive) {
   setShowMembershipPopup(true);
   return;
