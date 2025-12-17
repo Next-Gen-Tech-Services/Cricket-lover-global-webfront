@@ -14,8 +14,8 @@ import { logout } from "@/utils/common.util";
 import { useRouter, usePathname } from "next/navigation";
 import { FaUserCircle } from "react-icons/fa";
 import authInstance from "@/api/auth/auth.api";
-import { useDispatch } from "react-redux";
 import { updateUser } from "@/redux/redux-slice/user.slice";
+import { useDispatch } from "react-redux";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
