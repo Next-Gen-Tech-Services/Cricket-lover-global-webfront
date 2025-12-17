@@ -18,6 +18,7 @@ const ApiRoutes = {
         forget: { Method: HttpMethod.Post, Endpoint: "auth/forget-password" },
         updateProfile: { Method: HttpMethod.Patch, Endpoint: "/user/update-profile" },
         updateImage: { Method: HttpMethod.Post, Endpoint: "/upload" },
+        getProfile: { Method: HttpMethod.Get, Endpoint: "/user/get-profile" },
         eventHistory: { Method: HttpMethod.Get, Endpoint: "/user/event-history" },
         newsletterSubscribe: { Method: HttpMethod.Post, Endpoint: "/user/newsletter-subscribe" },
         Contact:{ Method: HttpMethod.Post, Endpoint: "/user/contact-us"},

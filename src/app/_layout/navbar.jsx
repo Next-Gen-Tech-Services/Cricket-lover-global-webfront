@@ -8,17 +8,20 @@ import {
   clearAuthLocal,
   getTokenLocal,
   getUserLocal,
+  setUserLocal,
 } from "@/utils/localStorage.util";
 import { logout } from "@/utils/common.util";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { FaUserCircle } from "react-icons/fa";
+import authInstance from "@/api/auth/auth.api";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-  const userData = getUserLocal();
+  const [userData, setUserData] = useState(getUserLocal());
   const userToken = getTokenLocal();
   const router = useRouter();
+  const pathname = usePathname();
   const [profileImage, setProfileImage] = useState(null);
   // ✅ PATCH 1 — Add profilePic
   const profilePic = userData?.avatarUrl || "/default-avatar.png";
@@ -28,9 +31,35 @@ const Navbar = () => {
     clearAuthLocal();
     logout(router);
   };
+
+  const fetchUserProfile = async () => {
+    const token = getTokenLocal();
+    if (!token) {
+      return;
+    }
+    
+    try {
+      const response = await authInstance.getProfile();
+      if (response?.status === "success" && response?.data) {
+        const profileData = response.data;
+        setUserLocal(profileData);
+        setUserData(profileData);
+        setProfileImage(profileData?.profileImage || null);
+      }
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+    }
+  };
+
   useEffect(() => {
-    setProfileImage(userData?.profileImage || null);
-  }, []);
+    const token = getTokenLocal();
+    if (token) {
+      fetchUserProfile();
+    } else {
+      setProfileImage(null);
+      setUserData(null);
+    }
+  }, [pathname]);
   return (
     <nav className="bg-[#001B5E] text-white py-4 relative w-full z-50">
       <div className="container mx-auto flex items-center justify-between px-6">

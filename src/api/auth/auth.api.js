@@ -95,6 +95,13 @@ class Auth extends HttpClient {
   });
 };
 
+  getProfile = async () => {
+    return this.instance({
+      method: ApiRoutes.auth.getProfile.Method,
+      url: ApiRoutes.auth.getProfile.Endpoint,
+    });
+  };
+
   getEventHistory = async () =>{
     return this.instance({
       method: ApiRoutes.auth.eventHistory.Method,

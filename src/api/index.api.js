@@ -10,7 +10,7 @@ export class HttpClient {
     console.log("Base URL:", baseURL);
 
     this.instance = axios.create({
-      baseURL: baseURL || "https://clg-api.ngtsindore.com/api/",
+      baseURL: baseURL || "https://api.cricketloversglobal.com/api/",
     });
 
     this._initializeRequestInterceptor();  // ✅ add request interceptor
