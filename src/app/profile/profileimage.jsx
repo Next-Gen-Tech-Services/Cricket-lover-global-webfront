@@ -35,7 +35,7 @@
 //     try {
 //       const res = await authInstance.profileImage(formData);
 //       console.log("res of upload images:", res);
-    
+
 //       // setUserLocal(res?.data?.user);
 
 //       //  Merge old user with new image URL
@@ -104,6 +104,11 @@ export default function ProfileImageUpload() {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState("");
   const fileRef = useRef(null);
+  const userData = getUserLocal();
+
+  console.log('====================================');
+  console.log(userData);
+  console.log('====================================');
 
   //  Load existing image from local storage on mount
   useEffect(() => {
@@ -161,10 +166,10 @@ export default function ProfileImageUpload() {
       };
 
       setUserLocal(updatedUser);
-      
+
       // Also update the profile with the new avatarUrl
       await authInstance.profileUpdate({ avatarUrl: res?.data });
-      
+
       toast(" Profile Image Updated Successfully!");
       setPreview(res?.data); // instantly show uploaded image
       setImage(null);
@@ -185,7 +190,16 @@ export default function ProfileImageUpload() {
             className="w-28 h-28 rounded-full shadow-md object-cover border border-gray-200"
           />
         ) : (
-          <FaUserCircle size={110} className="text-gray-300" />
+
+          userData?.avatarUrl ?
+            <img
+              src={userData?.avatarUrl}
+              alt="Profile Preview"
+              className="w-28 h-28 rounded-full shadow-md object-cover border border-gray-200"
+            />
+            :
+
+            <FaUserCircle size={110} className="text-gray-300" />
         )}
 
         {/* ➕ Image Picker Button */}
@@ -214,9 +228,8 @@ export default function ProfileImageUpload() {
           type="button"
           onClick={handleUpload}
           disabled={!image}
-          className={`${
-            image ? "bg-[#00a63e] hover:bg-[#26b95c]" : "bg-[#26b95c] "
-          } text-white px-5 py-2 rounded-lg shadow-sm text-sm active:scale-95 transition`}
+          className={`${image ? "bg-[#00a63e] hover:bg-[#26b95c]" : "bg-[#26b95c] "
+            } text-white px-5 py-2 rounded-lg shadow-sm text-sm active:scale-95 transition`}
         >
           Save Profile Image
         </button>
