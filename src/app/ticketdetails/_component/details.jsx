@@ -10,37 +10,104 @@ import React from "react";
 import { getTokenLocal } from "@/utils/localStorage.util";
 import { useSelector } from "react-redux";
 
-// MembershipPopup - simple modal (Option A)
+// Enhanced MembershipPopup Modal
 const MembershipPopup = ({ isOpen, onClose, onBuy }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-xl shadow-lg w-11/12 max-w-sm text-center">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">
+    <div
+      className="fixed inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-fadeIn"
+      onClick={onClose}
+    >
+      <div
+        className="bg-gradient-to-br from-white via-gray-50 to-white p-10 sm:p-12 rounded-3xl shadow-2xl w-full max-w-2xl text-center transform transition-all animate-slideUp relative overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Decorative Elements */}
+        <div className="absolute top-0 right-0 w-40 h-40 bg-green-100 rounded-full blur-3xl opacity-30 -mr-20 -mt-20"></div>
+        <div className="absolute bottom-0 left-0 w-40 h-40 bg-blue-100 rounded-full blur-3xl opacity-30 -ml-20 -mb-20"></div>
+
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-6 right-6 text-gray-400 hover:text-gray-600 transition-colors"
+          aria-label="Close"
+        >
+          <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        {/* Icon */}
+        <div className="relative mb-8 flex justify-center">
+          <div className="bg-gradient-to-br from-green-100 to-blue-100 p-6 rounded-full">
+            <svg className="w-16 h-16 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+            </svg>
+          </div>
+        </div>
+
+        {/* Title */}
+        <h2 className="relative text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
           Membership Required
         </h2>
 
-        <p className="text-gray-600 mb-6">
-          You need an active membership to buy tickets.
+        {/* Description */}
+        <p className="relative text-base sm:text-lg text-gray-600 mb-10 leading-relaxed max-w-xl mx-auto">
+          To purchase event tickets, you need an active membership. Join now or sign in to continue!
         </p>
 
-        <div className="flex justify-center gap-4">
+        {/* Buttons */}
+        <div className="relative flex flex-col sm:flex-row justify-center gap-4 max-w-lg mx-auto">
           <button
             onClick={onBuy}
-            className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-md font-semibold"
+            className="group flex-1 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-8 py-4 rounded-xl font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-3"
           >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
             Buy Membership
           </button>
 
           <button
-            onClick={onClose}
-            className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-5 py-2 rounded-md font-semibold"
+            onClick={() => window.location.href = "/login"}
+            className="group flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-4 rounded-xl font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-3"
           >
-            Cancel
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+            </svg>
+            Already Member
           </button>
         </div>
+
+        {/* Helper Text */}
+        <p className="relative mt-8 text-sm text-gray-500">
+          Need help? Contact our support team
+        </p>
       </div>
+
+      <style jsx>{`
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes slideUp {
+          from { 
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+          }
+          to { 
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.2s ease-out;
+        }
+        .animate-slideUp {
+          animation: slideUp 0.3s ease-out;
+        }
+      `}</style>
     </div>
   );
 };
@@ -61,10 +128,10 @@ export default function EventDetailsPage(event) {
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [getEvent, setGetEvent] = useState(null);
   const [ticketQuantities, setTicketQuantities] = useState({});
-  const [showMembershipPopup,setShowMembershipPopup] =useState(false)
+  const [showMembershipPopup, setShowMembershipPopup] = useState(false)
   const membershipActive = useSelector(
-  (state) => state.user.userInfo?.showMembership
-);
+    (state) => state.user.userInfo?.showMembership
+  );
 
 
   // helper: total tickets selected
@@ -187,15 +254,15 @@ export default function EventDetailsPage(event) {
 
     // const token = getTokenLocal();
 
-  // if (!token) {
-  //   toast("Please login to confirm your purchase.");
-  //   window.location.href = "/login";
-  //   return;
-  // }
-  if (!membershipActive) {
-  setShowMembershipPopup(true);
-  return;
-}
+    // if (!token) {
+    //   toast("Please login to confirm your purchase.");
+    //   window.location.href = "/login";
+    //   return;
+    // }
+    if (!membershipActive) {
+      setShowMembershipPopup(true);
+      return;
+    }
 
     if (totalTicketsSelected === 0)
       return toast.error("Select at least one ticket");
@@ -222,7 +289,7 @@ export default function EventDetailsPage(event) {
         quantity: Number(ticketQuantities[type] || 0),
       })),
     };
-    
+
 
     // call payment
     handlePayment(payload);
@@ -283,7 +350,7 @@ export default function EventDetailsPage(event) {
   }, [getEvent]);
 
   return (
-    
+
     <div className="min-h-screen bg-gray-50">
       {/* ✅ Top Section (Responsive Text) */}
       <section className="max-w-6xl mx-auto px-3 sm:px-4 py-8 sm:py-10 text-center">
@@ -370,11 +437,10 @@ export default function EventDetailsPage(event) {
                       className={`
           flex justify-between items-center w-full p-2   
           transition 
-          ${
-            selectedTicket?.type === ticket.type
-              ? "border-green-600 bg-green-50"
-              : "border-gray-300 bg-white"
-          }
+          ${selectedTicket?.type === ticket.type
+                          ? "border-green-600 bg-green-50"
+                          : "border-gray-300 bg-white"
+                        }
         `}
                     >
                       <span className="font-medium capitalize text-gray-700">
@@ -420,71 +486,103 @@ export default function EventDetailsPage(event) {
             </div>
           </div> */}
           <div className="flex flex-col gap-4 py-4 sm:py-6">
-            {getEvent?.tickets?.map((ticket, index) => (
-              <div
-                key={index}
-                className="flex justify-between items-center p-3  bg-white shadow-sm"
-              >
-                {/* ✅ LEFT SIDE TEXT */}
-                <div className="flex flex-col">
-                  <p className="font-bold text-gray-700 text-sm sm:text-base uppercase">
-                    {ticket.type} QUANTITY:
-                  </p>
+            {getEvent?.tickets?.map((ticket, index) => {
+              const isChild = ticket.type.toLowerCase().includes('child');
+              const adultTickets = Object.keys(ticketQuantities).reduce((sum, type) => {
+                if (!type.toLowerCase().includes('child')) {
+                  return sum + (ticketQuantities[type] || 0);
+                }
+                return sum;
+              }, 0);
+              const isChildDisabled = isChild && adultTickets === 0;
 
-                  <p className="text-xs sm:text-sm text-gray-500">
-                    Available: {ticket.quantity}
-                  </p>
+              return (
+                <div
+                  key={index}
+                  className={`flex flex-col p-3 bg-white shadow-sm rounded-lg border ${isChildDisabled ? 'border-yellow-300 bg-yellow-50' : 'border-gray-200'}`}
+                >
+                  <div className="flex justify-between items-center">
+                    {/* ✅ LEFT SIDE TEXT */}
+                    <div className="flex flex-col">
+                      <p className="font-bold text-gray-700 text-sm sm:text-base uppercase">
+                        {ticket.type} QUANTITY:
+                      </p>
+
+                      <p className="text-xs sm:text-sm text-gray-500">
+                        Available: {ticket.quantity}
+                      </p>
+                    </div>
+
+                    {/* ✅ RIGHT SIDE QTY SELECTOR */}
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      {/* Minus */}
+                      <button
+                        onClick={() =>
+                          setTicketQuantities((prev) => ({
+                            ...prev,
+                            [ticket.type]: Math.max(
+                              0,
+                              (prev[ticket.type] || 0) - 1
+                            ),
+                          }))
+                        }
+                        disabled={isChildDisabled}
+                        className={`border px-2 sm:px-3 py-1 rounded text-base sm:text-lg transition ${isChildDisabled ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:bg-gray-100'}`}
+                      >
+                        -
+                      </button>
+
+                      {/* Current Quantity */}
+                      <span className="font-bold text-base sm:text-lg">
+                        {ticketQuantities?.[ticket.type] || 0}
+                      </span>
+
+                      {/* Plus */}
+                      <button
+                        onClick={() =>
+                          setTicketQuantities((prev) => ({
+                            ...prev,
+                            [ticket.type]:
+                              (prev[ticket.type] || 0) < ticket.quantity
+                                ? (prev[ticket.type] || 0) + 1
+                                : prev[ticket.type],
+                          }))
+                        }
+                        className={`border px-2 sm:px-3 py-1 rounded text-base sm:text-lg transition 
+        ${(ticketQuantities?.[ticket.type] || 0) >= ticket.quantity || isChildDisabled
+                            ? "opacity-40 cursor-not-allowed"
+                            : "cursor-pointer hover:bg-gray-100"
+                          }`}
+                        disabled={
+                          (ticketQuantities?.[ticket.type] || 0) >= ticket.quantity || isChildDisabled
+                        }
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* ✅ CHILD AGE NOTE */}
+                  {isChild && (
+                    <div className="mt-2 pt-2 border-t border-gray-200">
+                      <div className="flex items-start gap-2">
+                        <svg className="w-4 h-4 text-blue-600 mt-0 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <div className="text-xs text-gray-600">
+                          <p className="font-semibold text-blue-700">Note: Child age should be under 16</p>
+                          {isChildDisabled && (
+                            <p className="text-yellow-700 font-medium mt-1">
+                              ⚠️ Please select adult tickets first
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
-
-                {/* ✅ RIGHT SIDE QTY SELECTOR */}
-                <div className="flex items-center gap-2 sm:gap-3">
-                  {/* Minus */}
-                  <button
-                    onClick={() =>
-                      setTicketQuantities((prev) => ({
-                        ...prev,
-                        [ticket.type]: Math.max(
-                          0,
-                          (prev[ticket.type] || 0) - 1
-                        ),
-                      }))
-                    }
-                    className="border px-2 sm:px-3 py-1 rounded text-base sm:text-lg transition cursor-pointer"
-                  >
-                    -
-                  </button>
-
-                  {/* Current Quantity */}
-                  <span className="font-bold text-base sm:text-lg">
-                    {ticketQuantities?.[ticket.type] || 0}
-                  </span>
-
-                  {/* Plus */}
-                  <button
-                    onClick={() =>
-                      setTicketQuantities((prev) => ({
-                        ...prev,
-                        [ticket.type]:
-                          (prev[ticket.type] || 0) < ticket.quantity
-                            ? (prev[ticket.type] || 0) + 1
-                            : prev[ticket.type],
-                      }))
-                    }
-                    className={`border px-2 sm:px-3 py-1 rounded text-base sm:text-lg transition 
-      ${
-        (ticketQuantities?.[ticket.type] || 0) >= ticket.quantity
-          ? "opacity-40 cursor-not-allowed"
-          : "cursor-pointer"
-      }`}
-                    disabled={
-                      (ticketQuantities?.[ticket.type] || 0) >= ticket.quantity
-                    }
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* ✅ PRODUCT SECTION (improved UI) */}
@@ -511,9 +609,9 @@ export default function EventDetailsPage(event) {
                         totalTicketsSelected === 0
                           ? "0%"
                           : `${Math.min(
-                              (totalProductUnits / totalTicketsSelected) * 100,
-                              100
-                            )}%`,
+                            (totalProductUnits / totalTicketsSelected) * 100,
+                            100
+                          )}%`,
                     }}
                     aria-hidden="true"
                   />
@@ -638,19 +736,18 @@ export default function EventDetailsPage(event) {
                               onClick={() =>
                                 setProductQuantity(product._id, quantity + 1)
                               }
-                              className={`w-8 h-8 grid place-items-center rounded-md border hover:bg-gray-50 transition ${
-                                totalProductUnits >= totalTicketsSelected &&
-                                quantity >=
+                              className={`w-8 h-8 grid place-items-center rounded-md border hover:bg-gray-50 transition ${totalProductUnits >= totalTicketsSelected &&
+                                  quantity >=
                                   totalTicketsSelected -
-                                    (totalProductUnits - quantity)
+                                  (totalProductUnits - quantity)
                                   ? "opacity-40 cursor-not-allowed"
                                   : ""
-                              }`}
+                                }`}
                               disabled={
                                 totalProductUnits >= totalTicketsSelected &&
                                 quantity >=
-                                  totalTicketsSelected -
-                                    (totalProductUnits - quantity)
+                                totalTicketsSelected -
+                                (totalProductUnits - quantity)
                               }
                             >
                               +
@@ -695,7 +792,7 @@ export default function EventDetailsPage(event) {
                         (s, p) =>
                           s +
                           (Number(p.product.price) || 0) *
-                            (Number(p.quantity) || 0),
+                          (Number(p.quantity) || 0),
                         0
                       )
                       .toFixed(4)}
@@ -737,7 +834,7 @@ export default function EventDetailsPage(event) {
               {/* LEFT: Total */}
               <div className="flex items-baseline gap-3 min-w-0">
                 <p className="font-bold text-sm sm:text-base truncate">
-                  TOTAL: &euro; {getTotalWithOption()}
+                  TOTAL: £ {getTotalWithOption()}
                 </p>
 
                 {/* mobile-only helper: products progress shown inline under total on smallest screens */}
@@ -802,11 +899,10 @@ export default function EventDetailsPage(event) {
                       {/* Confirm: green, disabled until units match tickets */}
                       <button
                         className={`w-full sm:w-auto px-3 py-2 rounded-md font-bold text-xs sm:text-sm transition
-                ${
-                  totalProductUnits === totalTicketsSelected
-                    ? "bg-green-600 text-white hover:bg-green-700"
-                    : "bg-green-200 text-green-800 opacity-80 cursor-not-allowed"
-                }`}
+                ${totalProductUnits === totalTicketsSelected
+                            ? "bg-green-600 text-white hover:bg-green-700"
+                            : "bg-green-200 text-green-800 opacity-80 cursor-not-allowed"
+                          }`}
                         onClick={handleConfirm}
                         disabled={totalProductUnits !== totalTicketsSelected}
                         aria-disabled={
@@ -871,7 +967,7 @@ export default function EventDetailsPage(event) {
             </p>
 
             <p>
-              <span className="font-bold">COST:</span> &euro;{" "}
+              <span className="font-bold">COST:</span> £{" "}
               {getTotalWithOption()}
             </p>
 
@@ -882,10 +978,10 @@ export default function EventDetailsPage(event) {
           </div>
         </div>
         <MembershipPopup
-  isOpen={showMembershipPopup}
-  onClose={() => setShowMembershipPopup(false)}
-  onBuy={() => (window.location.href = "/membership")}
-/>
+          isOpen={showMembershipPopup}
+          onClose={() => setShowMembershipPopup(false)}
+          onBuy={() => (window.location.href = "/membership")}
+        />
 
       </section>
     </div>
