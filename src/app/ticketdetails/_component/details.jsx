@@ -54,7 +54,7 @@ const MembershipPopup = ({ isOpen, onClose, onBuy }) => {
 
         {/* Description */}
         <p className="relative text-base sm:text-lg text-gray-600 mb-10 leading-relaxed max-w-xl mx-auto">
-          To purchase event tickets, you need an active membership. Join now or sign in to continue!
+          To purchase event tickets and unlock exciting features, join Cricket Lovers Global today or sign in to continue.
         </p>
 
         {/* Buttons */}
