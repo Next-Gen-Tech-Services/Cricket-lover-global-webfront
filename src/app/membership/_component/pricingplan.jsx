@@ -239,7 +239,7 @@ export default function PricingSection() {
              
               <div className="relative h-[300px] w-full bg-white rounded-2xl overflow-hidden border">
   {/* 🔥 Recommended Badge */}
-  {plan.name === "Lifetime Family Membership" && (
+  {plan.name === "Lifetime Single Membership" && (
     <span className="absolute top-3 left-3 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg z-20">
       Recommended
     </span>
