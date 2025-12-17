@@ -15,17 +15,20 @@ import { useRouter, usePathname } from "next/navigation";
 import { FaUserCircle } from "react-icons/fa";
 import authInstance from "@/api/auth/auth.api";
 import { updateUser } from "@/redux/redux-slice/user.slice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [userData, setUserData] = useState(getUserLocal());
+  const userData = useSelector((state) => state.user.userInfo);
   const dispatch = useDispatch();
   const userToken = getTokenLocal();
   const router = useRouter();
   const pathname = usePathname();
   const [profileImage, setProfileImage] = useState(null);
+
+  console.log(userData);
+  
   // ✅ PATCH 1 — Add profilePic
   const profilePic = userData?.avatarUrl || "/default-avatar.png";
 
@@ -43,12 +46,11 @@ const Navbar = () => {
 
     try {
       const response = await authInstance.getProfile();
-      if (response?.status === "success" && response?.data) {
-        const profileData = response.data;
-        // setUserLocal(profileData);
-        // setUserData(profileData);
-        // setProfileImage(profileData?.profileImage || null);
-        dispatch(updateUser(response?.data?.user));
+      if (response?.status === "Success" && response?.data) {
+        const profileData = response.data.user;
+        setProfileImage(profileData?.profileImage || null);
+        
+        dispatch(updateUser(profileData));
       }
     } catch (error) {
       console.error("Error fetching profile:", error);
@@ -61,7 +63,6 @@ const Navbar = () => {
       fetchUserProfile();
     } else {
       setProfileImage(null);
-      setUserData(null);
     }
   }, [pathname]);
   return (
