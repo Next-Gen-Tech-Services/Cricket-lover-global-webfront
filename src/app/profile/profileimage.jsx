@@ -157,9 +157,14 @@ export default function ProfileImageUpload() {
       const updatedUser = {
         ...oldUser,
         profileImage: res?.data, // assuming backend returns image URL
+        avatarUrl: res?.data, // also set avatarUrl for consistency
       };
 
       setUserLocal(updatedUser);
+      
+      // Also update the profile with the new avatarUrl
+      await authInstance.profileUpdate({ avatarUrl: res?.data });
+      
       toast(" Profile Image Updated Successfully!");
       setPreview(res?.data); // instantly show uploaded image
       setImage(null);

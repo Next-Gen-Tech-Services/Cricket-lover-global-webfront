@@ -28,7 +28,7 @@ const Navbar = () => {
   const [profileImage, setProfileImage] = useState(null);
 
   console.log(userData);
-  
+
   // ✅ PATCH 1 — Add profilePic
   const profilePic = userData?.avatarUrl || "/default-avatar.png";
 
@@ -49,7 +49,7 @@ const Navbar = () => {
       if (response?.status === "Success" && response?.data) {
         const profileData = response.data.user;
         setProfileImage(profileData?.profileImage || null);
-        
+
         dispatch(updateUser(profileData));
       }
     } catch (error) {
@@ -195,7 +195,7 @@ const Navbar = () => {
               {/* PROFILE IMAGE */}
               {profileImage ? (
                 <img
-                  src={profileImage}
+                  src={profilePic ?? profileImage}
                   alt="Profile"
                   className="w-10 h-10 rounded-full object-cover border border-green-600"
                 />
