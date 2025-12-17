@@ -268,7 +268,7 @@ export default function PricingSection() {
                   <User size={16} />
                   BUY{" "}
                   <span className="font-bold text-green-600">
-                    £{plan.price || "0.00"}
+                    £{Number(plan.price || 0).toFixed(2)}
                   </span>
                 </p>
 

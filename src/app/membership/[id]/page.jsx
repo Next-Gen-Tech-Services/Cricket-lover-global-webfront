@@ -114,7 +114,7 @@ export default function MembershipDetailsPage() {
               {plans?.name}
             </h1>
             <p className="mt-2 text-green-600 font-semibold text-lg">
-              Price: £{plans?.price} {plans?.durationUnit === 'years' ? '/per year' : ''}
+              Price: £{Number(plans?.price).toFixed(2)} {plans?.durationUnit === 'years' ? '/per year' : ''}
             </p>
           </div>
         </div>

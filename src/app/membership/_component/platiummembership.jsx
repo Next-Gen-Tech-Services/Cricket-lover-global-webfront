@@ -102,7 +102,7 @@ export default function MembershipDetailsPage() {
                {plans[0]?.name}
             </h1>
             <p className="mt-2 text-green-600 font-semibold text-lg">
-              Price:  £{plans[0]?.price} (One-time payment)
+              Price:  £{Number(plans[0]?.price).toFixed(2)} (One-time payment)
             </p>
           </div>
 

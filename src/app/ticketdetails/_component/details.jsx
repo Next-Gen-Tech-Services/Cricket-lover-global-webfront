@@ -247,7 +247,7 @@ export default function EventDetailsPage(event) {
       total += (Number(product.price) || 0) * Number(quantity || 0);
     });
 
-    return Number(total.toFixed(4));
+    return Number(total.toFixed(2));
   }
 
   const handleConfirm = () => {
@@ -375,7 +375,7 @@ export default function EventDetailsPage(event) {
                 </span>
 
                 <span className="font-bold text-green-700">
-                  £{ticket.price}
+                  £{Number(ticket.price).toFixed(2)}
                 </span>
               </p>
             ))}
@@ -691,10 +691,10 @@ export default function EventDetailsPage(event) {
 
                             <div className="text-right">
                               <p className="text-sm font-semibold">
-                                £{product.price}
+                                £{Number(product.price).toFixed(2)}
                               </p>
                               <p className="text-xs text-gray-400">
-                                £{lineTotal}
+                                £{Number(lineTotal).toFixed(2)}
                               </p>
                             </div>
                           </div>
@@ -795,7 +795,7 @@ export default function EventDetailsPage(event) {
                           (Number(p.quantity) || 0),
                         0
                       )
-                      .toFixed(4)}
+                      .toFixed(2)}
                   </div>
                 </div>
               </div>
@@ -834,7 +834,7 @@ export default function EventDetailsPage(event) {
               {/* LEFT: Total */}
               <div className="flex items-baseline gap-3 min-w-0">
                 <p className="font-bold text-sm sm:text-base truncate">
-                  TOTAL: £ {getTotalWithOption()}
+                  TOTAL: £ {getTotalWithOption().toFixed(2)}
                 </p>
 
                 {/* mobile-only helper: products progress shown inline under total on smallest screens */}
@@ -968,7 +968,7 @@ export default function EventDetailsPage(event) {
 
             <p>
               <span className="font-bold">COST:</span> £{" "}
-              {getTotalWithOption()}
+              {getTotalWithOption().toFixed(2)}
             </p>
 
             <p>

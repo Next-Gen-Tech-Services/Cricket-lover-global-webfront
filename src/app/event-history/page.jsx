@@ -122,12 +122,12 @@ export default function EventHistory() {
                         {item?.payment?.eventType !== "free" ? (
                           <>
                             <p>
-                              <span className="font-semibold text-white">Unit Price:   £ {ticket.unitPrice}</span>{" "}
+                              <span className="font-semibold text-white">Unit Price:   £ {Number(ticket.unitPrice).toFixed(2)}</span>{" "}
                             
                             </p>
                             <p>
                               <span className="font-semibold text-white">Total:</span>{" "}
-                              £ {ticket.total}
+                              £ {Number(ticket.total).toFixed(2)}
                             </p>
                           </>
                         ):(
@@ -147,15 +147,15 @@ export default function EventHistory() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5 text-sm">
                   <p>
                     <span className="font-semibold text-white">Tickets Total:</span>{" "}
-                    £{item.payment.totalTicketPrice}
+                    £{Number(item.payment.totalTicketPrice).toFixed(2)}
                   </p>
                   <p>
                     <span className="font-semibold text-white">Add-ons:</span>{" "}
-                    £{item.payment.totalProductPrice}
+                    £{Number(item.payment.totalProductPrice).toFixed(2)}
                   </p>
                   <p>
                     <span className="font-semibold text-white">Grand Total:</span>{" "}
-                    £{item.payment.totalAmount}
+                    £{Number(item.payment.totalAmount).toFixed(2)}
                   </p>
                 </div>
               </div>
@@ -200,8 +200,8 @@ export default function EventHistory() {
                     <div className="text-sm">
                       <p className="text-white font-semibold">{item.product.name}</p>
                       <p className="text-gray-400">
-                        £{item.product.unitPrice} × {item.product.quantity} = £
-                        {item.product.total}
+                        £{Number(item.product.unitPrice).toFixed(2)} × {item.product.quantity} = £
+                        {Number(item.product.total).toFixed(2)}
                       </p>
                     </div>
                   </div>
