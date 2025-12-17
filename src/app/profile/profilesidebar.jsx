@@ -12,7 +12,7 @@ export default function ProfileSidebar() {
 
   const menu = [
     { label: "Profile", icon: <User size={18} />, href: "/profile" },
-    { label: "Membership plan", icon: <User size={18} />, href: "/profile/membership-history" },
+    { label: "Membership plan", icon: <User size={18} />, href: "/membership-history" },
     { label: "My Tickets", icon: <Ticket size={18} />, href: "/event-history" },
   ];
 
