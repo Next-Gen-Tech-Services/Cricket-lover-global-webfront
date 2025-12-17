@@ -804,7 +804,7 @@ export default function EventDetailsPage(event) {
               {/* LEFT: Total */}
               <div className="flex items-baseline gap-3 min-w-0">
                 <p className="font-bold text-sm sm:text-base truncate">
-                  TOTAL: &euro; {getTotalWithOption()}
+                  TOTAL: £ {getTotalWithOption()}
                 </p>
 
                 {/* mobile-only helper: products progress shown inline under total on smallest screens */}
@@ -938,7 +938,7 @@ export default function EventDetailsPage(event) {
             </p>
 
             <p>
-              <span className="font-bold">COST:</span> &euro;{" "}
+              <span className="font-bold">COST:</span> £{" "}
               {getTotalWithOption()}
             </p>
 

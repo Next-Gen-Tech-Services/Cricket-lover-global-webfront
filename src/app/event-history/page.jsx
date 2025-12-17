@@ -122,12 +122,12 @@ export default function EventHistory() {
                         {item?.payment?.eventType !== "free" ? (
                           <>
                             <p>
-                              <span className="font-semibold text-white">Unit Price:   ₹ {ticket.unitPrice}</span>{" "}
+                              <span className="font-semibold text-white">Unit Price:   £ {ticket.unitPrice}</span>{" "}
                             
                             </p>
                             <p>
                               <span className="font-semibold text-white">Total:</span>{" "}
-                              ₹ {ticket.total}
+                              £ {ticket.total}
                             </p>
                           </>
                         ):(
@@ -147,15 +147,15 @@ export default function EventHistory() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5 text-sm">
                   <p>
                     <span className="font-semibold text-white">Tickets Total:</span>{" "}
-                    ₹{item.payment.totalTicketPrice}
+                    £{item.payment.totalTicketPrice}
                   </p>
                   <p>
                     <span className="font-semibold text-white">Add-ons:</span>{" "}
-                    ₹{item.payment.totalProductPrice}
+                    £{item.payment.totalProductPrice}
                   </p>
                   <p>
                     <span className="font-semibold text-white">Grand Total:</span>{" "}
-                    ₹{item.payment.totalAmount}
+                    £{item.payment.totalAmount}
                   </p>
                 </div>
               </div>
@@ -200,7 +200,7 @@ export default function EventHistory() {
                     <div className="text-sm">
                       <p className="text-white font-semibold">{item.product.name}</p>
                       <p className="text-gray-400">
-                        ₹{item.product.unitPrice} × {item.product.quantity} = ₹
+                        £{item.product.unitPrice} × {item.product.quantity} = £
                         {item.product.total}
                       </p>
                     </div>
