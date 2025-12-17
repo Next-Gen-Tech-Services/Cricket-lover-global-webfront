@@ -130,9 +130,9 @@ export default function ProfileImageUpload() {
       return;
     }
 
-    //  Optional size limit (2MB)
-    if (file.size > 2 * 1024 * 1024) {
-      toast("File size should be less than 2MB!");
+    //  Optional size limit (50MB)
+    if (file.size > 50 * 1024 * 1024) {
+      toast("File size should be less than 50MB!");
       e.target.value = "";
       return;
     }
