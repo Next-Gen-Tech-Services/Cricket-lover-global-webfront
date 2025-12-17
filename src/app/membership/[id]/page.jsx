@@ -114,7 +114,7 @@ const requireLogin = (callback) => {
               {plans?.name}
             </h1>
             <p className="mt-2 text-green-600 font-semibold text-lg">
-              Price: £{plans?.price} {plans?.durationUnit === 'years' ? '(One-year payment)' : ''}
+              Price: £{plans?.price} {plans?.durationUnit === 'years' ? '/per year' : ''}
             </p>
           </div>
         </div>
