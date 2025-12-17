@@ -70,18 +70,18 @@ export default function MembershipDetailsPage() {
 
   }, [userData, id])
 
-// require login
-const requireLogin = (callback) => {
-  const token = getTokenLocal();
+  // require login
+  // const requireLogin = (callback) => {
+  //   const token = getTokenLocal();
 
-  if (!token) {
-    toast("Please login to continue.");
-    window.location.href = "/login";
-    return;
-  }
+  //   if (!token) {
+  //     toast("Please login to continue.");
+  //     window.location.href = "/login";
+  //     return;
+  //   }
 
-  callback(); // If logged in → run the action
-};
+  //   callback(); // If logged in → run the action
+  // };
 
 
   return (
@@ -138,8 +138,8 @@ const requireLogin = (callback) => {
 
         <div className="mt-10 text-center">
           <button
-  onClick={() => requireLogin(() => handlePayment(id))}
-  className="
+            onClick={() => handlePayment(id)}
+            className="
     bg-green-600 hover:bg-green-700 text-white 
     px-6 py-3 text-base      
     sm:px-10 sm:py-4 sm:text-lg  
@@ -148,9 +148,9 @@ const requireLogin = (callback) => {
     transition cursor-pointer
     w-[85%] sm:w-auto       
   "
->
-  {plans?.name}
-</button>
+          >
+            {plans?.name}
+          </button>
 
         </div>
       </div>
