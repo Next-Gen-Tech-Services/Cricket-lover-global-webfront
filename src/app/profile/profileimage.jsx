@@ -99,12 +99,13 @@ import { Plus } from "lucide-react";
 import { FaUserCircle } from "react-icons/fa";
 import authInstance from "@/api/auth/auth.api";
 import { getUserLocal, setUserLocal } from "@/utils/localStorage.util";
+import { useSelector } from "react-redux";
 
 export default function ProfileImageUpload() {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState("");
   const fileRef = useRef(null);
-  const userData = getUserLocal();
+  const userData = useSelector((state) => state.user.userInfo);
 
   console.log('====================================');
   console.log(userData);
