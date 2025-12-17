@@ -14,11 +14,14 @@ import { logout } from "@/utils/common.util";
 import { useRouter, usePathname } from "next/navigation";
 import { FaUserCircle } from "react-icons/fa";
 import authInstance from "@/api/auth/auth.api";
+import { useDispatch } from "react-redux";
+import { updateUser } from "@/redux/redux-slice/user.slice";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [userData, setUserData] = useState(getUserLocal());
+  const dispatch = useDispatch();
   const userToken = getTokenLocal();
   const router = useRouter();
   const pathname = usePathname();
@@ -37,14 +40,15 @@ const Navbar = () => {
     if (!token) {
       return;
     }
-    
+
     try {
       const response = await authInstance.getProfile();
       if (response?.status === "success" && response?.data) {
         const profileData = response.data;
-        setUserLocal(profileData);
-        setUserData(profileData);
-        setProfileImage(profileData?.profileImage || null);
+        // setUserLocal(profileData);
+        // setUserData(profileData);
+        // setProfileImage(profileData?.profileImage || null);
+        dispatch(updateUser(response?.data?.user));
       }
     } catch (error) {
       console.error("Error fetching profile:", error);
@@ -211,9 +215,8 @@ const Navbar = () => {
 
               {/* DROPDOWN ICON */}
               <ChevronDown
-                className={`transition-transform duration-200 ${
-                  showDropdown ? "rotate-180" : ""
-                }`}
+                className={`transition-transform duration-200 ${showDropdown ? "rotate-180" : ""
+                  }`}
                 size={18}
               />
             </button>
