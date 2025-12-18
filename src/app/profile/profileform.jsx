@@ -23,6 +23,40 @@ export default function ProfileForm() {
     avatarUrl: "",
   });
 
+  // Team → Nationality mapping (AUTO SET)
+  const TEAM_TO_NATIONALITY = {
+    India: "🇮🇳 Indian",
+    England: "🇬🇧 British",
+    Australia: "🇦🇺 Australian",
+    Pakistan: "🇵🇰 Pakistani",
+    "South Africa": "🇿🇦 South African",
+    "New Zealand": "🇳🇿 New Zealander",
+    "Sri Lanka": "🇱🇰 Sri Lankan",
+    "West Indies": "🌴 West Indian",
+  };
+
+  const TEAMS = [
+    "India",
+    "England",
+    "Australia",
+    "Pakistan",
+    "South Africa",
+    "New Zealand",
+    "Sri Lanka",
+    "West Indies",
+  ];
+
+  const NATIONALITIES = [
+    "🇮🇳 Indian",
+    "🇬🇧 British",
+    "🇦🇺 Australian",
+    "🇵🇰 Pakistani",
+    "🇿🇦 South African",
+    "🇳🇿 New Zealander",
+    "🇱🇰 Sri Lankan",
+    "🌍 Other",
+  ];
+
   // Load user data
   useEffect(() => {
     const user = getUserLocal();
@@ -41,7 +75,7 @@ export default function ProfileForm() {
         avatarUrl: user.profileImage || user.avatarUrl || "",
       });
     }
-    setTimeout(() => setLoading(false), 600); // Shimmer effect
+    setTimeout(() => setLoading(false), 600);
   }, []);
 
   const handleChange = (e) =>
@@ -49,17 +83,16 @@ export default function ProfileForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const res = await authInstance.profileUpdate(formData);
       if (res?.data?.user) setUserLocal(res.data.user);
-      toast("✅ Profile Updated Successfully");
+      toast(" Profile Updated Successfully");
     } catch (err) {
       toast("❌ Something went wrong");
     }
   };
 
-  // ✅ Shimmer Loading Skeleton
+  // Shimmer loading
   if (loading) {
     return (
       <div className="animate-pulse grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -75,52 +108,103 @@ export default function ProfileForm() {
       onSubmit={handleSubmit}
       className="grid grid-cols-1 md:grid-cols-2 gap-6"
     >
-      {Object.keys(formData).filter(key => key !== 'avatarUrl').map((key, i) => (
-        <div key={i} className="flex flex-col">
-          <label className="text-sm text-gray-600 dark:text-gray-500 font-medium mb-1 capitalize">
-            {key.replace(/([A-Z])/g, " $1")}
-          </label>
+      {Object.keys(formData)
+        .filter((key) => key !== "avatarUrl")
+        .map((key, i) => (
+          <div key={i} className="flex flex-col">
+            <label className="text-sm text-gray-600 font-medium mb-1 capitalize">
+  {key === "contact"
+    ? "Phone Number"
+    : key === "postcode"
+    ? "Postcode / Pincode / Zipcode"
+    : key.replace(/([A-Z])/g, " $1")}
+</label>
 
-          {key === "dateOfBirth" ? (
-            <DatePicker
-              selected={new Date(formData.dateOfBirth)}
-              onChange={(date) =>
-                handleChange({
-                  target: {
-                    name: "dateOfBirth",
-                    value: date.toISOString(),
-                  },
-                })
-              }
-              className="w-full border border-gray-200 bg-gray-50 focus:bg-white 
-              rounded-md px-3 py-2 shadow-sm 
-              focus:ring-2 focus:ring-[#3E63DD] outline-none transition
-              text-xs md:text-sm focus:scale-[1.03]"
-              dateFormat="dd / MM / yyyy"
-            />
-          ) : (
-            <input
-              type="text"
-              name={key}
-              value={formData[key]}
-              onChange={handleChange}
-              className="
-                border border-gray-200 bg-gray-50 dark:bg-white/10 
-              text-black focus:bg-white dark:focus:bg-white/20
-                rounded-md px-3 py-2 shadow-sm focus:ring-2 
-                focus:ring-[#3E63DD] outline-none transition-all duration-200
-                text-xs md:text-sm focus:scale-[1.03]"
-            />
-          )}
-        </div>
-      ))}
 
-      {/* Animated Button */}
+            {/* DATE PICKER */}
+            {key === "dateOfBirth" ? (
+              <DatePicker
+                selected={
+                  formData.dateOfBirth
+                    ? new Date(formData.dateOfBirth)
+                    : null
+                }
+                onChange={(date) =>
+                  handleChange({
+                    target: {
+                      name: "dateOfBirth",
+                      value: date.toISOString(),
+                    },
+                  })
+                }
+                className="w-full border border-gray-200 bg-gray-50 rounded-md px-3 py-2
+                text-xs md:text-sm focus:ring-2 focus:ring-[#3E63DD] outline-none"
+                dateFormat="dd / MM / yyyy"
+              />
+            ) : key === "favouriteTeam" ? (
+              // ⭐ Favourite Team (AUTO nationality)
+              <select
+                name="favouriteTeam"
+                value={formData.favouriteTeam}
+                onChange={(e) => {
+                  const team = e.target.value;
+                  setFormData((prev) => ({
+                    ...prev,
+                    favouriteTeam: team,
+                    nationality:
+                      prev.nationality ||
+                      TEAM_TO_NATIONALITY[team] ||
+                      "",
+                  }));
+                }}
+                className="border border-gray-200 bg-gray-50 rounded-md px-3 py-2
+                text-xs md:text-sm focus:ring-2 focus:ring-[#3E63DD] outline-none"
+              >
+                <option value="">Select Team</option>
+                {TEAMS.map((team) => (
+                  <option key={team} value={team}>
+                    {team}
+                  </option>
+                ))}
+              </select>
+            ) : key === "nationality" ? (
+              // 🌍 Nationality
+              <select
+                name="nationality"
+                value={formData.nationality}
+                onChange={handleChange}
+                required
+                className="border border-gray-200 bg-gray-50 rounded-md px-3 py-2
+                text-xs md:text-sm focus:ring-2 focus:ring-[#3E63DD] outline-none"
+              >
+                <option value="">Select Nationality</option>
+                {NATIONALITIES.map((nation) => (
+                  <option key={nation} value={nation}>
+                    {nation}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              // DEFAULT INPUT
+              <input
+                type="text"
+                name={key}
+                value={formData[key]}
+                onChange={handleChange}
+                required
+                className="border border-gray-200 bg-gray-50 rounded-md px-3 py-2
+                text-xs md:text-sm focus:ring-2 focus:ring-[#3E63DD] outline-none"
+              />
+            )}
+          </div>
+        ))}
+
+      {/* Submit */}
       <button
         type="submit"
         className="col-span-1 md:col-span-2 bg-[#00a63e] hover:bg-[#26b95c]
-        text-white py-3 rounded-xl font-semibold w-full shadow-lg transition 
-        active:scale-95 animate-fadeIn"
+        text-white py-3 rounded-xl font-semibold w-full shadow-lg transition
+        active:scale-95"
       >
         Save Changes
       </button>

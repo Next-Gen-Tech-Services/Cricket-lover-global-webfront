@@ -8,8 +8,14 @@ import Footer from "./_layout/footer";
 import Navbar from "./_layout/navbar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import { store } from "@/redux/redux-store/store";
+
+
+/* 🔔 POPUP ADD */
+import { useEffect, useState } from "react";
+import { getProfileCompletion } from "@/utils/profileCompletion.util";
+import ProfileReminderPopup from "./popup/page";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,33 +27,79 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// export const metadata = {
-//   title: "CRICKET LOVERS GLOBAL",
-//   description: "Your app description",
-//   icons: {
-//     icon: "/favicon.webp",   // or /favicon.png
-//   },
-// };
+/*  Wrapper needed because useSelector must be inside Provider */
+function LayoutWithPopup({ children, hideNavFooter }) {
+  const userData = useSelector((state) => state.user.userInfo);
+  const pathname = usePathname(); //  ADD THIS LINE
+  const [showPopup, setShowPopup] = useState(false);
+
+
+
+
+
+  useEffect(() => {
+  if (!userData || hideNavFooter) return;
+  if (pathname === "/profile" || pathname === "/logout") {
+    setShowPopup(false);
+    return;
+  }
+
+  const { percent } = getProfileCompletion(userData);
+
+  // profile incomplete → always show
+  if (percent < 80) {
+    setShowPopup(true);
+  } else {
+    setShowPopup(false);
+  }
+}, [userData, pathname]);
+
+
+  const handleClose = () => {
+  setShowPopup(false);
+};
+
+
+  // const percent = getProfileCompletion(userData).percent;
+  const percent = userData ? getProfileCompletion(userData).percent : 0;
+
+
+  return (
+    <>
+      {!hideNavFooter && <Navbar />}
+
+      <main>
+        {children}
+        <ToastContainer position="top-right" autoClose={3000} />
+      </main>
+
+      {!hideNavFooter && <Footer />}
+
+      {/* 🔔 PROFILE REMINDER POPUP */}
+      <ProfileReminderPopup
+  isOpen={showPopup}
+  onClose={handleClose}
+  percent={percent}
+/>
+
+    </>
+  );
+}
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
   const hideNavFooter =
     pathname === "/login" || pathname === "/signup" || pathname === "/success";
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Provider store={store}>
-          {!hideNavFooter && <Navbar />}
-          <main>
+          <LayoutWithPopup hideNavFooter={hideNavFooter}>
             {children}
-            <ToastContainer
-              position="top-right"
-              autoClose={3000}
-            ></ToastContainer>
-          </main>
-          {!hideNavFooter && <Footer />}
+          </LayoutWithPopup>
         </Provider>
       </body>
     </html>

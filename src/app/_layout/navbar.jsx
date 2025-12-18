@@ -30,7 +30,10 @@ const Navbar = () => {
   console.log(userData);
 
   // ✅ PATCH 1 — Add profilePic
-  const profilePic = userData?.avatarUrl || "/default-avatar.png";
+  // const profilePic = userData?.avatarUrl || "/default-avatar.png";
+  const profilePic =
+  userData?.profileImage || userData?.avatarUrl || "/default-avatar.png";
+
 
   const handleLogout = () => {
     setShowDropdown(false);
@@ -193,15 +196,16 @@ const Navbar = () => {
               className="flex items-center justify-between gap-3 bg-green-50 border border-green-600 text-green-800 px-4 py-2 rounded-full focus:outline-none hover:bg-green-100 transition w-full sm:w-auto"
             >
               {/* PROFILE IMAGE */}
-              {profileImage ? (
-                <img
-                  src={profilePic ?? profileImage}
-                  alt="Profile"
-                  className="w-10 h-10 rounded-full object-cover border border-green-600"
-                />
-              ) : (
-                <FaUserCircle className="text-green-600 w-10 h-10" />
-              )}
+              {profilePic ? (
+  <img
+    src={profilePic}
+    alt="Profile"
+    className="w-10 h-10 rounded-full object-cover border border-green-600"
+  />
+) : (
+  <FaUserCircle className="text-green-600 w-10 h-10" />
+)}
+
 
               {/* USER NAME */}
               <div className="hidden sm:flex flex-col items-start">

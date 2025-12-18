@@ -100,8 +100,13 @@ import { FaUserCircle } from "react-icons/fa";
 import authInstance from "@/api/auth/auth.api";
 import { getUserLocal, setUserLocal } from "@/utils/localStorage.util";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { updateUser } from "@/redux/redux-slice/user.slice";
+
 
 export default function ProfileImageUpload() {
+  const dispatch = useDispatch();
+
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState("");
   const fileRef = useRef(null);
@@ -159,14 +164,17 @@ export default function ProfileImageUpload() {
       const res = await authInstance.profileImage(formData);
       console.log("res of upload images:", res);
 
-      const oldUser = getUserLocal();
+      const oldUser = getUserLocal();   
+      
       const updatedUser = {
         ...oldUser,
         profileImage: res?.data, // assuming backend returns image URL
         avatarUrl: res?.data, // also set avatarUrl for consistency
       };
 
+
       setUserLocal(updatedUser);
+      dispatch(updateUser(updatedUser));
 
       // Also update the profile with the new avatarUrl
       await authInstance.profileUpdate({ avatarUrl: res?.data });
