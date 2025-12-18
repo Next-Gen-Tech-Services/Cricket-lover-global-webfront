@@ -58,8 +58,8 @@ export default function Login() {
       dispatch(updateUser(res?.data?.user));
 
       toast.success("Login Successful ");
-      router.push("/");
-
+      // router.push("/");
+        router.back()
       // window.location.href = "/";
     } catch (err) {
       setLoading(false);

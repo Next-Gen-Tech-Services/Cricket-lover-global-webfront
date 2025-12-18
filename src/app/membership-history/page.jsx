@@ -104,7 +104,7 @@ const MembershipHistory = () => {
 
                                 <p className="text-lg">
                                     <span className="font-semibold">Plan Price:</span>{" "}
-                                    £ {item?.price || "0.00"}
+                                    £ {Number(item?.price || 0).toFixed(2)}
                                 </p>
                             </div>
                         </div>

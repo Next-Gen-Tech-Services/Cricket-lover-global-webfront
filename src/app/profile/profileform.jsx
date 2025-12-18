@@ -20,6 +20,7 @@ export default function ProfileForm() {
     dateOfBirth: "",
     address: "",
     postcode: "",
+    avatarUrl: "",
   });
 
   // Load user data
@@ -37,6 +38,7 @@ export default function ProfileForm() {
         dateOfBirth: user.dateOfBirth?.split("T")[0] || "",
         address: user.address || "",
         postcode: user.postcode || "",
+        avatarUrl: user.profileImage || user.avatarUrl || "",
       });
     }
     setTimeout(() => setLoading(false), 600); // Shimmer effect
@@ -73,7 +75,7 @@ export default function ProfileForm() {
       onSubmit={handleSubmit}
       className="grid grid-cols-1 md:grid-cols-2 gap-6"
     >
-      {Object.keys(formData).map((key, i) => (
+      {Object.keys(formData).filter(key => key !== 'avatarUrl').map((key, i) => (
         <div key={i} className="flex flex-col">
           <label className="text-sm text-gray-600 dark:text-gray-500 font-medium mb-1 capitalize">
             {key.replace(/([A-Z])/g, " $1")}

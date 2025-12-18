@@ -38,16 +38,17 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {" "}
-        {!hideNavFooter && <Navbar />}
-        <main>
-          <Provider store={store}>{children}</Provider>
-          <ToastContainer
-            position="top-right"
-            autoClose={3000}
-          ></ToastContainer>
-        </main>
-        {!hideNavFooter && <Footer />}
+        <Provider store={store}>
+          {!hideNavFooter && <Navbar />}
+          <main>
+            {children}
+            <ToastContainer
+              position="top-right"
+              autoClose={3000}
+            ></ToastContainer>
+          </main>
+          {!hideNavFooter && <Footer />}
+        </Provider>
       </body>
     </html>
   );

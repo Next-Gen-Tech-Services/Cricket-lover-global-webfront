@@ -8,18 +8,27 @@ import {
   clearAuthLocal,
   getTokenLocal,
   getUserLocal,
+  setUserLocal,
 } from "@/utils/localStorage.util";
 import { logout } from "@/utils/common.util";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { FaUserCircle } from "react-icons/fa";
+import authInstance from "@/api/auth/auth.api";
+import { updateUser } from "@/redux/redux-slice/user.slice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-  const userData = getUserLocal();
+  const userData = useSelector((state) => state.user.userInfo);
+  const dispatch = useDispatch();
   const userToken = getTokenLocal();
   const router = useRouter();
+  const pathname = usePathname();
   const [profileImage, setProfileImage] = useState(null);
+
+  console.log(userData);
+
   // ✅ PATCH 1 — Add profilePic
   const profilePic = userData?.avatarUrl || "/default-avatar.png";
 
@@ -28,9 +37,34 @@ const Navbar = () => {
     clearAuthLocal();
     logout(router);
   };
+
+  const fetchUserProfile = async () => {
+    const token = getTokenLocal();
+    if (!token) {
+      return;
+    }
+
+    try {
+      const response = await authInstance.getProfile();
+      if (response?.status === "Success" && response?.data) {
+        const profileData = response.data.user;
+        setProfileImage(profileData?.profileImage || null);
+
+        dispatch(updateUser(profileData));
+      }
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+    }
+  };
+
   useEffect(() => {
-    setProfileImage(userData?.profileImage || null);
-  }, []);
+    const token = getTokenLocal();
+    if (token) {
+      fetchUserProfile();
+    } else {
+      setProfileImage(null);
+    }
+  }, [pathname]);
   return (
     <nav className="bg-[#001B5E] text-white py-4 relative w-full z-50">
       <div className="container mx-auto flex items-center justify-between px-6">
@@ -161,7 +195,7 @@ const Navbar = () => {
               {/* PROFILE IMAGE */}
               {profileImage ? (
                 <img
-                  src={profileImage}
+                  src={profilePic ?? profileImage}
                   alt="Profile"
                   className="w-10 h-10 rounded-full object-cover border border-green-600"
                 />
@@ -182,9 +216,8 @@ const Navbar = () => {
 
               {/* DROPDOWN ICON */}
               <ChevronDown
-                className={`transition-transform duration-200 ${
-                  showDropdown ? "rotate-180" : ""
-                }`}
+                className={`transition-transform duration-200 ${showDropdown ? "rotate-180" : ""
+                  }`}
                 size={18}
               />
             </button>
