@@ -511,9 +511,9 @@ if (totalProductUnits < totalTicketsSelected) {
                         {ticket.type} QUANTITY:
                       </p>
 
-                      <p className="text-xs sm:text-sm text-gray-500">
+                      {/* <p className="text-xs sm:text-sm text-gray-500">
                         Available: {ticket.quantity}
-                      </p>
+                      </p> */}
                     </div>
 
                     {/* ✅ RIGHT SIDE QTY SELECTOR */}
