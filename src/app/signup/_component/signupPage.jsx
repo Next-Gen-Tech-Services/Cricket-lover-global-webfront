@@ -14,6 +14,8 @@ import { useRouter } from "next/navigation";
 export default function Signup() {
   const dispatch = useDispatch();
   const router = useRouter();
+  const [contact, setContact] = useState("");
+
 
   const countries = [
   { code: "", name: "Select your country" },
@@ -245,6 +247,7 @@ export default function Signup() {
       lastName,
       gender,
       country,
+      contact,
       email,
       password,
       dateOfBirth,
@@ -379,7 +382,7 @@ export default function Signup() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div className="text-left">
               <label className="block font-semibold mb-1 text-sm text-black">EMAIL</label>
               <input
@@ -405,6 +408,19 @@ export default function Signup() {
                 <p className="text-red-500 text-xs">{emailError}</p>
               )}
             </div>
+            <div className="text-left">
+    <label className="block font-semibold mb-1 text-sm text-black">
+      CONTACT NUMBER
+    </label>
+    <input
+      type="tel"
+      placeholder="Enter contact number"
+      className="w-full p-2 border border-gray-300 rounded-md outline-none"
+      value={contact}
+      onChange={(e) => setContact(e.target.value)}
+      required
+    />
+  </div>
 
             <div className="text-left">
               <label className="block font-semibold mb-1 text-sm text-black">

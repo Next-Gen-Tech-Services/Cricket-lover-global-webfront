@@ -150,58 +150,60 @@ export default function EventDetailsPage(event) {
 
   // add a product (or increment its quantity). Enforce total units <= totalTicketsSelected
   const handleAddProduct = (product) => {
-    // if no tickets selected, don't allow
-    if (totalTicketsSelected === 0) {
-      return toast.error("Select tickets before adding products");
+  if (totalTicketsSelected === 0) {
+    return toast.error("Select tickets before adding products");
+  }
+
+  setSelectedProducts((prev) => {
+    const idx = prev.findIndex((p) => p.product._id === product._id);
+
+    if (idx > -1) {
+      const copy = [...prev];
+      copy[idx] = {
+        ...copy[idx],
+        quantity: copy[idx].quantity + 1,
+      };
+      return copy;
     }
 
-    setSelectedProducts((prev) => {
-      // find existing
-      const idx = prev.findIndex((p) => p.product._id === product._id);
-      // if totalProductUnits already equals totalTicketsSelected, block increment
-      if (totalProductUnits >= totalTicketsSelected && idx === -1) {
-        toast.error(
-          `You can add up to ${totalTicketsSelected} product unit(s) (equal to tickets).`
-        );
-        return prev;
-      }
+    return [...prev, { product, quantity: 1 }];
+  });
+};
 
-      if (idx > -1) {
-        // increment, but ensure we don't exceed ticket total
-        const newQty = Math.min(
-          prev[idx].quantity + 1,
-          totalTicketsSelected - (totalProductUnits - prev[idx].quantity)
-        );
-        const copy = [...prev];
-        copy[idx] = { ...copy[idx], quantity: newQty };
-        return copy;
-      } else {
-        // add new product with qty 1
-        return [...prev, { product, quantity: 1 }];
-      }
-    });
-  };
 
   // set product quantity (used by + / - controls)
-  const setProductQuantity = (productId, qty) => {
-    const q = Math.max(0, Number(qty) || 0);
-    // ensure not exceed ticket limit
-    const otherUnits = selectedProducts.reduce(
-      (s, p) => s + (p.product._id === productId ? 0 : p.quantity),
-      0
-    );
-    const allowed = Math.max(0, totalTicketsSelected - otherUnits);
-    const finalQty = Math.min(q, allowed);
+  // const setProductQuantity = (productId, qty) => {
+  //   const q = Math.max(0, Number(qty) || 0);
+  //   // ensure not exceed ticket limit
+  //   const otherUnits = selectedProducts.reduce(
+  //     (s, p) => s + (p.product._id === productId ? 0 : p.quantity),
+  //     0
+  //   );
+  //   const allowed = Math.max(0, totalTicketsSelected - otherUnits);
+  //   const finalQty = Math.min(q, allowed);
 
-    setSelectedProducts(
-      (prev) =>
-        prev
-          .map((p) =>
-            p.product._id === productId ? { ...p, quantity: finalQty } : p
-          )
-          .filter((p) => p.quantity > 0) // remove zero-qty
-    );
-  };
+  //   setSelectedProducts(
+  //     (prev) =>
+  //       prev
+  //         .map((p) =>
+  //           p.product._id === productId ? { ...p, quantity: finalQty } : p
+  //         )
+  //         .filter((p) => p.quantity > 0) // remove zero-qty
+  //   );
+  // };
+const setProductQuantity = (productId, qty) => {
+  const finalQty = Math.max(0, Number(qty) || 0);
+
+  setSelectedProducts((prev) =>
+    prev
+      .map((p) =>
+        p.product._id === productId
+          ? { ...p, quantity: finalQty }
+          : p
+      )
+      .filter((p) => p.quantity > 0)
+  );
+};
 
   const removeSelectedProduct = (productId) => {
     setSelectedProducts((prev) =>
@@ -263,17 +265,18 @@ export default function EventDetailsPage(event) {
       setShowMembershipPopup(true);
       return;
     }
+if (totalProductUnits < totalTicketsSelected) {
+  return toast.error(
+    `Please select at least ${totalTicketsSelected} product(s).`
+  );
+}
 
     if (totalTicketsSelected === 0)
       return toast.error("Select at least one ticket");
 
 
     // require that product units === tickets selected — change as needed
-    if (totalProductUnits !== totalTicketsSelected) {
-      return toast.error(
-        `Please select ${totalTicketsSelected} product unit(s). Currently selected: ${totalProductUnits}`
-      );
-    }
+    
 
     // build products array
     const productsPayload = selectedProducts.map((p) => ({
@@ -732,26 +735,15 @@ export default function EventDetailsPage(event) {
                             />
 
                             <button
-                              aria-label={`Increase quantity for ${product.name}`}
-                              onClick={() =>
-                                setProductQuantity(product._id, quantity + 1)
-                              }
-                              className={`w-8 h-8 grid place-items-center rounded-md border hover:bg-gray-50 transition ${totalProductUnits >= totalTicketsSelected &&
-                                  quantity >=
-                                  totalTicketsSelected -
-                                  (totalProductUnits - quantity)
-                                  ? "opacity-40 cursor-not-allowed"
-                                  : ""
-                                }`}
-                              disabled={
-                                totalProductUnits >= totalTicketsSelected &&
-                                quantity >=
-                                totalTicketsSelected -
-                                (totalProductUnits - quantity)
-                              }
-                            >
-                              +
-                            </button>
+  aria-label={`Increase quantity for ${product.name}`}
+  onClick={() =>
+    setProductQuantity(product._id, quantity + 1)
+  }
+  className="w-8 h-8 grid place-items-center rounded-md border hover:bg-gray-50 transition"
+>
+  +
+</button>
+
 
                             <button
                               onClick={() => removeSelectedProduct(product._id)}
@@ -897,20 +889,39 @@ export default function EventDetailsPage(event) {
                       </button>
 
                       {/* Confirm: green, disabled until units match tickets */}
-                      <button
+                      {/* <button
                         className={`w-full sm:w-auto px-3 py-2 rounded-md font-bold text-xs sm:text-sm transition
                 ${totalProductUnits === totalTicketsSelected
                             ? "bg-green-600 text-white hover:bg-green-700"
                             : "bg-green-200 text-green-800 opacity-80 cursor-not-allowed"
                           }`}
                         onClick={handleConfirm}
-                        disabled={totalProductUnits !== totalTicketsSelected}
-                        aria-disabled={
-                          totalProductUnits !== totalTicketsSelected
-                        }
+disabled={totalProductUnits < totalTicketsSelected}
+aria-disabled={totalProductUnits < totalTicketsSelected}
+
                       >
                         Confirm
-                      </button>
+                      </button> */}
+                      <button
+  className={`w-full sm:w-auto px-3 py-2 rounded-md font-bold text-xs sm:text-sm transition
+    ${
+      totalTicketsSelected > 0 && totalProductUnits >= totalTicketsSelected
+        ? "bg-green-600 text-white hover:bg-green-700"
+        : "bg-green-200 text-green-800 opacity-80 cursor-not-allowed"
+    }`}
+  onClick={handleConfirm}
+  disabled={
+    totalTicketsSelected === 0 ||
+    totalProductUnits < totalTicketsSelected
+  }
+    aria-disabled={
+      totalTicketsSelected === 0 ||
+      totalProductUnits > totalTicketsSelected
+    }
+>
+  Confirm
+</button>
+
                     </div>
                   )}
                 </div>
