@@ -59,7 +59,7 @@ export default function Login() {
 
       toast.success("Login Successful ");
       // router.push("/");
-        router.back()
+      router.replace("/");
       // window.location.href = "/";
     } catch (err) {
       setLoading(false);

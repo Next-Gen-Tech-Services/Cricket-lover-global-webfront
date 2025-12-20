@@ -342,7 +342,7 @@ const Contact = () => {
           {/* Message */}
           <div className="mt-6">
             <label className="text-sm font-medium text-gray-700 mb-1 block">
-              Message
+              Message <span className="text-red-500">*</span>
             </label>
             <textarea
               name="message"
@@ -350,6 +350,7 @@ const Contact = () => {
               rows="5"
               value={formData.message}
               onChange={handleChange}
+              required
               className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#551FFF]"
             ></textarea>
           </div>

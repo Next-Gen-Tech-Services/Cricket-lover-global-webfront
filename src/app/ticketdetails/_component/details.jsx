@@ -33,16 +33,36 @@ const MembershipPopup = ({ isOpen, onClose, onBuy }) => {
           className="absolute top-6 right-6 text-gray-400 hover:text-gray-600 transition-colors"
           aria-label="Close"
         >
-          <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          <svg
+            className="w-7 h-7"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
 
         {/* Icon */}
         <div className="relative mb-8 flex justify-center">
           <div className="bg-gradient-to-br from-green-100 to-blue-100 p-6 rounded-full">
-            <svg className="w-16 h-16 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+            <svg
+              className="w-16 h-16 text-green-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
+              />
             </svg>
           </div>
         </div>
@@ -54,7 +74,8 @@ const MembershipPopup = ({ isOpen, onClose, onBuy }) => {
 
         {/* Description */}
         <p className="relative text-base sm:text-lg text-gray-600 mb-10 leading-relaxed max-w-xl mx-auto">
-          To purchase event tickets and unlock exciting features, join Cricket Lovers Global today or sign in to continue.
+          To purchase event tickets and unlock exciting features, join Cricket
+          Lovers Global today or sign in to continue.
         </p>
 
         {/* Buttons */}
@@ -63,18 +84,38 @@ const MembershipPopup = ({ isOpen, onClose, onBuy }) => {
             onClick={onBuy}
             className="group flex-1 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-8 py-4 rounded-xl font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-3"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+              />
             </svg>
             Buy Membership
           </button>
 
           <button
-            onClick={() => window.location.href = "/login"}
+            onClick={() => (window.location.href = "/login")}
             className="group flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-4 rounded-xl font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-3"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+              />
             </svg>
             Already Member
           </button>
@@ -88,15 +129,19 @@ const MembershipPopup = ({ isOpen, onClose, onBuy }) => {
 
       <style jsx>{`
         @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
         }
         @keyframes slideUp {
-          from { 
+          from {
             opacity: 0;
             transform: translateY(20px) scale(0.95);
           }
-          to { 
+          to {
             opacity: 1;
             transform: translateY(0) scale(1);
           }
@@ -128,11 +173,10 @@ export default function EventDetailsPage(event) {
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [getEvent, setGetEvent] = useState(null);
   const [ticketQuantities, setTicketQuantities] = useState({});
-  const [showMembershipPopup, setShowMembershipPopup] = useState(false)
+  const [showMembershipPopup, setShowMembershipPopup] = useState(false);
   const membershipActive = useSelector(
     (state) => state.user.userInfo?.showMembership
   );
-
 
   // helper: total tickets selected
   const totalTicketsSelected = Object.values(ticketQuantities).reduce(
@@ -150,26 +194,25 @@ export default function EventDetailsPage(event) {
 
   // add a product (or increment its quantity). Enforce total units <= totalTicketsSelected
   const handleAddProduct = (product) => {
-  if (totalTicketsSelected === 0) {
-    return toast.error("Select tickets before adding products");
-  }
-
-  setSelectedProducts((prev) => {
-    const idx = prev.findIndex((p) => p.product._id === product._id);
-
-    if (idx > -1) {
-      const copy = [...prev];
-      copy[idx] = {
-        ...copy[idx],
-        quantity: copy[idx].quantity + 1,
-      };
-      return copy;
+    if (totalTicketsSelected === 0) {
+      return toast.error("Select tickets before adding products");
     }
 
-    return [...prev, { product, quantity: 1 }];
-  });
-};
+    setSelectedProducts((prev) => {
+      const idx = prev.findIndex((p) => p.product._id === product._id);
 
+      if (idx > -1) {
+        const copy = [...prev];
+        copy[idx] = {
+          ...copy[idx],
+          quantity: copy[idx].quantity + 1,
+        };
+        return copy;
+      }
+
+      return [...prev, { product, quantity: 1 }];
+    });
+  };
 
   // set product quantity (used by + / - controls)
   // const setProductQuantity = (productId, qty) => {
@@ -191,19 +234,17 @@ export default function EventDetailsPage(event) {
   //         .filter((p) => p.quantity > 0) // remove zero-qty
   //   );
   // };
-const setProductQuantity = (productId, qty) => {
-  const finalQty = Math.max(0, Number(qty) || 0);
+  const setProductQuantity = (productId, qty) => {
+    const finalQty = Math.max(0, Number(qty) || 0);
 
-  setSelectedProducts((prev) =>
-    prev
-      .map((p) =>
-        p.product._id === productId
-          ? { ...p, quantity: finalQty }
-          : p
-      )
-      .filter((p) => p.quantity > 0)
-  );
-};
+    setSelectedProducts((prev) =>
+      prev
+        .map((p) =>
+          p.product._id === productId ? { ...p, quantity: finalQty } : p
+        )
+        .filter((p) => p.quantity > 0)
+    );
+  };
 
   const removeSelectedProduct = (productId) => {
     setSelectedProducts((prev) =>
@@ -253,7 +294,6 @@ const setProductQuantity = (productId, qty) => {
   }
 
   const handleConfirm = () => {
-
     // const token = getTokenLocal();
 
     // if (!token) {
@@ -265,18 +305,16 @@ const setProductQuantity = (productId, qty) => {
       setShowMembershipPopup(true);
       return;
     }
-if (totalProductUnits < totalTicketsSelected) {
-  return toast.error(
-    `Please select at least ${totalTicketsSelected} product(s).`
-  );
-}
+    if (totalProductUnits < totalTicketsSelected) {
+      return toast.error(
+        `Please select at least ${totalTicketsSelected} product(s).`
+      );
+    }
 
     if (totalTicketsSelected === 0)
       return toast.error("Select at least one ticket");
 
-
     // require that product units === tickets selected — change as needed
-    
 
     // build products array
     const productsPayload = selectedProducts.map((p) => ({
@@ -292,7 +330,6 @@ if (totalProductUnits < totalTicketsSelected) {
         quantity: Number(ticketQuantities[type] || 0),
       })),
     };
-
 
     // call payment
     handlePayment(payload);
@@ -353,7 +390,6 @@ if (totalProductUnits < totalTicketsSelected) {
   }, [getEvent]);
 
   return (
-
     <div className="min-h-screen bg-gray-50">
       {/* ✅ Top Section (Responsive Text) */}
       <section className="max-w-6xl mx-auto px-3 sm:px-4 py-8 sm:py-10 text-center">
@@ -440,10 +476,11 @@ if (totalProductUnits < totalTicketsSelected) {
                       className={`
           flex justify-between items-center w-full p-2   
           transition 
-          ${selectedTicket?.type === ticket.type
-                          ? "border-green-600 bg-green-50"
-                          : "border-gray-300 bg-white"
-                        }
+          ${
+            selectedTicket?.type === ticket.type
+              ? "border-green-600 bg-green-50"
+              : "border-gray-300 bg-white"
+          }
         `}
                     >
                       <span className="font-medium capitalize text-gray-700">
@@ -490,19 +527,26 @@ if (totalProductUnits < totalTicketsSelected) {
           </div> */}
           <div className="flex flex-col gap-4 py-4 sm:py-6">
             {getEvent?.tickets?.map((ticket, index) => {
-              const isChild = ticket.type.toLowerCase().includes('child');
-              const adultTickets = Object.keys(ticketQuantities).reduce((sum, type) => {
-                if (!type.toLowerCase().includes('child')) {
-                  return sum + (ticketQuantities[type] || 0);
-                }
-                return sum;
-              }, 0);
+              const isChild = ticket.type.toLowerCase().includes("child");
+              const adultTickets = Object.keys(ticketQuantities).reduce(
+                (sum, type) => {
+                  if (!type.toLowerCase().includes("child")) {
+                    return sum + (ticketQuantities[type] || 0);
+                  }
+                  return sum;
+                },
+                0
+              );
               const isChildDisabled = isChild && adultTickets === 0;
 
               return (
                 <div
                   key={index}
-                  className={`flex flex-col p-3 bg-white shadow-sm rounded-lg border ${isChildDisabled ? 'border-yellow-300 bg-yellow-50' : 'border-gray-200'}`}
+                  className={`flex flex-col p-3 bg-white shadow-sm rounded-lg border ${
+                    isChildDisabled
+                      ? "border-yellow-300 bg-yellow-50"
+                      : "border-gray-200"
+                  }`}
                 >
                   <div className="flex justify-between items-center">
                     {/* ✅ LEFT SIDE TEXT */}
@@ -530,7 +574,11 @@ if (totalProductUnits < totalTicketsSelected) {
                           }))
                         }
                         disabled={isChildDisabled}
-                        className={`border px-2 sm:px-3 py-1 rounded text-base sm:text-lg transition ${isChildDisabled ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:bg-gray-100'}`}
+                        className={`border px-2 sm:px-3 py-1 rounded text-base sm:text-lg transition ${
+                          isChildDisabled
+                            ? "opacity-40 cursor-not-allowed"
+                            : "cursor-pointer hover:bg-gray-100"
+                        }`}
                       >
                         -
                       </button>
@@ -552,12 +600,15 @@ if (totalProductUnits < totalTicketsSelected) {
                           }))
                         }
                         className={`border px-2 sm:px-3 py-1 rounded text-base sm:text-lg transition 
-        ${(ticketQuantities?.[ticket.type] || 0) >= ticket.quantity || isChildDisabled
-                            ? "opacity-40 cursor-not-allowed"
-                            : "cursor-pointer hover:bg-gray-100"
-                          }`}
+        ${
+          (ticketQuantities?.[ticket.type] || 0) >= ticket.quantity ||
+          isChildDisabled
+            ? "opacity-40 cursor-not-allowed"
+            : "cursor-pointer hover:bg-gray-100"
+        }`}
                         disabled={
-                          (ticketQuantities?.[ticket.type] || 0) >= ticket.quantity || isChildDisabled
+                          (ticketQuantities?.[ticket.type] || 0) >=
+                            ticket.quantity || isChildDisabled
                         }
                       >
                         +
@@ -569,11 +620,23 @@ if (totalProductUnits < totalTicketsSelected) {
                   {isChild && (
                     <div className="mt-2 pt-2 border-t border-gray-200">
                       <div className="flex items-start gap-2">
-                        <svg className="w-4 h-4 text-blue-600 mt-0 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        <svg
+                          className="w-4 h-4 text-blue-600 mt-0 flex-shrink-0"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
                         </svg>
                         <div className="text-xs text-gray-600">
-                          <p className="font-semibold text-blue-700">Note: Child age should be under 16</p>
+                          <p className="font-semibold text-blue-700">
+                            Note: Child age should be under 16
+                          </p>
                           {isChildDisabled && (
                             <p className="text-yellow-700 font-medium mt-1">
                               ⚠️ Please select adult tickets first
@@ -612,9 +675,9 @@ if (totalProductUnits < totalTicketsSelected) {
                         totalTicketsSelected === 0
                           ? "0%"
                           : `${Math.min(
-                            (totalProductUnits / totalTicketsSelected) * 100,
-                            100
-                          )}%`,
+                              (totalProductUnits / totalTicketsSelected) * 100,
+                              100
+                            )}%`,
                     }}
                     aria-hidden="true"
                   />
@@ -735,15 +798,14 @@ if (totalProductUnits < totalTicketsSelected) {
                             />
 
                             <button
-  aria-label={`Increase quantity for ${product.name}`}
-  onClick={() =>
-    setProductQuantity(product._id, quantity + 1)
-  }
-  className="w-8 h-8 grid place-items-center rounded-md border hover:bg-gray-50 transition"
->
-  +
-</button>
-
+                              aria-label={`Increase quantity for ${product.name}`}
+                              onClick={() =>
+                                setProductQuantity(product._id, quantity + 1)
+                              }
+                              className="w-8 h-8 grid place-items-center rounded-md border hover:bg-gray-50 transition"
+                            >
+                              +
+                            </button>
 
                             <button
                               onClick={() => removeSelectedProduct(product._id)}
@@ -784,7 +846,7 @@ if (totalProductUnits < totalTicketsSelected) {
                         (s, p) =>
                           s +
                           (Number(p.product.price) || 0) *
-                          (Number(p.quantity) || 0),
+                            (Number(p.quantity) || 0),
                         0
                       )
                       .toFixed(2)}
@@ -903,25 +965,24 @@ aria-disabled={totalProductUnits < totalTicketsSelected}
                         Confirm
                       </button> */}
                       <button
-  className={`w-full sm:w-auto px-3 py-2 rounded-md font-bold text-xs sm:text-sm transition
+                        className={`w-full sm:w-auto px-3 py-2 rounded-md font-bold text-xs sm:text-sm transition
     ${
       totalTicketsSelected > 0 && totalProductUnits >= totalTicketsSelected
         ? "bg-green-600 text-white hover:bg-green-700"
         : "bg-green-200 text-green-800 opacity-80 cursor-not-allowed"
     }`}
-  onClick={handleConfirm}
-  disabled={
-    totalTicketsSelected === 0 ||
-    totalProductUnits < totalTicketsSelected
-  }
-    aria-disabled={
-      totalTicketsSelected === 0 ||
-      totalProductUnits > totalTicketsSelected
-    }
->
-  Confirm
-</button>
-
+                        onClick={handleConfirm}
+                        disabled={
+                          totalTicketsSelected === 0 ||
+                          totalProductUnits < totalTicketsSelected
+                        }
+                        aria-disabled={
+                          totalTicketsSelected === 0 ||
+                          totalProductUnits > totalTicketsSelected
+                        }
+                      >
+                        Confirm
+                      </button>
                     </div>
                   )}
                 </div>
@@ -993,7 +1054,6 @@ aria-disabled={totalProductUnits < totalTicketsSelected}
           onClose={() => setShowMembershipPopup(false)}
           onBuy={() => (window.location.href = "/membership")}
         />
-
       </section>
     </div>
   );

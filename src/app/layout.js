@@ -29,30 +29,38 @@ const geistMono = Geist_Mono({
 
 /*  Wrapper needed because useSelector must be inside Provider */
 function LayoutWithPopup({ children, hideNavFooter }) {
-  const userData = useSelector((state) => state.user.userInfo);
   const pathname = usePathname(); //  ADD THIS LINE
   const [showPopup, setShowPopup] = useState(false);
 
+const userData = useSelector((state) => state.user.userInfo);
+const token = useSelector((state) => state.user.token);
+const isLoggedIn = !!(token && userData);
 
 
 
 
   useEffect(() => {
-  if (!userData || hideNavFooter) return;
-  if (pathname === "/profile" || pathname === "/logout") {
+  //  Not logged in → never show popup
+  if (!isLoggedIn) {
+    setShowPopup(false);
+    return;
+  }
+
+  //  Auth / profile pages → never show
+  if (
+    hideNavFooter ||
+    pathname === "/profile" ||
+    pathname === "/logout"
+  ) {
     setShowPopup(false);
     return;
   }
 
   const { percent } = getProfileCompletion(userData);
 
-  // profile incomplete → always show
-  if (percent < 80) {
-    setShowPopup(true);
-  } else {
-    setShowPopup(false);
-  }
-}, [userData, pathname]);
+  setShowPopup(percent < 80);
+}, [isLoggedIn, userData, pathname, hideNavFooter]);
+
 
 
   const handleClose = () => {
@@ -61,7 +69,8 @@ function LayoutWithPopup({ children, hideNavFooter }) {
 
 
   // const percent = getProfileCompletion(userData).percent;
-  const percent = userData ? getProfileCompletion(userData).percent : 0;
+const percent =
+  isLoggedIn ? getProfileCompletion(userData).percent : 0;
 
 
   return (

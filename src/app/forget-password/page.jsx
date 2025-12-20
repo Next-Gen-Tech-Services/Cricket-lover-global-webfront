@@ -29,6 +29,8 @@ export default function ForgotPassword() {
       const res = await authInstance.forgetPassword({ email });
       setLoading(false);
             
+
+
       if (res?.status?.toLowerCase() !== "success")
         return setError(res?.message || "Failed to send reset email");
 
@@ -97,7 +99,7 @@ export default function ForgotPassword() {
           <button
             type="submit"
             className="w-full p-3 bg-green-600 text-white rounded-md font-semibold hover:bg-green-700 transition"
-            disabled={loading}
+            disabled={loading}        
           >
             {loading ? "Processing..." : "Send Reset Link"}
           </button>

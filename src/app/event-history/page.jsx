@@ -6,11 +6,14 @@ import authInstance from "@/api/auth/auth.api";
 export default function EventHistory() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+      const [getData, setGetData] = useState({});
+  
 
   useEffect(() => {
     const load = async () => {
       const res = await authInstance.getEventHistory();
       setEvents(res?.data || []);
+      setGetData(res?.data || null);
       setLoading(false);
     };
     load();
@@ -22,14 +25,13 @@ export default function EventHistory() {
         Loading event history...
       </div>
     );
-  console.log("Fetched event history:", events);
 
   return (
     <div className="min-h-screen bg-white py-10 px-5">
       <h2 className="text-3xl font-bold text-center text-[#22366e] drop-shadow-md mb-10">
         My Event History
       </h2>
-
+{getData?.length > 0 ? (
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {events.map((item) => (
           <div
@@ -218,8 +220,14 @@ export default function EventHistory() {
             </div>
           </div>
 
-        ))}
+        ))
+        }
       </div>
+      ) : (
+                <p className="text-center text-gray-500 mt-10">
+                    No event history found.
+                </p>
+      )}
     </div>
   );
 }

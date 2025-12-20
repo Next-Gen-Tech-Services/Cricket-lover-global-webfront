@@ -4,6 +4,10 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { logoimg } from "@/shared/images";
 import { toast } from "react-toastify";
+import { Eye, EyeOff } from "lucide-react";
+import { strengthIndicator, strengthColor } from "@/utils/password-strength";
+
+
 
 // ✅ Redux imports
 import { useDispatch } from "react-redux";
@@ -15,6 +19,12 @@ export default function Signup() {
   const dispatch = useDispatch();
   const router = useRouter();
   const [contact, setContact] = useState("");
+  const [strength, setStrength] = useState(null);
+const [showPassword, setShowPassword] = useState(false);
+const [contactError, setContactError] = useState("");
+
+const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
 
 
   const countries = [
@@ -323,7 +333,7 @@ export default function Signup() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div className="text-left">
               <label className="block font-semibold mb-1 text-sm text-black">GENDER</label>
               <select
@@ -338,6 +348,32 @@ export default function Signup() {
                 <option value="other">Other</option>
               </select>
             </div>
+            <div className="text-left">
+    <label className="block font-semibold mb-1 text-sm text-black">
+      CONTACT NUMBER
+    </label>
+    <input
+  type="tel"
+  placeholder="Enter contact number"
+  className={`w-full p-2 border rounded-md outline-none ${
+    contactError ? "border-red-500" : "border-gray-300"
+  }`}
+  value={contact}
+  onChange={(e) => {
+    const val = e.target.value.replace(/\D/g, ""); // numbers only
+
+    setContact(val);
+
+    if (val.length < 7 || val.length > 15) {
+      setContactError("Enter a valid contact number");
+    } else {
+      setContactError("");
+    }
+  }}
+  required
+/>
+
+  </div>
 
             <div className="text-left">
               <label className="block font-semibold mb-1 text-sm text-black">COUNTRY OF RESIDENCE</label>
@@ -359,30 +395,71 @@ export default function Signup() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div className="text-left">
               <label className="block font-semibold mb-1 text-sm text-black">PASSWORD</label>
-              <input
-                type="password"
-                placeholder="Create a password"
-                className="w-full p-2 border border-gray-300 rounded-md outline-none"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <div className="relative">
+  <input
+    type={showPassword ? "text" : "password"}
+    placeholder="Create a password"
+    className={`w-full p-2 border rounded-md outline-none ${
+      strength?.label === "Poor" ? "border-red-500" : "border-gray-300"
+    }`}
+    value={password}
+    onChange={(e) => {
+      const val = e.target.value;
+      setPassword(val);
+
+      if (val) {
+        const level = strengthIndicator(val);
+        const info = strengthColor(level);
+        setStrength(info);
+      } else {
+        setStrength(null);
+      }
+    }}
+    required
+  />
+
+  <button
+    type="button"
+    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600"
+    onClick={() => setShowPassword(!showPassword)}
+  >
+    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+  </button>
+</div>
+
+{strength && (
+  <p className="text-xs mt-1" style={{ color: strength.color }}>
+    {strength.label}
+  </p>
+)}
+
             </div>
 
             <div className="text-left">
               <label className="block font-semibold mb-1 text-sm text-black">CONFIRM PASSWORD</label>
-              <input
-                type="password"
-                placeholder="Confirm password"
-                className="w-full p-2 border border-gray-300 rounded-md outline-none"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
+              <div className="relative">
+  <input
+    type={showConfirmPassword ? "text" : "password"}
+    placeholder="Confirm password"
+    className="w-full p-2 border border-gray-300 rounded-md outline-none"
+    value={confirmPassword}
+    onChange={(e) => setConfirmPassword(e.target.value)}
+    required
+  />
+
+  <button
+    type="button"
+    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600"
+    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+  >
+    {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+  </button>
+</div>
+
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div className="text-left">
               <label className="block font-semibold mb-1 text-sm text-black">EMAIL</label>
               <input
@@ -408,19 +485,7 @@ export default function Signup() {
                 <p className="text-red-500 text-xs">{emailError}</p>
               )}
             </div>
-            <div className="text-left">
-    <label className="block font-semibold mb-1 text-sm text-black">
-      CONTACT NUMBER
-    </label>
-    <input
-      type="tel"
-      placeholder="Enter contact number"
-      className="w-full p-2 border border-gray-300 rounded-md outline-none"
-      value={contact}
-      onChange={(e) => setContact(e.target.value)}
-      required
-    />
-  </div>
+            
 
             <div className="text-left">
               <label className="block font-semibold mb-1 text-sm text-black">

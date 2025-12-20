@@ -51,7 +51,7 @@ const Care2 = () => {
             Kids in the UK
           </h2>
 
-          <p className="text-[#70757c] text-sm sm:text-base md:text-m leading-relaxed max-w-lg">
+          <p className="text-[#70757c] text-sm sm:text-base md:text-md lg:text-lg leading-relaxed max-w-lg">
             We plan to provide year-round cricket training to underprivileged
             kids and kids belonging to refugee families within the UK in the
             coming months through our academy. This will also include providing
