@@ -4,7 +4,7 @@ import Passion4 from "../../public/assets/Passion3.webp";
 import Home1 from "../../public/assets/Home1.webp";
 import Home2 from "../../public/assets/Home2.webp";
 import Logo from "../../public/assets/Logo.png";
-import LogoBase from "../../public/assets/Logo.png";
+import LogoBase from "../../public/assets/LogoBase.png";
 import profile1 from "../../public/assets/profile1.webp";
 import profile2 from "../../public/assets/profile2.webp";
 import Passion1 from "../../public/assets/Passion1.jpeg";
