@@ -382,7 +382,7 @@ export default function ProfileForm() {
                 className="border border-gray-200 bg-gray-50 rounded-md px-3 py-2
                 text-xs md:text-sm focus:ring-2 focus:ring-[#3E63DD] outline-none"
               >
-                <option value="">Select Nationality</option>
+                <option value="">Select Country of Residence</option>
                 {NATIONALITIES.map((n) => (
                   <option key={n}>{n}</option>
                 ))}
