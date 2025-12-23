@@ -196,8 +196,9 @@ export default function EventDetailsPage(event) {
 
   // add a product (or increment its quantity). Enforce total units <= totalTicketsSelected
   const handleAddProduct = (product) => {
+    toast.dismiss();
     if (totalTicketsSelected === 0) {
-      return toast.error("Select tickets before adding products");
+      return toast.error("Select tickets before adding products", { autoClose: false });
     }
 
     setSelectedProducts((prev) => {
@@ -217,6 +218,7 @@ export default function EventDetailsPage(event) {
   };
 
   const setProductQuantity = (productId, qty) => {
+    toast.dismiss();
     const finalQty = Math.max(0, Number(qty) || 0);
 
     setSelectedProducts((prev) =>
@@ -282,12 +284,13 @@ export default function EventDetailsPage(event) {
     }
     if (totalProductUnits < totalTicketsSelected) {
       return toast.error(
-        `Please select at least ${totalTicketsSelected} product(s).`
+        `Please select at least ${totalTicketsSelected} product(s).`,
+        { autoClose: false }
       );
     }
 
     if (totalTicketsSelected === 0)
-      return toast.error("Select at least one ticket");
+      return toast.error("Select at least one ticket", { autoClose: false });
 
     // require that product units === tickets selected — change as needed
 
@@ -326,7 +329,7 @@ export default function EventDetailsPage(event) {
         error?.message ||
         "Something went wrong ";
 
-      toast.error(backendMessage);
+      toast.error(backendMessage,{ autoClose: false });
     }
   };
 
@@ -517,15 +520,16 @@ export default function EventDetailsPage(event) {
                     <div className="flex items-center gap-2 sm:gap-3">
                       {/* Minus */}
                       <button
-                        onClick={() =>
+                        onClick={() => {
+                          toast.dismiss();
                           setTicketQuantities((prev) => ({
                             ...prev,
                             [ticket.type]: Math.max(
                               0,
                               (prev[ticket.type] || 0) - 1
                             ),
-                          }))
-                        }
+                          }));
+                        }}
                         disabled={isChildDisabled}
                         className={`border px-2 sm:px-3 py-1 rounded text-base sm:text-lg transition ${isChildDisabled
                           ? "opacity-40 cursor-not-allowed"
@@ -542,15 +546,16 @@ export default function EventDetailsPage(event) {
 
                       {/* Plus */}
                       <button
-                        onClick={() =>
+                        onClick={() => {
+                          toast.dismiss();
                           setTicketQuantities((prev) => ({
                             ...prev,
                             [ticket.type]:
                               (prev[ticket.type] || 0) < ticket.quantity
                                 ? (prev[ticket.type] || 0) + 1
                                 : prev[ticket.type],
-                          }))
-                        }
+                          }));
+                        }}
                         className={`border px-2 sm:px-3 py-1 rounded text-base sm:text-lg transition 
         ${(ticketQuantities?.[ticket.type] || 0) >= ticket.quantity ||
                             isChildDisabled
@@ -653,7 +658,7 @@ export default function EventDetailsPage(event) {
                   <button
                     onClick={() => {
                       if (totalTicketsSelected === 0)
-                        return toast.error("Select tickets first");
+                        return toast.error("Select tickets first", { autoClose: false });
                       setOpen(true);
                     }}
                     className="bg-green-600 text-white px-4 py-2 rounded-lg text-xs font-semibold hover:bg-green-700 transition"
