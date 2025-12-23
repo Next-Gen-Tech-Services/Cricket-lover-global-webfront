@@ -228,6 +228,8 @@ import "react-datepicker/dist/react-datepicker.css";
 
 export default function ProfileForm() {
   const [loading, setLoading] = useState(true);
+  const [fetchingAddress, setFetchingAddress] = useState(false);
+  const [availableAddresses, setAvailableAddresses] = useState([]);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -291,6 +293,58 @@ export default function ProfileForm() {
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  const handlePostcodeChange = async (e) => {
+    const postcode = e.target.value;
+    setFormData({ ...formData, postcode });
+
+    if (postcode.length >= 5) {
+      setFetchingAddress(true);
+      try {
+        // Using Ideal Postcodes API for detailed house addresses
+        const response = await fetch(
+          `https://api.ideal-postcodes.co.uk/v1/postcodes/${postcode.replace(/\s/g, "")}?api_key=ak_test`
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log('API Response:', data);
+          
+          if (data.result && data.result.length > 0) {
+            // Format addresses with house number, street, locality, town
+            const addresses = data.result.map((addr) => {
+              const parts = [
+                addr.line_1,
+                addr.line_2,
+                addr.line_3,
+                addr.post_town,
+                addr.postcode
+              ].filter(part => part);
+              return parts.join(', ');
+            });
+            setAvailableAddresses(addresses);
+            // toast("✅ Found " + addresses.length + " addresses");
+          } else {
+            setAvailableAddresses([]);
+            // toast("⚠️ No addresses found for this postcode");
+          }
+        } else {
+          const errorData = await response.json();
+          console.error('API Error:', response.status, errorData);
+          setAvailableAddresses([]);
+          // toast(`⚠️ ${errorData.message || 'Postcode not found'}`);
+        }
+      } catch (error) {
+        console.error('Fetch Error:', error);
+        setAvailableAddresses([]);
+        // toast("⚠️ Could not fetch addresses");
+      } finally {
+        setFetchingAddress(false);
+      }
+    } else {
+      setAvailableAddresses([]);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -340,7 +394,52 @@ export default function ProfileForm() {
               {key === "nationality" ? "Country of Residence" : key === "postcode" ? "Postcode / Pincode / Zipcode" : key.replace(/([A-Z])/g, " $1")}
             </label>
 
-            {key === "dateOfBirth" ? (
+            {key === "postcode" ? (
+              <input
+                type="text"
+                name="postcode"
+                value={formData.postcode}
+                onChange={handlePostcodeChange}
+                className="border border-gray-200 bg-gray-50 rounded-md px-3 py-2
+                text-xs md:text-sm focus:ring-2 focus:ring-[#3E63DD] outline-none"
+                placeholder="Enter postcode to auto-fetch address"
+              />
+            ) : key === "address" && availableAddresses.length > 0 ? (
+              <>
+                <select
+                  name="address"
+                  value={formData.address === "manual" ? "manual" : formData.address}
+                  onChange={(e) => {
+                    if (e.target.value === "manual") {
+                      setFormData({ ...formData, address: "" });
+                      setAvailableAddresses([]);
+                    } else {
+                      handleChange(e);
+                    }
+                  }}
+                  className="border border-gray-200 bg-gray-50 rounded-md px-3 py-2
+                  text-xs md:text-sm focus:ring-2 focus:ring-[#3E63DD] outline-none"
+                >
+                  <option value="">Select Address</option>
+                  {availableAddresses.map((addr, idx) => (
+                    <option key={idx} value={addr}>
+                      {addr}
+                    </option>
+                  ))}
+                  <option value="manual">Enter Manually</option>
+                </select>
+              </>
+            ) : key === "address" ? (
+              <input
+                type="text"
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+                className="border border-gray-200 bg-gray-50 rounded-md px-3 py-2
+                text-xs md:text-sm focus:ring-2 focus:ring-[#3E63DD] outline-none"
+                placeholder="Enter address manually"
+              />
+            ) : key === "dateOfBirth" ? (
               <DatePicker
                 selected={formData.dateOfBirth ? new Date(formData.dateOfBirth) : null}
                 onChange={(date) =>
