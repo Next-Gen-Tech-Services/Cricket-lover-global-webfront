@@ -2,8 +2,16 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import authInstance from "@/api/auth/auth.api";
+import { usePageSEO } from "@/utils/useSEO";
+import { pageMetadata } from "../configs/seo.config";
 
 export default function EventHistory() {
+  usePageSEO({
+    title: pageMetadata.eventHistory.title,
+    description: pageMetadata.eventHistory.description,
+    keywords: pageMetadata.eventHistory.keywords,
+  });
+
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
       const [getData, setGetData] = useState({});

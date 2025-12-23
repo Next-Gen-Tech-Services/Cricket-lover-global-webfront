@@ -10,6 +10,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Provider, useSelector } from "react-redux";
 import { store } from "@/redux/redux-store/store";
+import { OrganizationSchema, WebsiteSchema } from "@/component/StructuredData";
 
 
 /* 🔔 POPUP ADD */
@@ -102,6 +103,15 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#000000" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="canonical" href={`https://www.cricketloversglobal.com${pathname}`} />
+        <OrganizationSchema />
+        <WebsiteSchema />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

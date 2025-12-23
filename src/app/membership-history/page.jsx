@@ -1,8 +1,16 @@
 "use client";
 import React, { useState, useEffect } from 'react'
 import authInstance from '@/api/auth/auth.api';
+import { usePageSEO } from "@/utils/useSEO";
+import { pageMetadata } from "../configs/seo.config";
 
 const MembershipHistory = () => {
+    usePageSEO({
+        title: pageMetadata.membershipHistory.title,
+        description: pageMetadata.membershipHistory.description,
+        keywords: pageMetadata.membershipHistory.keywords,
+    });
+
     const [getData, setGetData] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");

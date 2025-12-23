@@ -8,8 +8,16 @@ import { toast } from "react-toastify";
 import { useParams, useSearchParams } from "next/navigation";
 import ProductDetails from "./product";
 import Model from "../_component/popupmodel";
+import { usePageSEO } from "@/utils/useSEO";
+import { pageMetadata } from "../../configs/seo.config";
 
 export default function TicketPage() {
+  usePageSEO({
+    title: pageMetadata.ticketDetails.title,
+    description: pageMetadata.ticketDetails.description,
+    keywords: pageMetadata.ticketDetails.keywords,
+  });
+
   const query = useSearchParams();
   const view = query.get("view");
 

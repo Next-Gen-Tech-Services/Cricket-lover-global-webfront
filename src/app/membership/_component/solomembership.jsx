@@ -66,7 +66,7 @@
 //         onClick={() => router.push("/membership")}
 //         className="bg-green-600 hover:bg-green-700 text-white px-7 py-3 font-bold rounded-lg flex items-center gap-2 mb-5"
 //       >
-//         <ArrowLeft size={20} /> Back to Pricing Plans
+//         <ArrowLeft size={20} /> Back to Membership Plans
 //       </button>
 
 //       {/* BANNER */}

@@ -4,8 +4,16 @@ import ProfileSidebar from "./profilesidebar";
 import ProfileImageUpload from "./profileimage";
 import ProfileForm from "./profileform";
 import ProtectedRoute from "@/component/protectroute";
+import { usePageSEO } from "@/utils/useSEO";
+import { pageMetadata } from "../../configs/seo.config";
 
 export default function ProfilePage() {
+  usePageSEO({
+    title: pageMetadata.profile.title,
+    description: pageMetadata.profile.description,
+    keywords: pageMetadata.profile.keywords,
+  });
+
   return (
     <div className="min-h-screen bg-[#F4F6FB] flex transition-all">
       <ProtectedRoute>

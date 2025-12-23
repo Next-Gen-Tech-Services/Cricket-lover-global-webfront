@@ -79,7 +79,7 @@ export default function MembershipDetailsPage() {
       onClick={() => router.push("/membership")}
       className="mt-4 md:mt-0 bg-green-600 hover:bg-green-700 text-white px-7 py-3 font-bold rounded-lg flex items-center gap-2 mb-5  transition cursor-pointer"
     >
-      <ArrowLeft size={20} /> Back to Pricing Plans
+      <ArrowLeft size={20} /> Back to Membership Plans
     </button>
 
       {/* BANNER */}
