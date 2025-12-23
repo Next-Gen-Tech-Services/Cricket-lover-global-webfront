@@ -71,8 +71,17 @@ const Footer = () => {
 
       {/* Bottom Section */}
       <div className="bg-[#1c2a4b] text-white text-center py-3 text-l">
-        © 2025 All Rights Reserved.&nbsp;
-        <span className="font-normalbold">Managed by - FRWD Studio</span>
+        © 2025 All Rights Reserved.&nbsp; Managed by –&nbsp;
+        
+
+<Link
+  href="https://www.pacomedia.in/"
+  target="_blank"
+  className="font-normal  hover:underline"
+>
+  PACO Media
+</Link>
+
       </div>
     </footer>
   );
