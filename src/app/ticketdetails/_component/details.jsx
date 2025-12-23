@@ -10,6 +10,7 @@ import React from "react";
 import { getTokenLocal } from "@/utils/localStorage.util";
 import { useSelector } from "react-redux";
 import Link from "next/link";
+import TshirtCustomization from "./TshirtCustomization";
 
 
 // Enhanced MembershipPopup Modal
@@ -168,7 +169,7 @@ export default function EventDetailsPage(event) {
   const [products, setProducts] = useState([]);
   // const [open, setOpen] = useState(false);
   // const [selectedProduct, setSelectedProduct] = useState(null);
-  const [selectedProducts, setSelectedProducts] = useState([]); // { product, quantity }
+  const [selectedProducts, setSelectedProducts] = useState([]); // { product, quantity, items: [{size, country}] }
   const [open, setOpen] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
   const router = useRouter();
@@ -206,14 +207,22 @@ export default function EventDetailsPage(event) {
 
       if (idx > -1) {
         const copy = [...prev];
+        const newQuantity = copy[idx].quantity + 1;
         copy[idx] = {
           ...copy[idx],
-          quantity: copy[idx].quantity + 1,
+          quantity: newQuantity,
+          items: product.type === "tshirt" 
+            ? [...(copy[idx].items || []), { size: "", country: "" }]
+            : copy[idx].items
         };
         return copy;
       }
 
-      return [...prev, { product, quantity: 1 }];
+      return [...prev, { 
+        product, 
+        quantity: 1,
+        items: product.type === "tshirt" ? [{ size: "", country: "" }] : []
+      }];
     });
   };
 
@@ -223,9 +232,32 @@ export default function EventDetailsPage(event) {
 
     setSelectedProducts((prev) =>
       prev
-        .map((p) =>
-          p.product._id === productId ? { ...p, quantity: finalQty } : p
-        )
+        .map((p) => {
+          if (p.product._id === productId) {
+            const currentQty = p.quantity;
+            const newQty = finalQty;
+            
+            // If product is tshirt, adjust items array
+            if (p.product.type === "tshirt") {
+              let newItems = [...(p.items || [])];
+              
+              if (newQty > currentQty) {
+                // Add more items
+                for (let i = currentQty; i < newQty; i++) {
+                  newItems.push({ size: "", country: "" });
+                }
+              } else if (newQty < currentQty) {
+                // Remove items
+                newItems = newItems.slice(0, newQty);
+              }
+              
+              return { ...p, quantity: newQty, items: newItems };
+            }
+            
+            return { ...p, quantity: newQty };
+          }
+          return p;
+        })
         .filter((p) => p.quantity > 0)
     );
   };
@@ -233,6 +265,14 @@ export default function EventDetailsPage(event) {
   const removeSelectedProduct = (productId) => {
     setSelectedProducts((prev) =>
       prev.filter((p) => p.product._id !== productId)
+    );
+  };
+
+  const updateTshirtItems = (productId, items) => {
+    setSelectedProducts((prev) =>
+      prev.map((p) =>
+        p.product._id === productId ? { ...p, items } : p
+      )
     );
   };
 
@@ -292,12 +332,35 @@ export default function EventDetailsPage(event) {
     if (totalTicketsSelected === 0)
       return toast.error("Select at least one ticket", { autoClose: false });
 
+    // Validate t-shirt customization
+    for (const p of selectedProducts) {
+      if (p.product.type === "tshirt") {
+        const items = p.items || [];
+        if (items.length !== p.quantity) {
+          return toast.error(
+            `Please complete size and country selection for ${p.product.name}`,
+            { autoClose: false }
+          );
+        }
+        
+        for (let i = 0; i < items.length; i++) {
+          if (!items[i].size || !items[i].country) {
+            return toast.error(
+              `Please select size and country for all ${p.product.name} items (T-shirt #${i + 1})`,
+              { autoClose: false }
+            );
+          }
+        }
+      }
+    }
+
     // require that product units === tickets selected — change as needed
 
     // build products array
     const productsPayload = selectedProducts.map((p) => ({
       id: p.product._id,
       quantity: p.quantity,
+      items: p.product.type === "tshirt" ? p.items : undefined,
     }));
 
     const payload = {
@@ -683,95 +746,106 @@ export default function EventDetailsPage(event) {
             {selectedProducts.length > 0 && (
               <div className="flex flex-col gap-3 w-full">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {selectedProducts.map(({ product, quantity }) => {
+                  {selectedProducts.map(({ product, quantity, items }) => {
                     const lineTotal = (
                       (Number(product.price) || 0) * (Number(quantity) || 0)
                     ).toFixed(2);
                     return (
                       <div
                         key={product._id}
-                        className="p-3 border rounded-2xl bg-white shadow-sm flex items-center gap-3"
+                        className="p-3 border rounded-2xl bg-white shadow-sm flex flex-col gap-3"
                         role="group"
                         aria-label={`${product.name} selected`}
                       >
-                        <img
-                          src={product.coverImage}
-                          alt={product.name}
-                          className="w-14 h-14 rounded-lg object-cover border"
-                        />
+                        <div className="flex items-center gap-3">
+                          <img
+                            src={product.coverImage}
+                            alt={product.name}
+                            className="w-14 h-14 rounded-lg object-cover border"
+                          />
 
-                        <div className="flex-1 min-w-0">
-                          <div className="flex justify-between items-start gap-2">
-                            <div className="truncate">
-                              <p className="text-sm font-semibold truncate">
-                                {product.name}
-                              </p>
-                              <p className="text-xs text-gray-500 truncate">
-                                {product.category || product.brandName}
-                              </p>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex justify-between items-start gap-2">
+                              <div className="truncate">
+                                <p className="text-sm font-semibold truncate">
+                                  {product.name}
+                                </p>
+                                <p className="text-xs text-gray-500 truncate">
+                                  {product.category || product.brandName}
+                                </p>
+                              </div>
+
+                              <div className="text-right">
+                                <p className="text-sm font-semibold">
+                                  £{Number(product.price).toFixed(2)}
+                                </p>
+                                <p className="text-xs text-gray-400">
+                                  £{Number(lineTotal).toFixed(2)}
+                                </p>
+                              </div>
                             </div>
 
-                            <div className="text-right">
-                              <p className="text-sm font-semibold">
-                                £{Number(product.price).toFixed(2)}
-                              </p>
-                              <p className="text-xs text-gray-400">
-                                £{Number(lineTotal).toFixed(2)}
-                              </p>
+                            {/* quantity controls */}
+                            <div className="mt-3 flex items-center gap-2">
+                              <button
+                                aria-label={`Decrease quantity for ${product.name}`}
+                                onClick={() =>
+                                  setProductQuantity(
+                                    product._id,
+                                    Math.max(0, quantity - 1)
+                                  )
+                                }
+                                className="w-8 h-8 grid place-items-center rounded-md border hover:bg-gray-50 transition"
+                              >
+                                −
+                              </button>
+
+                              {/* editable quantity input for keyboard users */}
+                              <input
+                                type="number"
+                                aria-label={`Quantity for ${product.name}`}
+                                value={quantity}
+                                min={0}
+                                max={totalTicketsSelected}
+                                onChange={(e) => {
+                                  const v = Math.max(
+                                    0,
+                                    Number(e.target.value) || 0
+                                  );
+                                  setProductQuantity(product._id, v);
+                                }}
+                                className="w-16 h-8 text-center rounded-md border px-2 py-1 text-sm"
+                              />
+
+                              <button
+                                aria-label={`Increase quantity for ${product.name}`}
+                                onClick={() =>
+                                  setProductQuantity(product._id, quantity + 1)
+                                }
+                                className="w-8 h-8 grid place-items-center rounded-md border hover:bg-gray-50 transition"
+                              >
+                                +
+                              </button>
+
+                              <button
+                                onClick={() => removeSelectedProduct(product._id)}
+                                className="ml-2 text-red-600 text-xs hover:underline"
+                                aria-label={`Remove ${product.name}`}
+                              >
+                                Remove
+                              </button>
                             </div>
-                          </div>
-
-                          {/* quantity controls */}
-                          <div className="mt-3 flex items-center gap-2">
-                            <button
-                              aria-label={`Decrease quantity for ${product.name}`}
-                              onClick={() =>
-                                setProductQuantity(
-                                  product._id,
-                                  Math.max(0, quantity - 1)
-                                )
-                              }
-                              className="w-8 h-8 grid place-items-center rounded-md border hover:bg-gray-50 transition"
-                            >
-                              −
-                            </button>
-
-                            {/* editable quantity input for keyboard users */}
-                            <input
-                              type="number"
-                              aria-label={`Quantity for ${product.name}`}
-                              value={quantity}
-                              min={0}
-                              max={totalTicketsSelected}
-                              onChange={(e) => {
-                                const v = Math.max(
-                                  0,
-                                  Number(e.target.value) || 0
-                                );
-                                setProductQuantity(product._id, v);
-                              }}
-                              className="w-16 h-8 text-center rounded-md border px-2 py-1 text-sm"
-                            />
-
-                            <button
-                              aria-label={`Increase quantity for ${product.name}`}
-                              onClick={() =>
-                                setProductQuantity(product._id, quantity + 1)
-                              }
-                              className="w-8 h-8 grid place-items-center rounded-md border hover:bg-gray-50 transition"
-                            >
-                              +
-                            </button>
-
-                            <button
-                              onClick={() => removeSelectedProduct(product._id)}
-                              className="ml-2 text-red-600 text-xs hover:underline"
-                              aria-label={`Remove ${product.name}`}
-                            >
-                              Remove
-                            </button>
                           </div>
                         </div>
+
+                        {/* T-shirt customization */}
+                        {product.type === "tshirt" && quantity > 0 && (
+                          <TshirtCustomization
+                            quantity={quantity}
+                            items={items || []}
+                            onChange={(newItems) => updateTshirtItems(product._id, newItems)}
+                          />
+                        )}
                       </div>
                     );
                   })}
