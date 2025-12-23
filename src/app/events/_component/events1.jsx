@@ -156,7 +156,7 @@ const handlePrevPage = () => {
                   }
                   className="bg-green-600 hover:bg-green-700 text-white px-7 py-2 rounded-lg text-lg font-semibold"
                 >
-                  Buy tickets
+                  Join Event
                 </button>
               </div>
 
@@ -328,7 +328,7 @@ const handlePrevPage = () => {
                         }}
                         className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-md text-sm font-semibold mt-auto group-hover:scale-105 transition duration-300 cursor-pointer"
                       >
-                        Buy tickets
+                        Join Event
                       </button>
                     </div>
                   </div>
