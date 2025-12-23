@@ -309,7 +309,7 @@ const [showConfirmPassword, setShowConfirmPassword] = useState(false);
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div className="text-left">
-              <label className="block font-semibold mb-1 text-sm text-black">FIRSTNAME</label>
+              <label className="block font-semibold mb-1 text-sm text-black">FIRST NAME</label>
               <input
                 type="text"
                 placeholder="Enter your first name"
@@ -321,7 +321,7 @@ const [showConfirmPassword, setShowConfirmPassword] = useState(false);
             </div>
 
             <div className="text-left">
-              <label className="block font-semibold mb-1 text-sm text-black">LASTNAME</label>
+              <label className="block font-semibold mb-1 text-sm text-black">LAST NAME</label>
               <input
                 type="text"
                 placeholder="Enter your last name"
