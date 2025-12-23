@@ -337,7 +337,7 @@ export default function ProfileForm() {
         .map((key) => (
           <div key={key} className="flex flex-col">
             <label className="text-sm text-gray-600 font-medium mb-1 capitalize">
-              {key.replace(/([A-Z])/g, " $1")}
+              {key === "nationality" ? "Country of Residence" : key.replace(/([A-Z])/g, " $1")}
             </label>
 
             {key === "dateOfBirth" ? (
