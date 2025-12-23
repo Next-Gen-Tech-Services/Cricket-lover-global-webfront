@@ -700,7 +700,7 @@ export default function EventDetailsPage(event) {
                     No  CLG Merchandise added yet
                   </div>
                   <p className="text-xs text-gray-500">
-                    Add a CLG Merchandise for each ticket — you can choose the same
+                    Add atleast one CLG Merchandise for each ticket — you can choose the same
                     CLG Merchandise multiple times.
                   </p>
                 </div>
