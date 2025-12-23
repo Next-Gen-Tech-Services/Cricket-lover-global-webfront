@@ -71,7 +71,6 @@ export default function TicketPage() {
 
   return (
     <>
-      <Model />
       {selectedEvent && <EventDetailsPage event={selectedEvent} />}
 
       {view === "product" ? <ProductDetails /> : ""}

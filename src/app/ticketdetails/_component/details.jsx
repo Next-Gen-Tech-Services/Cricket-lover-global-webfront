@@ -430,15 +430,15 @@ export default function EventDetailsPage(event) {
           <h2 className="text-xl sm:text-2xl font-bold mb-3">HOW TO BUY:</h2>
           <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-gray-700">
 
-<li className="flex items-center gap-2 ">
-  <span> ✅ BECOME A CRICKET LOVERS GLOBAL (CLG) MEMBER.</span>
-  <Link
-    href="/membership"
-    className="text-green-600  underline hover:text-green-700"
-  >
-    Click here
-  </Link>
-</li>
+            <li className="flex items-center gap-2 ">
+              <span> ✅ BECOME A CRICKET LOVERS GLOBAL (CLG) MEMBER.</span>
+              <Link
+                href="/membership"
+                className="text-green-600  underline hover:text-green-700"
+              >
+                Click here
+              </Link>
+            </li>
 
             <li>✅ LOG IN WITH YOUR MEMBERSHIP CREDENTIALS TO BOOK MATCH AND EVENT TICKETS.</li>
           </ul>
@@ -487,11 +487,10 @@ export default function EventDetailsPage(event) {
                       className={`
           flex justify-between items-center w-full p-2   
           transition 
-          ${
-            selectedTicket?.type === ticket.type
-              ? "border-green-600 bg-green-50"
-              : "border-gray-300 bg-white"
-          }
+          ${selectedTicket?.type === ticket.type
+                          ? "border-green-600 bg-green-50"
+                          : "border-gray-300 bg-white"
+                        }
         `}
                     >
                       <span className="font-medium capitalize text-gray-700">
@@ -553,11 +552,10 @@ export default function EventDetailsPage(event) {
               return (
                 <div
                   key={index}
-                  className={`flex flex-col p-3 bg-white shadow-sm rounded-lg border ${
-                    isChildDisabled
+                  className={`flex flex-col p-3 bg-white shadow-sm rounded-lg border ${isChildDisabled
                       ? "border-yellow-300 bg-yellow-50"
                       : "border-gray-200"
-                  }`}
+                    }`}
                 >
                   <div className="flex justify-between items-center">
                     {/* ✅ LEFT SIDE TEXT */}
@@ -585,11 +583,10 @@ export default function EventDetailsPage(event) {
                           }))
                         }
                         disabled={isChildDisabled}
-                        className={`border px-2 sm:px-3 py-1 rounded text-base sm:text-lg transition ${
-                          isChildDisabled
+                        className={`border px-2 sm:px-3 py-1 rounded text-base sm:text-lg transition ${isChildDisabled
                             ? "opacity-40 cursor-not-allowed"
                             : "cursor-pointer hover:bg-gray-100"
-                        }`}
+                          }`}
                       >
                         -
                       </button>
@@ -611,15 +608,14 @@ export default function EventDetailsPage(event) {
                           }))
                         }
                         className={`border px-2 sm:px-3 py-1 rounded text-base sm:text-lg transition 
-        ${
-          (ticketQuantities?.[ticket.type] || 0) >= ticket.quantity ||
-          isChildDisabled
-            ? "opacity-40 cursor-not-allowed"
-            : "cursor-pointer hover:bg-gray-100"
-        }`}
+        ${(ticketQuantities?.[ticket.type] || 0) >= ticket.quantity ||
+                            isChildDisabled
+                            ? "opacity-40 cursor-not-allowed"
+                            : "cursor-pointer hover:bg-gray-100"
+                          }`}
                         disabled={
                           (ticketQuantities?.[ticket.type] || 0) >=
-                            ticket.quantity || isChildDisabled
+                          ticket.quantity || isChildDisabled
                         }
                       >
                         +
@@ -686,9 +682,9 @@ export default function EventDetailsPage(event) {
                         totalTicketsSelected === 0
                           ? "0%"
                           : `${Math.min(
-                              (totalProductUnits / totalTicketsSelected) * 100,
-                              100
-                            )}%`,
+                            (totalProductUnits / totalTicketsSelected) * 100,
+                            100
+                          )}%`,
                     }}
                     aria-hidden="true"
                   />
@@ -851,13 +847,13 @@ export default function EventDetailsPage(event) {
                   </div>
 
                   <div className="text-sm font-semibold">
-                     CLG Merchandise total: £
+                    CLG Merchandise total: £
                     {selectedProducts
                       .reduce(
                         (s, p) =>
                           s +
                           (Number(p.product.price) || 0) *
-                            (Number(p.quantity) || 0),
+                          (Number(p.quantity) || 0),
                         0
                       )
                       .toFixed(2)}
@@ -867,30 +863,202 @@ export default function EventDetailsPage(event) {
             )}
 
             <Modal isOpen={open} onClose={() => setOpen(false)}>
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl sm:text-2xl font-semibold text-black">
-                  Select CLG Merchandise
-                  
-                </h2>
+              {/* Minimalistic Header */}
+              <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    Select Merchandise
+                  </h2>
+                  <p className="text-sm text-gray-500 mt-1">
+                    {totalProductUnits} of {totalTicketsSelected} tickets have products
+                  </p>
+                </div>
 
-                {/* Close button INSIDE header */}
+                {/* Minimalistic Close button */}
                 <button
                   onClick={() => setOpen(false)}
-                  className="text-gray-600 hover:text-black text-xl"
+                  className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+                  aria-label="Close"
                 >
-                  ✖
+                  <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
                 </button>
               </div>
 
-              <div className="flex flex-col gap-3 sm:gap-4 max-h-[60vh] overflow-auto">
-                {products.map((item) => (
-                  <ProductDetails
-                    key={item._id}
-                    product={item}
-                    onAdd={() => handleAddProduct(item)}
-                  />
-                ))}
+              {/* Products List with Quantity Controls */}
+              <div className="flex flex-col gap-3 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+                {products.map((item) => {
+                  const selectedProduct = selectedProducts.find(p => p.product._id === item._id);
+                  const currentQty = selectedProduct ? selectedProduct.quantity : 0;
+                  const otherProductsTotal = selectedProducts.reduce(
+                    (sum, p) => sum + (p.product._id === item._id ? 0 : p.quantity),
+                    0
+                  );
+                  const availableToAdd = totalTicketsSelected - otherProductsTotal;
+                  const maxReached = currentQty >= availableToAdd;
+
+                  return (
+                    <div
+                      key={item._id}
+                      className={`group relative flex items-center gap-4 p-4 rounded-xl border-2 transition-all ${currentQty > 0
+                          ? 'border-green-500 bg-green-50'
+                          : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
+                        }`}
+                    >
+                      {/* Product Image */}
+                      <div className="relative w-20 h-20 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                        <img
+                          src={item.coverImage}
+                          alt={item.name}
+                          className="w-full h-full object-cover"
+                        />
+                        {currentQty > 0 && (
+                          <div className="absolute top-1 right-1 bg-green-600 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
+                            {currentQty}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Product Info */}
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-gray-900 text-sm leading-tight mb-1 flex items-center gap-1.5">
+                          <span className="truncate">{item.name}</span>
+                          {/* Info Icon with Tooltip */}
+                          {item.description && (
+                            <div className="relative group/tooltip flex-shrink-0">
+                              <svg 
+                                className="w-4 h-4 text-gray-400 hover:text-blue-600 cursor-help transition-colors" 
+                                fill="none" 
+                                stroke="currentColor" 
+                                viewBox="0 0 24 24"
+                              >
+                                <path 
+                                  strokeLinecap="round" 
+                                  strokeLinejoin="round" 
+                                  strokeWidth={2} 
+                                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" 
+                                />
+                              </svg>
+                              {/* Tooltip */}
+                              <div className="absolute left-0 top-full mt-2 hidden group-hover/tooltip:block z-[60] w-64 pointer-events-none">
+                                <div className="bg-gray-900 text-white text-xs rounded-lg py-2.5 px-3.5 shadow-2xl border border-gray-700">
+                                  <p className="leading-relaxed">{item.description}</p>
+                                  {/* Arrow */}
+                                  <div className="absolute left-4 bottom-full w-0 h-0 border-l-[6px] border-r-[6px] border-b-[6px] border-transparent border-b-gray-900"></div>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </h3>
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-lg font-bold text-green-600">
+                            £{Number(item.price).toFixed(2)}
+                          </span>
+                          {item.category && (
+                            <span className="text-xs text-gray-500 px-2 py-0.5 bg-gray-100 rounded">
+                              {item.category}
+                            </span>
+                          )}
+                        </div>
+                        {item.brandName && (
+                          <p className="text-xs text-gray-500">{item.brandName}</p>
+                        )}
+                      </div>
+
+                      {/* Quantity Controls */}
+                      <div className="flex-shrink-0">
+                        {currentQty === 0 ? (
+                          <button
+                            onClick={() => handleAddProduct(item)}
+                            disabled={totalTicketsSelected === 0}
+                            className={`px-6 py-2.5 rounded-lg font-semibold text-sm transition-all ${totalTicketsSelected === 0
+                                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                : 'bg-green-600 text-white hover:bg-green-700 shadow-sm hover:shadow-md'
+                              }`}
+                          >
+                            Add
+                          </button>
+                        ) : (
+                          <div className="flex items-center gap-2 bg-white rounded-lg border-2 border-green-500 p-1">
+                            {/* Decrement */}
+                            <button
+                              onClick={() => {
+                                if (currentQty === 1) {
+                                  removeSelectedProduct(item._id);
+                                } else {
+                                  setProductQuantity(item._id, currentQty - 1);
+                                }
+                              }}
+                              className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-50 text-red-600 font-bold transition-colors"
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M20 12H4" />
+                              </svg>
+                            </button>
+
+                            {/* Quantity Display */}
+                            <div className="w-10 text-center">
+                              <span className="text-lg font-bold text-gray-900">{currentQty}</span>
+                            </div>
+
+                            {/* Increment */}
+                            <button
+                              onClick={() => handleAddProduct(item)}
+                              className={`w-8 h-8 flex items-center justify-center rounded-md font-bold transition-colors hover:bg-green-50 text-green-600`}
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                              </svg>
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
+
+              {/* Footer Summary */}
+              <div className="mt-6 pt-4 border-t border-gray-200">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-sm text-gray-600">Products Total</span>
+                  <span className="text-xl font-bold text-green-600">
+                    £{selectedProducts.reduce((s, p) => s + (Number(p.product.price) || 0) * (Number(p.quantity) || 0), 0).toFixed(2)}
+                  </span>
+                </div>
+                <button
+                  onClick={() => setOpen(false)}
+                  disabled={totalProductUnits  < totalTicketsSelected}
+                  className={`w-full py-3 rounded-lg font-semibold transition-all ${totalProductUnits < totalTicketsSelected
+
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-green-600 text-white hover:bg-green-700 shadow-md'
+                    }`}
+                >
+                  {totalProductUnits < totalTicketsSelected
+                    ? `Select ${totalTicketsSelected - totalProductUnits} more product${totalTicketsSelected - totalProductUnits > 1 ? 's' : ''}`
+                    : 'Done'
+                  }
+                </button>
+              </div>
+
+              {/* Custom Scrollbar Styles */}
+              <style jsx>{`
+                .custom-scrollbar::-webkit-scrollbar {
+                  width: 6px;
+                }
+                .custom-scrollbar::-webkit-scrollbar-track {
+                  background: #f1f1f1;
+                  border-radius: 10px;
+                }
+                .custom-scrollbar::-webkit-scrollbar-thumb {
+                  background: #10b981;
+                  border-radius: 10px;
+                }
+                .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                  background: #059669;
+                }
+              `}</style>
             </Modal>
           </div>
 
@@ -978,11 +1146,10 @@ aria-disabled={totalProductUnits < totalTicketsSelected}
                       </button> */}
                       <button
                         className={`w-full sm:w-auto px-3 py-2 rounded-md font-bold text-xs sm:text-sm transition
-    ${
-      totalTicketsSelected > 0 && totalProductUnits >= totalTicketsSelected
-        ? "bg-green-600 text-white hover:bg-green-700"
-        : "bg-green-200 text-green-800 opacity-80 cursor-not-allowed"
-    }`}
+    ${totalTicketsSelected > 0 && totalProductUnits >= totalTicketsSelected
+                            ? "bg-green-600 text-white hover:bg-green-700"
+                            : "bg-green-200 text-green-800 opacity-80 cursor-not-allowed"
+                          }`}
                         onClick={handleConfirm}
                         disabled={
                           totalTicketsSelected === 0 ||
@@ -998,40 +1165,6 @@ aria-disabled={totalProductUnits < totalTicketsSelected}
                     </div>
                   )}
                 </div>
-
-                {/* MODAL kept inside same block so markup is nearby — modal content unchanged */}
-                <Modal isOpen={open} onClose={() => setOpen(false)}>
-                  <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-xl sm:text-2xl font-semibold text-black">
-  Select CLG Merchandise {" "}
-  <span className="font-bold text-green-600">
-    ({totalProductUnits})
-  </span>
-</h2>
-
-
-                    {/* Close button INSIDE header */}
-                    <button
-                      onClick={() => setOpen(false)}
-                      className="text-gray-600 cursor-pointer hover:text-black text-xl"
-                    >
-                      ✖
-                    </button>
-                  </div>
-
-                  <div className="flex flex-col gap-3 sm:gap-4 max-h-[60vh] overflow-auto">
-                    {products.map((item) => (
-                      <ProductDetails
-                        key={item._id}
-                        product={item}
-                        onAdd={() => {
-                          handleAddProduct(item);
-                          // keep modal open to add multiple
-                        }}
-                      />
-                    ))}
-                  </div>
-                </Modal>
               </div>
             </div>
           </div>
