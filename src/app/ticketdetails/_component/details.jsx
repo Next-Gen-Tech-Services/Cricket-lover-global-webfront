@@ -216,26 +216,6 @@ export default function EventDetailsPage(event) {
     });
   };
 
-  // set product quantity (used by + / - controls)
-  // const setProductQuantity = (productId, qty) => {
-  //   const q = Math.max(0, Number(qty) || 0);
-  //   // ensure not exceed ticket limit
-  //   const otherUnits = selectedProducts.reduce(
-  //     (s, p) => s + (p.product._id === productId ? 0 : p.quantity),
-  //     0
-  //   );
-  //   const allowed = Math.max(0, totalTicketsSelected - otherUnits);
-  //   const finalQty = Math.min(q, allowed);
-
-  //   setSelectedProducts(
-  //     (prev) =>
-  //       prev
-  //         .map((p) =>
-  //           p.product._id === productId ? { ...p, quantity: finalQty } : p
-  //         )
-  //         .filter((p) => p.quantity > 0) // remove zero-qty
-  //   );
-  // };
   const setProductQuantity = (productId, qty) => {
     const finalQty = Math.max(0, Number(qty) || 0);
 
@@ -271,13 +251,6 @@ export default function EventDetailsPage(event) {
   useEffect(() => {
     setGetEvent(event?.event);
   }, [event]);
-  // console.log("get by id of event data:", products, getEvent, ticketQuantities);
-
-  // const getTotalWithOption = () => {
-  //   const ticketPrice = event?.tickets?.[0]?.price || 0;
-  //   const productPrice = selectedProduct?.price || 0;
-  //   return Math.round(qty * ticketPrice + qty * productPrice);
-  // };
   function getTotalWithOption() {
     let total = 0;
 
@@ -484,14 +457,11 @@ export default function EventDetailsPage(event) {
                     <button
                       key={index}
                       onClick={() => setSelectedTicket(ticket)}
-                      className={`
-          flex justify-between items-center w-full p-2   
-          transition 
-          ${selectedTicket?.type === ticket.type
+                      className={` flex justify-between items-center w-full p-2   transition ${selectedTicket?.type === ticket.type
                           ? "border-green-600 bg-green-50"
                           : "border-gray-300 bg-white"
-                        }
-        `}
+                        }`
+                      }
                     >
                       <span className="font-medium capitalize text-gray-700">
                         {ticket.type} Ticket Price:
@@ -509,32 +479,6 @@ export default function EventDetailsPage(event) {
             </div>
           </div>
 
-          {/* ✅ Quantity Selector */}
-          {/* <div className="flex justify-between items-center py-4 sm:py-6">
-            <p className="font-bold text-gray-700 text-sm sm:text-base">
-              ADULT QUANTITY: {event?.event[0]?.quantity || qty}
-            </p>
-
-            <div className="flex items-center gap-2 sm:gap-3">
-              
-              <button
-                onClick={() => qty > 1 && setQty(qty - 1)}
-                className="border px-2 sm:px-3 py-1 rounded text-base sm:text-lg  transition cursor-pointer"
-              >
-                -
-              </button>
-
-              <span className="font-bold text-base sm:text-lg">{qty}</span>
-
-              
-              <button
-                onClick={() => setQty(qty + 1)}
-                className="border px-2 sm:px-3 py-1 rounded text-base sm:text-lg  transition cursor-pointer"
-              >
-                +
-              </button>
-            </div>
-          </div> */}
           <div className="flex flex-col gap-4 py-4 sm:py-6">
             {getEvent?.tickets?.map((ticket, index) => {
               const isChild = ticket.type.toLowerCase().includes("child");
@@ -553,8 +497,8 @@ export default function EventDetailsPage(event) {
                 <div
                   key={index}
                   className={`flex flex-col p-3 bg-white shadow-sm rounded-lg border ${isChildDisabled
-                      ? "border-yellow-300 bg-yellow-50"
-                      : "border-gray-200"
+                    ? "border-yellow-300 bg-yellow-50"
+                    : "border-gray-200"
                     }`}
                 >
                   <div className="flex justify-between items-center">
@@ -584,8 +528,8 @@ export default function EventDetailsPage(event) {
                         }
                         disabled={isChildDisabled}
                         className={`border px-2 sm:px-3 py-1 rounded text-base sm:text-lg transition ${isChildDisabled
-                            ? "opacity-40 cursor-not-allowed"
-                            : "cursor-pointer hover:bg-gray-100"
+                          ? "opacity-40 cursor-not-allowed"
+                          : "cursor-pointer hover:bg-gray-100"
                           }`}
                       >
                         -
@@ -902,8 +846,8 @@ export default function EventDetailsPage(event) {
                     <div
                       key={item._id}
                       className={`group relative flex items-center gap-4 p-4 rounded-xl border-2 transition-all ${currentQty > 0
-                          ? 'border-green-500 bg-green-50'
-                          : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
+                        ? 'border-green-500 bg-green-50'
+                        : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
                         }`}
                     >
                       {/* Product Image */}
@@ -927,17 +871,17 @@ export default function EventDetailsPage(event) {
                           {/* Info Icon with Tooltip */}
                           {item.description && (
                             <div className="relative group/tooltip flex-shrink-0">
-                              <svg 
-                                className="w-4 h-4 text-gray-400 hover:text-blue-600 cursor-help transition-colors" 
-                                fill="none" 
-                                stroke="currentColor" 
+                              <svg
+                                className="w-4 h-4 text-gray-400 hover:text-blue-600 cursor-help transition-colors"
+                                fill="none"
+                                stroke="currentColor"
                                 viewBox="0 0 24 24"
                               >
-                                <path 
-                                  strokeLinecap="round" 
-                                  strokeLinejoin="round" 
-                                  strokeWidth={2} 
-                                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" 
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                                 />
                               </svg>
                               {/* Tooltip */}
@@ -973,8 +917,8 @@ export default function EventDetailsPage(event) {
                             onClick={() => handleAddProduct(item)}
                             disabled={totalTicketsSelected === 0}
                             className={`px-6 py-2.5 rounded-lg font-semibold text-sm transition-all ${totalTicketsSelected === 0
-                                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                : 'bg-green-600 text-white hover:bg-green-700 shadow-sm hover:shadow-md'
+                              ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                              : 'bg-green-600 text-white hover:bg-green-700 shadow-sm hover:shadow-md'
                               }`}
                           >
                             Add
@@ -1029,10 +973,10 @@ export default function EventDetailsPage(event) {
                 </div>
                 <button
                   onClick={() => setOpen(false)}
-                  disabled={totalProductUnits  < totalTicketsSelected}
+                  disabled={totalProductUnits < totalTicketsSelected}
                   className={`w-full py-3 rounded-lg font-semibold transition-all ${totalProductUnits < totalTicketsSelected
 
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-green-600 text-white hover:bg-green-700 shadow-md'
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-green-600 text-white hover:bg-green-700 shadow-md'
                     }`}
                 >
                   {totalProductUnits < totalTicketsSelected
@@ -1064,7 +1008,7 @@ export default function EventDetailsPage(event) {
 
           {/* ✅ TOTAL + GET TICKETS BUTTON (responsive) */}
           <div className="w-full mt-4">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4 sm:pb-6 border-b">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4 sm:pb-6 ">
               {/* LEFT: Total */}
               <div className="flex items-baseline gap-3 min-w-0">
                 <p className="font-bold text-sm sm:text-base truncate">
@@ -1130,23 +1074,8 @@ export default function EventDetailsPage(event) {
                         Change / Add more
                       </button>
 
-                      {/* Confirm: green, disabled until units match tickets */}
-                      {/* <button
-                        className={`w-full sm:w-auto px-3 py-2 rounded-md font-bold text-xs sm:text-sm transition
-                ${totalProductUnits === totalTicketsSelected
-                            ? "bg-green-600 text-white hover:bg-green-700"
-                            : "bg-green-200 text-green-800 opacity-80 cursor-not-allowed"
-                          }`}
-                        onClick={handleConfirm}
-disabled={totalProductUnits < totalTicketsSelected}
-aria-disabled={totalProductUnits < totalTicketsSelected}
-
-                      >
-                        Confirm
-                      </button> */}
                       <button
-                        className={`w-full sm:w-auto px-3 py-2 rounded-md font-bold text-xs sm:text-sm transition
-    ${totalTicketsSelected > 0 && totalProductUnits >= totalTicketsSelected
+                        className={`w-full sm:w-auto px-3 py-2 rounded-md font-bold text-xs sm:text-sm transition${totalTicketsSelected > 0 && totalProductUnits >= totalTicketsSelected
                             ? "bg-green-600 text-white hover:bg-green-700"
                             : "bg-green-200 text-green-800 opacity-80 cursor-not-allowed"
                           }`}
@@ -1166,6 +1095,27 @@ aria-disabled={totalProductUnits < totalTicketsSelected}
                   )}
                 </div>
               </div>
+            </div>
+
+            {/* Ticket Return & Transfer Policy Disclaimer */}
+            <div className="mt-6 pt-4 border-t border-gray-200">
+              <h3 className="text-xs font-semibold text-gray-700 uppercase tracking-wide mb-2">
+                Ticket Return & Transfer Policy
+              </h3>
+              <ul className="text-xs text-gray-600 space-y-1.5">
+                <li className="flex items-start">
+                  <span className="text-green-600 mr-2">•</span>
+                  <span>All match tickets are non-refundable</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-green-600 mr-2">•</span>
+                  <span>Tickets are non-returnable</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-green-600 mr-2">•</span>
+                  <span>Ticket transfers are permitted only through Cricket Lovers Global (CLG) and are subject to approval and availability</span>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
