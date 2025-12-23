@@ -1075,7 +1075,8 @@ export default function EventDetailsPage(event) {
                       </button>
 
                       <button
-                        className={`w-full sm:w-auto px-3 py-2 rounded-md font-bold text-xs sm:text-sm transition${totalTicketsSelected > 0 && totalProductUnits >= totalTicketsSelected
+                        className={`w-full sm:w-auto px-3 py-2 rounded-md font-bold text-xs sm:text-sm transition ${
+                          totalTicketsSelected > 0 && totalProductUnits >= totalTicketsSelected
                             ? "bg-green-600 text-white hover:bg-green-700"
                             : "bg-green-200 text-green-800 opacity-80 cursor-not-allowed"
                           }`}
