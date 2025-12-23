@@ -224,7 +224,7 @@ export default function PricingSection() {
       {/* Heading */}
       <div className="flex justify-between items-center mb-12">
         <h2 className="text-4xl md:text-5xl font-extrabold text-[#0b1441]">
-          PRICING <span className="text-[#22c55e]">PLAN</span>
+          MEMBERSHIP <span className="text-[#22c55e]">PLAN</span>
         </h2>
       </div>
 

@@ -6,6 +6,7 @@ export default function ProductDetails({ product, onAdd }) {
   return (
     <div className="w-full p-3 md:p-4 border rounded-xl bg-white shadow-sm flex items-center gap-3 bg-gradient-to-t from-[#e8ebf0] to-[#f3f5f8] border-gray-300">
       {/*  Product Image */}
+      
       <img
         src={product.coverImage}
         alt={product.name}
@@ -32,6 +33,9 @@ export default function ProductDetails({ product, onAdd }) {
 
         <p className="text-[10px] md:text-xs text-gray-500">
           {product.brandName}
+        </p>
+         <p className="text-[10px] md:text-xs text-gray-500">
+          {product.description}
         </p>
       </div>
 

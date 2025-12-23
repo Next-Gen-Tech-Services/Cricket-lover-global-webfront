@@ -9,6 +9,8 @@ import ProductDetails from "../[eventId]/product";
 import React from "react";
 import { getTokenLocal } from "@/utils/localStorage.util";
 import { useSelector } from "react-redux";
+import Link from "next/link";
+
 
 // Enhanced MembershipPopup Modal
 const MembershipPopup = ({ isOpen, onClose, onBuy }) => {
@@ -427,19 +429,28 @@ export default function EventDetailsPage(event) {
         <div>
           <h2 className="text-xl sm:text-2xl font-bold mb-3">HOW TO BUY:</h2>
           <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-gray-700">
-            <li>✅ PURCHASE ONLINE THROUGH OUR OFFICIAL WEBSITE.</li>
-            <li>✅ BUY FROM AUTHORIZED TICKETING PARTNERS.</li>
+
+<li className="flex items-center gap-2 ">
+  <span> ✅ BECOME A CRICKET LOVERS GLOBAL (CLG) MEMBER.</span>
+  <Link
+    href="/membership"
+    className="text-green-600  underline hover:text-green-700"
+  >
+    Click here
+  </Link>
+</li>
+
+            <li>✅ LOG IN WITH YOUR MEMBERSHIP CREDENTIALS TO BOOK MATCH AND EVENT TICKETS.</li>
           </ul>
         </div>
 
         <div>
           <h2 className="text-xl sm:text-2xl font-bold mb-3">
-            BENEFITS OF BUYING OFFICIAL TICKETS:
+            BENEFITS OF BUYING TICKETS AS A CLG MEMBER:
           </h2>
           <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-gray-700">
-            <li>✅ GUARANTEED ENTRY TO THE STADIUM.</li>
-            <li>✅ ACCESS TO EXCLUSIVE FAN EVENTS.</li>
-            <li>✅ PRIORITY FOR HIGH-DEMAND MATCHES AND FINALS.</li>
+            <li>✅ SIT WITH PASSIONATE CLG CRICKET FANS.</li>
+            <li>✅ EXCLUSIVE ACCESS TO TICKETS FOR HIGH-DEMAND MATCHES</li>
           </ul>
         </div>
       </section>
@@ -656,7 +667,7 @@ export default function EventDetailsPage(event) {
             {/* Header: progress + summary */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
               <div className="flex items-center gap-3">
-                <div className="text-sm font-semibold">Products</div>
+                <div className="text-sm font-semibold">CLG Merchandise</div>
 
                 <div className="text-xs text-gray-600">
                   <span className="font-bold">{totalProductUnits}</span> /{" "}
@@ -690,11 +701,11 @@ export default function EventDetailsPage(event) {
               <div className="w-full sm:w-2/3 p-4 border rounded-2xl bg-gradient-to-t from-white to-gray-50 shadow-sm flex flex-col sm:flex-row items-center gap-4">
                 <div className="flex-1 text-sm text-gray-700">
                   <div className="font-semibold mb-1">
-                    No products added yet
+                    No  CLG Merchandise added yet
                   </div>
                   <p className="text-xs text-gray-500">
-                    Add a product for each ticket — you can choose the same
-                    product multiple times.
+                    Add a CLG Merchandise for each ticket — you can choose the same
+                    CLG Merchandise multiple times.
                   </p>
                 </div>
 
@@ -707,7 +718,7 @@ export default function EventDetailsPage(event) {
                     }}
                     className="bg-green-600 text-white px-4 py-2 rounded-lg text-xs font-semibold hover:bg-green-700 transition"
                   >
-                    Add Product
+                    Add CLG Merchandise
                   </button>
 
                   <button
@@ -840,7 +851,7 @@ export default function EventDetailsPage(event) {
                   </div>
 
                   <div className="text-sm font-semibold">
-                    Products total: £
+                     CLG Merchandise total: £
                     {selectedProducts
                       .reduce(
                         (s, p) =>
@@ -858,7 +869,8 @@ export default function EventDetailsPage(event) {
             <Modal isOpen={open} onClose={() => setOpen(false)}>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl sm:text-2xl font-semibold text-black">
-                  Select Product
+                  Select CLG Merchandise
+                  
                 </h2>
 
                 {/* Close button INSIDE header */}
@@ -895,7 +907,7 @@ export default function EventDetailsPage(event) {
                 <div className="sm:hidden text-xs text-gray-600">
                   <span className="font-semibold">{totalProductUnits}</span> /{" "}
                   <span className="font-semibold">{totalTicketsSelected}</span>{" "}
-                  products
+                  CLG Merchandise
                 </div>
               </div>
 
@@ -906,7 +918,7 @@ export default function EventDetailsPage(event) {
                   <div className="flex items-center justify-between sm:justify-start gap-2 w-full sm:w-auto">
                     {/* Progress pill (hidden on smallest screens since we show it under total) */}
                     <div className="hidden sm:inline-flex items-center gap-2 text-xs text-gray-700 bg-gray-50 border rounded-full px-3 py-1">
-                      <span>Products</span>
+                      <span>CLG Merchandise</span>
                       <span className="font-bold">{totalProductUnits}</span>
                       <span>/</span>
                       <span className="font-bold">{totalTicketsSelected}</span>
@@ -922,7 +934,7 @@ export default function EventDetailsPage(event) {
                         }}
                         aria-label="Add product"
                       >
-                        Add Product
+                        Add CLG Merchandise
                       </button>
                     )}
 
@@ -991,8 +1003,12 @@ aria-disabled={totalProductUnits < totalTicketsSelected}
                 <Modal isOpen={open} onClose={() => setOpen(false)}>
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-xl sm:text-2xl font-semibold text-black">
-                      Select Product
-                    </h2>
+  Select CLG Merchandise {" "}
+  <span className="font-bold text-green-600">
+    ({totalProductUnits})
+  </span>
+</h2>
+
 
                     {/* Close button INSIDE header */}
                     <button
