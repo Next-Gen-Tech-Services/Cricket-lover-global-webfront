@@ -77,7 +77,7 @@ const Navbar = () => {
             <Image
               src={logoimg.logoImg}
               alt="Cricket Lovers Global"
-              className="h-16 w-32"
+              className="h-17 w-32"
             />
           </Link>
         </div>
