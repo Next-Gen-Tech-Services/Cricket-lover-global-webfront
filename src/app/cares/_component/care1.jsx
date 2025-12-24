@@ -90,7 +90,7 @@ const Care1 = () => {
           <p className="text-[#70757c] text-sm sm:text-base md:text-md lg:text-lg leading-relaxed max-w-xl">
             During a recent academy tour to India, we spent a whole day at an
             Orphanage in Mumbai playing cricket and football with the inmates
-            and shared a meal with them. We provided a personalised t-shirts to
+            and shared a meal with them. We provided personalised t-shirts to
             all 150 children at the Orphanage and also ordered their favourite
             McDonalds meal which we all ate together in their dining hall.
           </p>
