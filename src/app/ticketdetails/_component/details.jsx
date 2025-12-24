@@ -357,11 +357,29 @@ export default function EventDetailsPage(event) {
     // require that product units === tickets selected — change as needed
 
     // build products array
-    const productsPayload = selectedProducts.map((p) => ({
-      id: p.product._id,
-      quantity: p.quantity,
-      items: p.product.type === "tshirt" ? p.items : undefined,
-    }));
+    const productsPayload = [];
+    
+    selectedProducts.forEach((p) => {
+      if (p.product.type === "tshirt" && p.items && p.items.length > 0) {
+        // For t-shirts, create separate entries for each customized item
+        p.items.forEach((item) => {
+          productsPayload.push({
+            id: p.product._id,
+            quantity: 1, // Each item is 1 unit
+            size: item.size,
+            country: item.country,
+          });
+        });
+      } else {
+        // For non-tshirt products, add as-is
+        productsPayload.push({
+          id: p.product._id,
+          quantity: p.quantity,
+        });
+      }
+    });
+
+    console.log("Products payload being sent:", productsPayload);
 
     const payload = {
       eventId: getEvent?._id,
