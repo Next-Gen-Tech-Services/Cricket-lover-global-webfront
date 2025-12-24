@@ -281,7 +281,7 @@ const handlePrevPage = () => {
               : events.map((event) => (
                   <div
                     key={event?._id}
-                    className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition overflow-hidden cursor-pointer flex flex-col relative group"
+                    className="bg-white rounded-2xl shadow-xl hover:shadow-lg transition overflow-hidden cursor-pointer flex flex-col relative group"
                     onClick={() => router.push(`/ticketdetails/${event?._id}`)}
                   >
                     <div className="w-full h-60 overflow-hidden rounded-xl">

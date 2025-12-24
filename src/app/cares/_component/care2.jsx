@@ -46,8 +46,8 @@ const Care2 = () => {
         {/* LEFT TEXT */}
         <div className="order-2 md:order-1 text-left space-y-6 px-2 md:px-0">
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-5xl font-semibold uppercase leading-tight tracking-tight text-[#0d0d36]">
-            Supporting<br />Under<br />
-            Privilege / Refugee<br />
+            Supporting Under<br />
+            Underprivileged / Refugee<br />
             Kids in the UK
           </h2>
 
@@ -59,7 +59,7 @@ const Care2 = () => {
             support this cause in the near future.
           </p>
 
-          <p className="text-[#70757c] text-sm sm:text-base md:text-m leading-relaxed max-w-lg">
+          <p className="text-[#70757c] text-sm sm:text-base md:text-md  lg:text-lg leading-relaxed max-w-lg">
             We hope to be able to help more and more children through this
             initiative and make cricket a medium of hope and joy for all.
           </p>

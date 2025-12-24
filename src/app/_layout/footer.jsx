@@ -22,17 +22,17 @@ const Footer = () => {
           />
           {/* Tagline */}
           <p className="text-lg font-semibold tracking-wide">
-            PASSION BEYOND BOUNDARIES.
+            PASSION BEYOND BOUNDARIES
           </p>
           {/* Social Icons */}
           <div className="flex gap-5 mt-8 text-[22px]">
-            <a href="https://www.facebook.com/people/Cricket-Lovers-Global-Academy/61559836160887/" className="!text-[#00175f] hover:text-[#00175f]">
+            <a href="https://www.facebook.com/p/Cricket-Lovers-Global-100063728492925/" className="!text-[#00175f] hover:text-[#00175f]">
               <FaFacebookF />
             </a>
             <a href="https://www.instagram.com/cricketloversglobal/" className="!text-[#00175f] hover:text-[#00175f]">
               <FaInstagram />
             </a>
-            <a href="https://x.com/i/flow/login?redirect_after_login=%2Fsearch%3Fq%3D%2523CricketLoversGlobal%26src%3Dhashtag_click%26f%3Duser" className="!text-[#00175f] hover:text-[#00175f]">
+            <a href="https://x.com/CricketLoversG?s=20" className="!text-[#00175f] hover:text-[#00175f]">
               <FaTwitter />
             </a>
           </div>
@@ -43,10 +43,20 @@ const Footer = () => {
           <h3 className="text-[22px] font-bold mb-2">Quick Links</h3>
           <ul className="space-y-2 text-[16px]">
             <li><a href="/about" className="!text-[#031036] !no-underline hover:no-underline">About</a></li>
+            <li><a href="/cares" className="!text-[#031036] !no-underline hover:no-underline">Cares</a></li>
             <li><a href="/gallery" className="!text-[#00175f] !no-underline hover:no-underline">Gallery</a></li>
             <li><a href="/membership" className="!text-[#041f71] !no-underline hover:no-underline">Memberships</a></li>
             <li><a href="/events" className="!text-[#00175f] !no-underline hover:no-underline">Events</a></li>
-            <li><a href="/academy" className="!text-[#00175f] !no-underline hover:no-underline">CLG Academy</a></li>
+<li>
+  <a
+    href="https://clgacademy.co.uk/"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="!text-[#00175f] !no-underline hover:no-underline"
+  >
+    CLG Academy
+  </a>
+</li>
           </ul>
         </div>
 

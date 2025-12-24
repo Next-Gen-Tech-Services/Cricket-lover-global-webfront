@@ -20,7 +20,7 @@ const blogs = [
     img: benfitIconImg.benfitIcon10,
   },
   {
-    title: "Annual Meetings",
+    title: "Annual Gatherings",
     desc: "Entry to Cricket Lovers Global Annual Meet",
     img: benfitIconImg.benfitIcon3,
   },
@@ -96,12 +96,12 @@ const MembershipBenefit = () => {
       {/* Header Section */}
       <section className="py-12 sm:py-14 md:py-16 px-4 sm:px-8 md:px-16 lg:px-24 flex flex-col gap-10">
         <div className="text-center max-w-3xl mx-auto">
-          <p className="text-[#4154f1] font-semibold uppercase tracking-wider text-base sm:text-lg">
+          {/* <p className="text-[#4154f1] font-semibold uppercase tracking-wider text-base sm:text-lg">
             What to expect as a cricket lovers global member
-          </p>
+          </p> */}
           <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-[#0b1441] mt-2">
-            What you can expect when <br className="hidden md:block" />
-            you join us
+            WHAT TO EXPECT AS A CRICKET LOVERS GLOBAL MEMBER
+            
           </h2>
         </div>
       </section>
