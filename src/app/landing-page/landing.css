@@ -141,35 +141,20 @@
   min-width: 180px;
 }
 
-/* Alternate button colors */
-.button-group .btn-primary:nth-child(1),
-.button-group .btn-secondary:nth-child(3) {
+/* All buttons green */
+.btn-primary,
+.btn-secondary {
   background: #16a34a;
   color: white;
   box-shadow: 0 4px 20px rgba(22, 163, 74, 0.5);
   border: none;
 }
 
-.button-group .btn-primary:nth-child(1):hover,
-.button-group .btn-secondary:nth-child(3):hover {
+.btn-primary:hover,
+.btn-secondary:hover {
   background: #15803d;
   transform: translateY(-2px);
   box-shadow: 0 6px 30px rgba(22, 163, 74, 0.7);
-}
-
-.button-group .btn-secondary:nth-child(2) {
-  background: white;
-  color: #1e3a8a;
-  border: 2px solid #60a5fa;
-  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.3);
-}
-
-.button-group .btn-secondary:nth-child(2):hover {
-  background: #f0f9ff;
-  border-color: #3b82f6;
-  color: #1e3a8a;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 30px rgba(255, 255, 255, 0.5);
 }
 
 /* Decorative Stumps */
