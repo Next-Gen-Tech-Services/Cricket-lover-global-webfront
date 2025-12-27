@@ -322,17 +322,10 @@ export default function EventDetailsPage(event) {
       setShowMembershipPopup(true);
       return;
     }
-    if (totalProductUnits < totalTicketsSelected) {
-      return toast.error(
-        `Please select at least ${totalTicketsSelected} product(s).`,
-        { autoClose: false }
-      );
-    }
-
     if (totalTicketsSelected === 0)
       return toast.error("Select at least one ticket", { autoClose: false });
 
-    // Validate t-shirt customization
+    // Validate t-shirt customization only if products are selected
     for (const p of selectedProducts) {
       if (p.product.type === "tshirt") {
         const items = p.items || [];
@@ -354,9 +347,7 @@ export default function EventDetailsPage(event) {
       }
     }
 
-    // require that product units === tickets selected — change as needed
-
-    // build products array
+    // Products are now optional - build products array if any products selected
     const productsPayload = [];
     
     selectedProducts.forEach((p) => {
@@ -727,11 +718,10 @@ export default function EventDetailsPage(event) {
               <div className="w-full sm:w-2/3 p-4 border rounded-2xl bg-gradient-to-t from-white to-gray-50 shadow-sm flex flex-col sm:flex-row items-center gap-4">
                 <div className="flex-1 text-sm text-gray-700">
                   <div className="font-semibold mb-1">
-                    No  CLG Merchandise added yet
+                    Support Cricket Lovers Global
                   </div>
                   <p className="text-xs text-gray-500">
-                    Add atleast one CLG Merchandise for each ticket — you can choose the same
-                    CLG Merchandise multiple times.
+                    While purchasing your match tickets, we invite you to also choose CLG merchandise to support and promote Cricket Lovers Global and our cricketing initiatives worldwide.
                   </p>
                 </div>
 
@@ -1070,16 +1060,9 @@ export default function EventDetailsPage(event) {
                 </div>
                 <button
                   onClick={() => setOpen(false)}
-                  disabled={totalProductUnits < totalTicketsSelected}
-                  className={`w-full py-3 rounded-lg font-semibold transition-all ${totalProductUnits < totalTicketsSelected
-
-                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-green-600 text-white hover:bg-green-700 shadow-md'
-                    }`}
+                  className="w-full py-3 rounded-lg font-semibold transition-all bg-green-600 text-white hover:bg-green-700 shadow-md"
                 >
-                  {totalProductUnits < totalTicketsSelected
-                    ? `Select ${totalTicketsSelected - totalProductUnits} more product${totalTicketsSelected - totalProductUnits > 1 ? 's' : ''}`
-                    : 'Done'
-                  }
+                  Done
                 </button>
               </div>
 
@@ -1133,8 +1116,8 @@ export default function EventDetailsPage(event) {
                       <span className="font-bold">{totalTicketsSelected}</span>
                     </div>
 
-                    {/* Add Product (primary action) */}
-                    {totalProductUnits < totalTicketsSelected && (
+                    {/* Add Product Button - Always available when tickets are selected */}
+                    {totalTicketsSelected > 0 && (
                       <button
                         className="w-full sm:w-auto bg-green-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-green-700 text-xs sm:text-sm transition"
                         onClick={() => {
@@ -1147,7 +1130,7 @@ export default function EventDetailsPage(event) {
                       </button>
                     )}
 
-                    {/* if no slots and 0 tickets, show disabled CTA */}
+                    {/* if no tickets selected, show disabled CTA */}
                     {totalTicketsSelected === 0 && (
                       <button
                         className="w-full sm:w-auto bg-gray-200 text-gray-600 px-4 py-2 rounded-md text-xs sm:text-sm"
@@ -1159,33 +1142,30 @@ export default function EventDetailsPage(event) {
                     )}
                   </div>
 
-                  {/* Confirm + Change (shown only when there are selected products) */}
-                  {selectedProducts.length > 0 && (
+                  {/* Confirm Button - shown when tickets are selected (products optional) */}
+                  {totalTicketsSelected > 0 && (
                     <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
-                      {/* Open product modal / change */}
-                      <button
-                        onClick={() => setOpen(true)}
-                        className="w-full sm:w-auto bg-white border border-gray-200 text-gray-800 px-3 py-2 rounded-md text-xs sm:text-sm hover:shadow-sm transition"
-                        aria-label="Change or add more products"
-                      >
-                        Change / Add more
-                      </button>
+                      {/* Open product modal / change - only show if products already selected */}
+                      {selectedProducts.length > 0 && (
+                        <button
+                          onClick={() => setOpen(true)}
+                          className="w-full sm:w-auto bg-white border border-gray-200 text-gray-800 px-3 py-2 rounded-md text-xs sm:text-sm hover:shadow-sm transition"
+                          aria-label="Change or add more products"
+                        >
+                          Change / Add more
+                        </button>
+                      )}
 
+                      {/* Confirm Button */}
                       <button
                         className={`w-full sm:w-auto px-3 py-2 rounded-md font-bold text-xs sm:text-sm transition ${
-                          totalTicketsSelected > 0 && totalProductUnits >= totalTicketsSelected
+                          totalTicketsSelected > 0
                             ? "bg-green-600 text-white hover:bg-green-700"
                             : "bg-green-200 text-green-800 opacity-80 cursor-not-allowed"
                           }`}
                         onClick={handleConfirm}
-                        disabled={
-                          totalTicketsSelected === 0 ||
-                          totalProductUnits < totalTicketsSelected
-                        }
-                        aria-disabled={
-                          totalTicketsSelected === 0 ||
-                          totalProductUnits > totalTicketsSelected
-                        }
+                        disabled={totalTicketsSelected === 0}
+                        aria-disabled={totalTicketsSelected === 0}
                       >
                         Confirm
                       </button>
