@@ -33,45 +33,46 @@ function LayoutWithPopup({ children, hideNavFooter }) {
   const pathname = usePathname(); //  ADD THIS LINE
   const [showPopup, setShowPopup] = useState(false);
 
-const userData = useSelector((state) => state.user.userInfo);
-const token = useSelector((state) => state.user.token);
-const isLoggedIn = !!(token && userData);
+  const userData = useSelector((state) => state.user.userInfo);
+  const token = useSelector((state) => state.user.token);
+  const isLoggedIn = !!(token && userData);
 
 
 
 
   useEffect(() => {
-  //  Not logged in → never show popup
-  if (!isLoggedIn) {
-    setShowPopup(false);
-    return;
-  }
+    //  Not logged in → never show popup
+    if (!isLoggedIn) {
+      setShowPopup(false);
+      return;
+    }
 
-  //  Auth / profile pages → never show
-  if (
-    hideNavFooter ||
-    pathname === "/profile" ||
-    pathname === "/logout"
-  ) {
-    setShowPopup(false);
-    return;
-  }
+    //  Auth / profile pages → never show
+    if (
+!hideNavFooter ||
+      pathname === "/profile" ||
+      pathname === "/landing-page" ||
+      pathname === "/logout"
+    ) {
+      setShowPopup(false);
+      return;
+    }
 
-  const { percent } = getProfileCompletion(userData);
+    const { percent } = getProfileCompletion(userData);
 
-  setShowPopup(percent < 80);
-}, [isLoggedIn, userData, pathname, hideNavFooter]);
+    setShowPopup(percent < 80);
+  }, [isLoggedIn, userData, pathname, hideNavFooter]);
 
 
 
   const handleClose = () => {
-  setShowPopup(false);
-};
+    setShowPopup(false);
+  };
 
 
   // const percent = getProfileCompletion(userData).percent;
-const percent =
-  isLoggedIn ? getProfileCompletion(userData).percent : 0;
+  const percent =
+    isLoggedIn ? getProfileCompletion(userData).percent : 0;
 
 
   return (
@@ -87,10 +88,10 @@ const percent =
 
       {/* 🔔 PROFILE REMINDER POPUP */}
       <ProfileReminderPopup
-  isOpen={showPopup}
-  onClose={handleClose}
-  percent={percent}
-/>
+        isOpen={showPopup}
+        onClose={handleClose}
+        percent={percent}
+      />
 
     </>
   );
@@ -99,7 +100,7 @@ const percent =
 export default function RootLayout({ children }) {
   const pathname = usePathname();
   const hideNavFooter =
-    pathname === "/login" || pathname === "/signup" || pathname === "/success";
+    pathname === "/login" || pathname === "/signup" || pathname === "/success" || pathname === "/landing-page";
 
   return (
     <html lang="en">
