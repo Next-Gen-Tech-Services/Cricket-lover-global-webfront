@@ -9,12 +9,12 @@ const LandingPage = () => {
   const router = useRouter();
 
   const flagBalls = [
-    { name: "zimbabwe", code: "in", duration: 8 },
-    { name: "bangladesh", code: "in", duration: 9 },
-    { name: "sri lanka", code: "in", duration: 10 },
-    { name: "pakistan", code: "in", duration: 7 },
+    { name: "zimbabwe", code: "zw", duration: 8 },
+    { name: "bangladesh", code: "bd", duration: 9 },
+    { name: "sri lanka", code: "lk", duration: 10 },
+    { name: "pakistan", code: "pk", duration: 7 },
     { name: "india", code: "in", duration: 11 },
-    { name: "england", code: "in", duration: 8.5 },
+    { name: "england", code: "gb-eng", duration: 8.5 },
     { name: "australia", code: "au", duration: 9.5 },
     { name: "new zealand", code: "nz", duration: 10.5 },
     { name: "south africa", code: "za", duration: 7.5 },
@@ -87,13 +87,15 @@ const LandingPage = () => {
                 ease: "linear",
                 delay: index * 0.2,
               }}
-              style={{ width: "100%", height: "100%" }}
+              style={{ width: "100%", height: "100%", position: "relative" }}
             >
-              <img
-                src={`/assets/flags/${ball.code}.png`}
-                alt={ball.name}
-                className="flag-ball-image"
-              />
+              <div className="flag-ball-wrapper ">
+                <img
+                  src={`/assets/flags/${ball.code}.png`}
+                  alt={ball.name}
+                  className="flag-ball-image bg-white"
+                />
+              </div>
             </motion.div>
           </motion.div>
         );
@@ -108,7 +110,7 @@ const LandingPage = () => {
           transition={{ duration: 0.8 }}
         >
           <img
-            src="/assets/logo.png"
+            src="/assets/Logo.png"
             alt="Cricket Lovers Global"
             className="main-logo"
           />
