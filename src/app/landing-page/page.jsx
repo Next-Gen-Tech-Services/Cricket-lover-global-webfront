@@ -131,6 +131,12 @@ const LandingPage = () => {
           >
             SIGN UP FOR A MEMBERSHIP
           </button>
+          <button
+            className="btn-secondary"
+            onClick={() => router.push("/events")}
+          >
+            BUY EVENT TICKET
+          </button>
         </motion.div>
       </div>
     </section>
