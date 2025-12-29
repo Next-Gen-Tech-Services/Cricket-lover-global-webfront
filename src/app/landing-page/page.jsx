@@ -16,10 +16,11 @@ const LandingPage = () => {
     { name: "india", code: "in", duration: 11 },
     { name: "england", code: "gb-eng", duration: 8.5 },
     { name: "australia", code: "au", duration: 9.5 },
-    { name: "new zealand", code: "nz", duration: 10.5 },
+    
     { name: "south africa", code: "za", duration: 7.5 },
-    { name: "west indies", code: "bd", duration: 11.5 },
+    { name: "west indies", code: "wi", duration: 11.5 },
     { name: "ireland", code: "ie", duration: 8 },
+    { name: "new zealand", code: "nz", duration: 10.5 },
     { name: "afghanistan", code: "af", duration: 9 },
   ];
 
