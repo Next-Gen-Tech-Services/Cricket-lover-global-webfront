@@ -136,7 +136,7 @@ const LandingPage = () => {
             className="btn-secondary"
             onClick={() => router.push("/events")}
           >
-              JOIN EVENT 
+              JOIN EVENTS 
           </button>
         </motion.div>
       </div>
