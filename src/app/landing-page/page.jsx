@@ -18,7 +18,7 @@ const LandingPage = () => {
     { name: "australia", code: "au", duration: 9.5 },
     { name: "new zealand", code: "nz", duration: 10.5 },
     { name: "south africa", code: "za", duration: 7.5 },
-    { name: "west indies", code: "bb", duration: 11.5 },
+    { name: "west indies", code: "bd", duration: 11.5 },
     { name: "ireland", code: "ie", duration: 8 },
     { name: "afghanistan", code: "af", duration: 9 },
   ];
@@ -135,7 +135,7 @@ const LandingPage = () => {
             className="btn-secondary"
             onClick={() => router.push("/events")}
           >
-            BUY EVENT TICKET
+              JOIN EVENT 
           </button>
         </motion.div>
       </div>
